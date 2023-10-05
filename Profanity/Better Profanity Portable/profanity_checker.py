@@ -18,7 +18,7 @@ def add_to_list(text):
     current_directory = os.path.dirname(os.path.abspath(__file__))
     relative_path = os.path.join(current_directory, 'bp', 'profanity_wordlist.txt')
     with open(relative_path, "a") as file:
-        text = text + "\n"
+        text = "\n" + text
         file.write(text)
     print(f"{text}, added to wordlist")
 
