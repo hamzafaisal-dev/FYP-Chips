@@ -1,0 +1,3 @@
+1. find pre-existing datasets.
+2. process and create combined dataset.
+3. create model.
