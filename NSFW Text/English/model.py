@@ -40,14 +40,6 @@ def test_profanity(user_input, stop_words, lemmatizer, model):
         else:
             print(f'Clean: {round(probability*100, 1)}%')
 
-def show_embeddings(user_input, model, stop_words, lemmatizer):
-    user_input = text_cleaning(user_input, stop_words, lemmatizer)
-    user_input = user_input.split()
-    embeddings = []
-    for i in range(len(user_input)):
-        embeddings = model.get_word_vector(user_input)
-        print(embeddings)
-
 def main():
     stop_words, lemmatizer, model = load_shit()
     user_input = ""
