@@ -9,9 +9,138 @@ class AddChipFormPage extends StatefulWidget {
 }
 
 class _AddChipFormPageState extends State<AddChipFormPage> {
+  // for cities
+  List<String> selectedCities = [
+    'Chicago',
+    'Houston',
+    'Boston',
+  ];
+  final List<String> allCities = [
+    'New York',
+    'Los Angeles',
+    'Chicago',
+    'Houston',
+    'Miami',
+    'San Francisco',
+    'Boston',
+    'Seattle',
+    'Dallas',
+    'Denver',
+    // this is temporary for testing
+  ];
+
+  // for FOIs
+  List<String> selectedFOIs = [
+    'Flutter',
+    'Node.js',
+    'SQL',
+  ];
+  final List<String> allFOIs = [
+    'Flutter',
+    'Node.js',
+    'SQL',
+    'React',
+    'Angular',
+    'Vue.js',
+    'Python',
+    'Java',
+    'C++',
+    'C#',
+    'PHP',
+    'Ruby',
+    'Swift',
+    'Kotlin',
+    'Go',
+    'Rust',
+    'Dart',
+    'TypeScript',
+    'JavaScript',
+    'HTML',
+    'CSS',
+    'SASS',
+    'LESS',
+    'Bootstrap',
+    'Tailwind CSS',
+    'Material UI',
+    'Flutter',
+    'React Native',
+    'Ionic',
+    'Xamarin',
+    'Cordova',
+    'Electron',
+    'Unity',
+    'Unreal Engine',
+    'Firebase',
+    'MongoDB',
+    'MySQL',
+    'PostgreSQL',
+    'MariaDB',
+    'SQLite',
+    'Redis',
+    'Oracle',
+    'Microsoft SQL Server',
+    'Amazon Web Services (AWS)',
+    'Google Cloud Platform (GCP)',
+    'Microsoft Azure',
+    'Docker',
+    'Kubernetes',
+    'Jenkins',
+    'GitHub',
+    'GitLab',
+    'Bitbucket',
+    'Jira',
+    'Trello',
+    'Slack',
+    'Microsoft Teams',
+    'Zoom',
+    'Google Meet',
+    'Skype',
+    'Discord',
+    'Microsoft Office',
+    'Google Workspace',
+    'Adobe Creative Cloud',
+    'Figma',
+    'Sketch',
+    'InVision',
+    'Adobe XD',
+    'Zeplin',
+    'Marvel',
+    'Framer',
+    'Balsamiq',
+    'Axure',
+    'Webflow',
+    'WordPress',
+    'Shopify',
+    'Wix',
+    'Squarespace',
+    'Joomla',
+    'Drupal',
+    'Magento',
+    'PrestaShop',
+    'OpenCart',
+    'BigCommerce',
+    'Salesforce',
+    'HubSpot',
+    'Mailchimp',
+    'Marketo',
+    'Pardot',
+    'Zoho',
+    'Google Analytics',
+    'Google Ads',
+    'Facebook Ads',
+    'LinkedIn Ads',
+    'Twitter Ads',
+    'Pinterest Ads',
+    'Snapchat Ads',
+    'TikTok Ads',
+    'Google Tag Manager',
+    'Google Search Console',
+  ];
+
   String _selectedMode = '';
   RangeValues _values = const RangeValues(0, 20);
   final TextEditingController _deadlineController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // textformfield height
@@ -149,6 +278,18 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                     showSelectedIcon: false,
                   ),
                 ),
+
+                // sized box
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.018,
+                ),
+
+                // cities
+                buildCitySearchField(),
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.009,
+                ),
+                buildChips(selectedCities),
 
                 // sized box
                 SizedBox(
@@ -355,6 +496,18 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                   height: Responsiveness.sh(context) * 0.018,
                 ),
 
+                // cities
+                buildFoiSearchField(),
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.009,
+                ),
+                buildFoiChips(selectedFOIs),
+
+                // sized box
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.018,
+                ),
+
                 // description
                 TextFormField(
                   maxLines: 5,
@@ -368,6 +521,11 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                       ),
                     ),
                   ),
+                ),
+
+                // sized box
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.018,
                 ),
               ],
             ),
@@ -385,5 +543,105 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
         },
       ),
     );
+  }
+
+  Widget buildChips(List<String> cities) {
+    return Wrap(
+      spacing: 9.0,
+      children: cities.map((city) {
+        return Chip(
+          label: Text(city),
+          onDeleted: () {
+            removeCity(city);
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildFoiChips(List<String> fois) {
+    return Wrap(
+      spacing: 9.0,
+      children: fois.map((foi) {
+        return Chip(
+          label: Text(foi),
+          onDeleted: () {
+            removeFoi(foi);
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildCitySearchField() {
+    return SizedBox(
+      height: Responsiveness.sh(context) * 0.0639,
+      child: TextFormField(
+        controller: _locationController,
+        onFieldSubmitted: (value) {
+          addCity(value);
+          _locationController.clear();
+        },
+        decoration: InputDecoration(
+          labelText: 'Location(s)',
+          hintText: 'Search city name',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(Responsiveness.sw(context) * 0.018),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildFoiSearchField() {
+    return SizedBox(
+      height: Responsiveness.sh(context) * 0.0639,
+      child: TextFormField(
+        controller: _locationController,
+        onFieldSubmitted: (value) {
+          addFoi(value);
+          _locationController.clear();
+        },
+        decoration: InputDecoration(
+          labelText: 'Skills',
+          hintText: 'Search skills',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(Responsiveness.sw(context) * 0.018),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void addCity(String cityName) {
+    if (selectedCities.length < 9 && !selectedCities.contains(cityName)) {
+      setState(() {
+        selectedCities.add(cityName);
+      });
+    }
+  }
+
+  void addFoi(String foi) {
+    if (selectedFOIs.length < 9 && !selectedFOIs.contains(foi)) {
+      setState(() {
+        selectedFOIs.add(foi);
+      });
+    }
+  }
+
+  void removeCity(String cityName) {
+    setState(() {
+      selectedCities.remove(cityName);
+    });
+  }
+
+  void removeFoi(String foi) {
+    setState(() {
+      selectedFOIs.remove(foi);
+    });
   }
 }
