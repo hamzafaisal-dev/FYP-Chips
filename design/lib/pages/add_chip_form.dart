@@ -208,6 +208,75 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                   height: Responsiveness.sh(context) * 0.018,
                 ),
 
+                // preferred gender drop down
+                SizedBox(
+                  width: double.maxFinite,
+                  child: DropdownButtonFormField(
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    decoration: InputDecoration(
+                      labelText: 'Preferred Sex',
+                      hintText: 'E.g. Female',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(tffbr),
+                        ),
+                      ),
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'Male',
+                        child: Tooltip(
+                          message: 'Males preferred for this role',
+                          child: Row(
+                            children: [
+                              Text('Male'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Female',
+                        child: Tooltip(
+                          message: 'Females preferred for this role',
+                          child: Row(
+                            children: [
+                              Text('Female'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Intersex',
+                        child: Tooltip(
+                          message: 'Intersex people preferred for this role',
+                          child: Row(
+                            children: [
+                              Text('Intersex'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'No preference',
+                        child: Tooltip(
+                          message: 'All are welcome to apply for this role',
+                          child: Row(
+                            children: [
+                              Text('No preference'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                    onChanged: (p0) {},
+                  ),
+                ),
+
+                // sized box
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.018,
+                ),
+
                 // years of experience required range slider
                 Container(
                   width: double.maxFinite,
@@ -256,7 +325,7 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                   child: TextFormField(
                     controller: _deadlineController,
                     decoration: InputDecoration(
-                      labelText: 'Deadline',
+                      labelText: 'Deadline to Apply',
                       hintText: 'E.g. 31/12/2021',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(

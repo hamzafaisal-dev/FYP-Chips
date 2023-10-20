@@ -3,6 +3,7 @@ import 'package:design/pages/alert_settings.dart';
 import 'package:design/pages/bin.dart';
 import 'package:design/pages/main_pages.dart';
 import 'package:design/pages/settings.dart';
+import 'package:design/pages/settings/pnp_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -49,6 +50,7 @@ class MainApp extends StatelessWidget {
         '/bin': (context) => const BinPage(),
         '/alertSettings': (context) => const AlertSettings(),
         '/addChipForm': (context) => const AddChipFormPage(),
+        '/pnpSettings': (context) => const PNPSettings(),
       },
     );
   }

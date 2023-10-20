@@ -1,4 +1,3 @@
-import 'package:design/responsiveness.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
@@ -24,98 +23,48 @@ class Settings extends StatelessWidget {
       body: Column(
         children: [
           // profile & preferences settings
-          PopupMenuItem(
-            padding: const EdgeInsets.all(0),
+          ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text('Profile & Preferences'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/pnpSettings');
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Responsiveness.sw(context) * 0.036,
-                  ),
-                  child: const Icon(Icons.person_outline),
-                ),
-                const Text('Profle & Preferences'),
-              ],
-            ),
           ),
 
           // alert settings
-          PopupMenuItem(
-            padding: const EdgeInsets.all(0),
+          ListTile(
+            leading: const Icon(Icons.notifications_active_outlined),
+            title: const Text('Alerts'),
             onTap: () {
               Navigator.pushNamed(context, '/alertSettings');
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Responsiveness.sw(context) * 0.036,
-                  ),
-                  child: const Icon(Icons.notifications_active_outlined),
-                ),
-                const Text('Alerts'),
-              ],
-            ),
           ),
 
           // FOIs settings
-          PopupMenuItem(
-            padding: const EdgeInsets.all(0),
+          ListTile(
+            leading: const Icon(Icons.cases_outlined),
+            title: const Text('Fields of Interest'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/foiSettings');
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Responsiveness.sw(context) * 0.036,
-                  ),
-                  child: const Icon(Icons.cases_outlined),
-                ),
-                const Text('Fields of Interest'),
-              ],
-            ),
           ),
 
           // theme
-          PopupMenuItem(
-            padding: const EdgeInsets.all(0),
+          ListTile(
+            leading: const Icon(Icons.palette_outlined),
+            title: const Text('Theme'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/themeSettings');
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Responsiveness.sw(context) * 0.036,
-                  ),
-                  child: const Icon(Icons.palette_outlined),
-                ),
-                const Text('Theme'),
-              ],
-            ),
           ),
 
           // about us
-          PopupMenuItem(
-            padding: const EdgeInsets.all(0),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: const Text('About us'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/aboutUs');
             },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Responsiveness.sw(context) * 0.036,
-                  ),
-                  child: const Icon(Icons.info_outline),
-                ),
-                const Text('About us'),
-              ],
-            ),
           ),
         ],
       ),
