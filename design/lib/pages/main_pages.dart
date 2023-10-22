@@ -50,6 +50,7 @@ class _MainPagesState extends State<MainPages> {
               tooltip: 'Menu',
               onPressed: () {
                 showModalBottomSheet(
+                  showDragHandle: true,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(sw * 0.063),

@@ -11,21 +11,21 @@ class HamburgerMenu extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // punga
-        Padding(
-          padding: EdgeInsets.only(
-            top: sw * 0.036,
-            bottom: sw * 0.018,
-          ),
-          child: Container(
-            width: sw * 0.09,
-            height: sw * 0.0108,
-            decoration: BoxDecoration(
-              color: Theme.of(context).hintColor,
-              borderRadius: BorderRadius.all(Radius.circular(sw * 0.09)),
-            ),
-          ),
-        ),
+        // // punga
+        // Padding(
+        //   padding: EdgeInsets.only(
+        //     top: sw * 0.036,
+        //     bottom: sw * 0.018,
+        //   ),
+        //   child: Container(
+        //     width: sw * 0.09,
+        //     height: sw * 0.0108,
+        //     decoration: BoxDecoration(
+        //       color: Theme.of(context).hintColor,
+        //       borderRadius: BorderRadius.all(Radius.circular(sw * 0.09)),
+        //     ),
+        //   ),
+        // ),
 
         // settings
         PopupMenuItem(

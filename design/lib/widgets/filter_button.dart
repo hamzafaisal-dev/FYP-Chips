@@ -1,4 +1,5 @@
 import 'package:design/responsiveness.dart';
+import 'package:design/widgets/filter_modal.dart';
 import 'package:flutter/material.dart';
 
 class FilterButton extends StatelessWidget {
@@ -12,14 +13,15 @@ class FilterButton extends StatelessWidget {
       icon: const Icon(Icons.filter_alt_outlined),
       onPressed: () {
         showModalBottomSheet(
+          showDragHandle: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(sw * 0.0369),
-              topRight: Radius.circular(sw * 0.0369),
+              topLeft: Radius.circular(sw * 0.063),
+              topRight: Radius.circular(sw * 0.063),
             ),
           ),
           context: context,
-          builder: (context) => Container(),
+          builder: (context) => const FilterModal(),
         );
       },
     );
