@@ -79,27 +79,29 @@ class _MainPagesState extends State<MainPages> {
       //   ProfileBody2(),
       // ][currentIndex],
 
-      body: NotificationListener<UserScrollNotification>(
-        onNotification: (notification) {
-          if (notification.direction == ScrollDirection.forward) {
-            setState(() {
-              isScrolled = true;
-            });
-          } else if (notification.direction == ScrollDirection.reverse) {
-            setState(() {
-              isScrolled = false;
-            });
-          }
-          return true;
-        },
-        child: IndexedStack(
-          index: currentIndex,
-          children: const [
-            HomeBody(),
-            FavoritesBody(),
-            AppliedBody(),
-            ProfileBody2(),
-          ],
+      body: SafeArea(
+        child: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            if (notification.direction == ScrollDirection.forward) {
+              setState(() {
+                isScrolled = true;
+              });
+            } else if (notification.direction == ScrollDirection.reverse) {
+              setState(() {
+                isScrolled = false;
+              });
+            }
+            return true;
+          },
+          child: IndexedStack(
+            index: currentIndex,
+            children: const [
+              HomeBody(),
+              FavoritesBody(),
+              AppliedBody(),
+              ProfileBody2(),
+            ],
+          ),
         ),
       ),
 

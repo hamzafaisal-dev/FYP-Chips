@@ -22,15 +22,6 @@ class Settings extends StatelessWidget {
       // body
       body: Column(
         children: [
-          // profile & preferences settings
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: const Text('Profile & Preferences'),
-            onTap: () {
-              Navigator.pushNamed(context, '/pnpSettings');
-            },
-          ),
-
           // alert settings
           ListTile(
             leading: const Icon(Icons.notifications_active_outlined),
@@ -40,21 +31,21 @@ class Settings extends StatelessWidget {
             },
           ),
 
-          // FOIs settings
+          // preferences settings
           ListTile(
-            leading: const Icon(Icons.cases_outlined),
-            title: const Text('Fields of Interest'),
+            title: const Text('Preferences'),
+            leading: const Icon(Icons.tune),
             onTap: () {
-              Navigator.pushNamed(context, '/foiSettings');
+              Navigator.pushNamed(context, '/preferences');
             },
           ),
 
-          // theme
+          // change password
           ListTile(
-            leading: const Icon(Icons.palette_outlined),
-            title: const Text('Theme'),
+            leading: const Icon(Icons.lock_outline),
+            title: const Text('Change Password'),
             onTap: () {
-              Navigator.pushNamed(context, '/themeSettings');
+              Navigator.pushNamed(context, '/changePassword');
             },
           ),
 

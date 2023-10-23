@@ -1,9 +1,12 @@
 import 'package:design/pages/add_chip_form.dart';
-import 'package:design/pages/alert_settings.dart';
+import 'package:design/pages/settings/alert_settings.dart';
 import 'package:design/pages/bin.dart';
 import 'package:design/pages/main_pages.dart';
 import 'package:design/pages/settings.dart';
-import 'package:design/pages/settings/pnp_settings.dart';
+import 'package:design/pages/edit_profile.dart';
+import 'package:design/pages/settings/about_us.dart';
+import 'package:design/pages/settings/change_password_settings.dart';
+import 'package:design/pages/settings/preferences_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -38,6 +41,12 @@ class MainApp extends StatelessWidget {
           backgroundColor: Color(0xfffeffff),
           surfaceTintColor: Color(0xfffeffff),
         ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color(0xfffeffff),
+        ),
+        popupMenuTheme: const PopupMenuThemeData(
+          color: Color(0xfffeffff),
+        ),
       ),
 
       title: 'design',
@@ -50,7 +59,10 @@ class MainApp extends StatelessWidget {
         '/bin': (context) => const BinPage(),
         '/alertSettings': (context) => const AlertSettings(),
         '/addChipForm': (context) => const AddChipFormPage(),
-        '/pnpSettings': (context) => const PNPSettings(),
+        '/editProfile': (context) => const EditProfile(),
+        '/preferences': (context) => const PreferencesSettings(),
+        '/changePassword': (context) => const ChangePasswordSettings(),
+        '/aboutUs': (context) => const AboutUs(),
       },
     );
   }

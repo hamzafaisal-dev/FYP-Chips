@@ -46,14 +46,15 @@ class ProfileBody2 extends StatelessWidget {
                   //   ),
                   // ),
                   Padding(
-                      padding: EdgeInsets.only(
-                        left: sw * 0.0369,
-                      ),
-                      child: CircleAvatar(
-                        radius: sw * 0.117,
-                        backgroundImage:
-                            const AssetImage('assets/pictures/daa.jpeg'),
-                      )),
+                    padding: EdgeInsets.only(
+                      left: sw * 0.0369,
+                    ),
+                    child: CircleAvatar(
+                      radius: sw * 0.117,
+                      backgroundImage:
+                          const AssetImage('assets/pictures/daa.jpeg'),
+                    ),
+                  ),
 
                   // sized box
                   SizedBox(width: sw * 0.099),
@@ -135,23 +136,22 @@ class ProfileBody2 extends StatelessWidget {
                         SizedBox(height: sw * 0.0234),
 
                         // button
-                        Tooltip(
-                          message: 'Edit Profile & Personal Details',
-                          child: SizedBox(
-                            height: sw * 0.063,
-                            width: double.maxFinite,
-                            child: FilledButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(sw * 0.018),
-                                  ),
+                        SizedBox(
+                          height: sw * 0.063,
+                          width: double.maxFinite,
+                          child: FilledButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/editProfile');
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(sw * 0.018),
                                 ),
                               ),
-                              child: const Text('Edit Profile'),
                             ),
+                            child: const Text('Edit profile'),
                           ),
                         ),
                       ],
