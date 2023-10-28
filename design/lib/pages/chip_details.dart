@@ -1,4 +1,5 @@
 import 'package:design/responsiveness.dart';
+import 'package:design/widgets/stats_banner.dart';
 import 'package:flutter/material.dart';
 
 class ChipDetails extends StatefulWidget {
@@ -39,9 +40,18 @@ class _ChipDetailsState extends State<ChipDetails> {
                     onTap: () {
                       // show modal bottom sheet
                       showModalBottomSheet(
+                        showDragHandle: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                Responsiveness.sw(context) * 0.063),
+                            topRight: Radius.circular(
+                                Responsiveness.sw(context) * 0.063),
+                          ),
+                        ),
                         context: context,
                         builder: (context) {
-                          return Container();
+                          return const StatsBanner();
                         },
                       );
                     },

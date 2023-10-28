@@ -28,23 +28,6 @@ class ProfileBody2 extends StatelessWidget {
               // profile header
               Row(
                 children: [
-                  // avatar
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //     left: sw * 0.0369,
-                  //   ),
-                  //   child: Container(
-                  //     width: sw * 0.234,
-                  //     height: sw * 0.234,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(sw * 0.036),
-                  //       image: const DecorationImage(
-                  //         image: AssetImage('assets/pictures/daa.jpeg'),
-                  //         fit: BoxFit.cover,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.only(
                       left: sw * 0.0369,

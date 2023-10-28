@@ -61,6 +61,12 @@ class _MoreOptionsButtonState extends State<MoreOptionsButton> {
           ),
         ),
         PopupMenuItem(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              '/chipDetails',
+            );
+          },
           child: Tooltip(
             message: 'Show more details',
             child: Row(
