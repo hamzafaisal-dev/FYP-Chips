@@ -33,41 +33,46 @@ class _ChipTileState extends State<ChipTile> {
       // card
       child: Card(
         elevation: 1.8,
-        child: Row(
-          children: [
-            Expanded(
-              // tile
-              child: ListTile(
-                leading: widget.isToday
-                    ? Badge(
-                        smallSize: sw * 0.018,
-                        child: Tooltip(
-                          message: 'Expiring today!',
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/chipDetails');
+          },
+          child: Row(
+            children: [
+              Expanded(
+                // tile
+                child: ListTile(
+                  leading: widget.isToday
+                      ? Badge(
+                          smallSize: sw * 0.018,
+                          child: Tooltip(
+                            message: 'Expiring today!',
+                            child: CircleAvatar(
+                              child: Text(widget.deadline),
+                            ),
+                          ),
+                        )
+                      : Tooltip(
+                          message: '23rd August',
                           child: CircleAvatar(
                             child: Text(widget.deadline),
                           ),
                         ),
-                      )
-                    : Tooltip(
-                        message: '23rd August',
-                        child: CircleAvatar(
-                          child: Text(widget.deadline),
-                        ),
-                      ),
-                title: Text(widget.title),
-                subtitle: Text(widget.subtitle),
+                  title: Text(widget.title),
+                  subtitle: Text(widget.subtitle),
+                ),
               ),
-            ),
-            // trailing buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                widget.actionButton,
-                const MoreOptionsButton(),
-              ],
-            ),
-          ],
+              // trailing buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  widget.actionButton,
+                  const MoreOptionsButton(),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

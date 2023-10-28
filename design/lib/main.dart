@@ -1,4 +1,5 @@
 import 'package:design/pages/add_chip_form.dart';
+import 'package:design/pages/chip_details.dart';
 import 'package:design/pages/settings/alert_settings.dart';
 import 'package:design/pages/bin.dart';
 import 'package:design/pages/main_pages.dart';
@@ -63,6 +64,7 @@ class MainApp extends StatelessWidget {
         '/preferences': (context) => const PreferencesSettings(),
         '/changePassword': (context) => const ChangePasswordSettings(),
         '/aboutUs': (context) => const AboutUs(),
+        '/chipDetails': (context) => const ChipDetails(),
       },
     );
   }

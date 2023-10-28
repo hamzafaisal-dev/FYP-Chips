@@ -13,6 +13,7 @@ class FilterButton extends StatelessWidget {
       icon: const Icon(Icons.filter_alt_outlined),
       onPressed: () {
         showModalBottomSheet(
+          isScrollControlled: true,
           showDragHandle: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(

@@ -19,7 +19,7 @@ class _FilterModalState extends State<FilterModal> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        width: double.maxFinite,
+        width: MediaQuery.sizeOf(context).width,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: Responsiveness.sw(context) * 0.063,

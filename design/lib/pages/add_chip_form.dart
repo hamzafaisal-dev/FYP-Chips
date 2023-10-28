@@ -413,6 +413,27 @@ class _AddChipFormPageState extends State<AddChipFormPage> {
                   height: Responsiveness.sh(context) * 0.018,
                 ),
 
+                // expected salary textformfield
+                SizedBox(
+                  height: tffh,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Expected Salary',
+                      hintText: 'E.g. Rs.180,000',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(tffbr),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // sized box
+                SizedBox(
+                  height: Responsiveness.sh(context) * 0.018,
+                ),
+
                 // description
                 TextFormField(
                   maxLines: 5,
