@@ -8,6 +8,7 @@ import 'package:design/pages/edit_profile.dart';
 import 'package:design/pages/settings/about_us.dart';
 import 'package:design/pages/settings/change_password_settings.dart';
 import 'package:design/pages/settings/preferences_settings.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,28 +27,60 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
+      // theme: ThemeData(
+      //   useMaterial3: true,
+      //   colorScheme: const ColorScheme.light(
+      //     primary: Color(0xff1c485f),
+      //     primaryContainer: Color(0xff113142),
+      //     secondary: Color(0xfffeffff),
+      //     secondaryContainer: Color(0xfffeffff),
+      //     surface: Color(0xff86c7e0),
+      //     surfaceTint: Color(0xff86c7e0),
+      //     background: Color(0xfffeffff),
+      //   ),
+      //   appBarTheme: const AppBarTheme(
+      //     systemOverlayStyle: SystemUiOverlayStyle.dark,
+      //     backgroundColor: Color(0xfffeffff),
+      //     surfaceTintColor: Color(0xfffeffff),
+      //   ),
+      //   bottomSheetTheme: const BottomSheetThemeData(
+      //     backgroundColor: Color(0xfffeffff),
+      //   ),
+      //   popupMenuTheme: const PopupMenuThemeData(
+      //     color: Color(0xfffeffff),
+      //   ),
+      // ),
+
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.bigStone,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 7,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 10,
+          blendOnColors: false,
+          useTextTheme: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xff1c485f),
-          primaryContainer: Color(0xff113142),
-          secondary: Color(0xfffeffff),
-          secondaryContainer: Color(0xfffeffff),
-          surface: Color(0xff86c7e0),
-          surfaceTint: Color(0xff86c7e0),
-          background: Color(0xfffeffff),
+        swapLegacyOnMaterial3: true,
+      ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.bigStone,
+        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+        blendLevel: 13,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 20,
+          useTextTheme: true,
+          useM2StyleDividerInM3: true,
+          alignedDropdown: true,
+          useInputDecoratorThemeInDialogs: true,
         ),
-        appBarTheme: const AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          backgroundColor: Color(0xfffeffff),
-          surfaceTintColor: Color(0xfffeffff),
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Color(0xfffeffff),
-        ),
-        popupMenuTheme: const PopupMenuThemeData(
-          color: Color(0xfffeffff),
-        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        swapLegacyOnMaterial3: true,
       ),
 
       title: 'design',
