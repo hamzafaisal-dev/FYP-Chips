@@ -1,6 +1,6 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/chip_tile/chip_tile.dart';
-import 'package:design/widgets/chip_tile/like_button.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/chip_tile/chip_tile.dart';
+import 'package:design/Presentation/Widgets/chip_tile/like_button.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesBody extends StatefulWidget {

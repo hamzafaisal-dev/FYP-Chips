@@ -1,13 +1,12 @@
-import 'package:design/responsiveness.dart';
+import 'package:design/Common/responsiveness.dart';
 import 'package:flutter/material.dart';
 
-class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+class ChangePasswordSettings extends StatelessWidget {
+  const ChangePasswordSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // app bar
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -15,7 +14,7 @@ class EditProfile extends StatelessWidget {
           },
           icon: const Icon(Icons.close),
         ),
-        title: const Text('Edit Profile'),
+        title: const Text('Change Password'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -24,35 +23,26 @@ class EditProfile extends StatelessWidget {
           ),
         ],
       ),
-
-      // body
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: Responsiveness.sw(context) * 0.063,
           ),
           child: Column(
             children: [
-              // edit picture
-              CircleAvatar(
-                radius: Responsiveness.sw(context) * 0.117,
-                backgroundImage: const AssetImage('assets/pictures/daa.jpeg'),
-              ),
-              TextButton(
-                child: const Text('Edit Picture'),
-                onPressed: () {},
+              // sized box
+              SizedBox(
+                height: Responsiveness.sh(context) * 0.018,
               ),
 
-              // name textformfield
+              // old password textformfield
               SizedBox(
                 height: Responsiveness.sh(context) * 0.0639,
                 child: TextFormField(
-                  controller: TextEditingController(
-                    text: 'Ali Jone',
-                  ),
+                  obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Name',
-                    hintText: 'E.g. Dawood Haroon',
+                    suffixIcon: const Icon(Icons.visibility),
+                    labelText: 'Old Password',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(Responsiveness.sw(context) * 0.018),
@@ -67,35 +57,42 @@ class EditProfile extends StatelessWidget {
                 height: Responsiveness.sh(context) * 0.018,
               ),
 
-              // sex
+              // new password textformfield
               SizedBox(
-                width: double.maxFinite,
-                child: DropdownButtonFormField(
-                  style: Theme.of(context).textTheme.bodyLarge,
+                height: Responsiveness.sh(context) * 0.0639,
+                child: TextFormField(
+                  obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Sex',
-                    hintText: 'E.g. Female',
+                    suffixIcon: const Icon(Icons.visibility),
+                    labelText: 'New Password',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(Responsiveness.sw(context) * 0.018),
                       ),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Male',
-                      child: Text('Male'),
+                ),
+              ),
+
+              // sized box
+              SizedBox(
+                height: Responsiveness.sh(context) * 0.018,
+              ),
+
+              // confirm new password textformfield
+              SizedBox(
+                height: Responsiveness.sh(context) * 0.0639,
+                child: TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    suffixIcon: const Icon(Icons.visibility),
+                    labelText: 'Confirm New Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(Responsiveness.sw(context) * 0.018),
+                      ),
                     ),
-                    DropdownMenuItem(
-                      value: 'Female',
-                      child: Text('Female'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Intersex',
-                      child: Text('Intersex'),
-                    ),
-                  ],
-                  onChanged: (p0) {},
+                  ),
                 ),
               ),
             ],

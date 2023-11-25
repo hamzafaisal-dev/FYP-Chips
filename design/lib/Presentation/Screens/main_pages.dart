@@ -1,9 +1,9 @@
-import 'package:design/pages/applied_b.dart';
-import 'package:design/pages/favorites_b.dart';
-import 'package:design/pages/home_b.dart';
-import 'package:design/pages/profile_b2.dart';
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/hamburger_menu.dart';
+import 'package:design/Presentation/Screens/applied_b.dart';
+import 'package:design/Presentation/Screens/favorites_b.dart';
+import 'package:design/Presentation/Screens/home_b.dart';
+import 'package:design/Presentation/Screens/profile_b2.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/hamburger_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

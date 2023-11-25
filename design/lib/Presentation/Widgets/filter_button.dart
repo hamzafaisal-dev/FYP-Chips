@@ -1,5 +1,5 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/filter_modal.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/filter_modal.dart';
 import 'package:flutter/material.dart';
 
 class FilterButton extends StatelessWidget {

@@ -1,12 +1,13 @@
-import 'package:design/responsiveness.dart';
+import 'package:design/Common/responsiveness.dart';
 import 'package:flutter/material.dart';
 
-class ChangePasswordSettings extends StatelessWidget {
-  const ChangePasswordSettings({super.key});
+class EditProfile extends StatelessWidget {
+  const EditProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // app bar
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -14,7 +15,7 @@ class ChangePasswordSettings extends StatelessWidget {
           },
           icon: const Icon(Icons.close),
         ),
-        title: const Text('Change Password'),
+        title: const Text('Edit Profile'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -23,26 +24,35 @@ class ChangePasswordSettings extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+
+      // body
+      body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: Responsiveness.sw(context) * 0.063,
           ),
           child: Column(
             children: [
-              // sized box
-              SizedBox(
-                height: Responsiveness.sh(context) * 0.018,
+              // edit picture
+              CircleAvatar(
+                radius: Responsiveness.sw(context) * 0.117,
+                backgroundImage: const AssetImage('assets/pictures/daa.jpeg'),
+              ),
+              TextButton(
+                child: const Text('Edit Picture'),
+                onPressed: () {},
               ),
 
-              // old password textformfield
+              // name textformfield
               SizedBox(
                 height: Responsiveness.sh(context) * 0.0639,
                 child: TextFormField(
-                  obscureText: true,
+                  controller: TextEditingController(
+                    text: 'Ali Jone',
+                  ),
                   decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.visibility),
-                    labelText: 'Old Password',
+                    labelText: 'Name',
+                    hintText: 'E.g. Dawood Haroon',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(Responsiveness.sw(context) * 0.018),
@@ -57,42 +67,35 @@ class ChangePasswordSettings extends StatelessWidget {
                 height: Responsiveness.sh(context) * 0.018,
               ),
 
-              // new password textformfield
+              // sex
               SizedBox(
-                height: Responsiveness.sh(context) * 0.0639,
-                child: TextFormField(
-                  obscureText: true,
+                width: double.maxFinite,
+                child: DropdownButtonFormField(
+                  style: Theme.of(context).textTheme.bodyLarge,
                   decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.visibility),
-                    labelText: 'New Password',
+                    labelText: 'Sex',
+                    hintText: 'E.g. Female',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(Responsiveness.sw(context) * 0.018),
                       ),
                     ),
                   ),
-                ),
-              ),
-
-              // sized box
-              SizedBox(
-                height: Responsiveness.sh(context) * 0.018,
-              ),
-
-              // confirm new password textformfield
-              SizedBox(
-                height: Responsiveness.sh(context) * 0.0639,
-                child: TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.visibility),
-                    labelText: 'Confirm New Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(Responsiveness.sw(context) * 0.018),
-                      ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Male',
+                      child: Text('Male'),
                     ),
-                  ),
+                    DropdownMenuItem(
+                      value: 'Female',
+                      child: Text('Female'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Intersex',
+                      child: Text('Intersex'),
+                    ),
+                  ],
+                  onChanged: (p0) {},
                 ),
               ),
             ],

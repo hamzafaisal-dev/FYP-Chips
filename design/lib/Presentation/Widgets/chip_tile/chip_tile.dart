@@ -1,5 +1,5 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/chip_tile/more_options_button.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/chip_tile/more_options_button.dart';
 import 'package:flutter/material.dart';
 
 class ChipTile extends StatefulWidget {

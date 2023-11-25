@@ -1,17 +1,13 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/chip_tile/chip_tile.dart';
-import 'package:design/widgets/chip_tile/edit_button.dart';
-import 'package:design/widgets/chip_tile/like_button.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/chip_tile/chip_tile.dart';
+import 'package:design/Presentation/Widgets/chip_tile/edit_button.dart';
+import 'package:design/Presentation/Widgets/chip_tile/like_button.dart';
+import 'package:design/Presentation/Widgets/filter_button.dart';
 import 'package:flutter/material.dart';
 
-class AppliedBody extends StatefulWidget {
-  const AppliedBody({super.key});
+class HomeBody extends StatelessWidget {
+  const HomeBody({super.key});
 
-  @override
-  State<AppliedBody> createState() => _AppliedBodyState();
-}
-
-class _AppliedBodyState extends State<AppliedBody> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -19,7 +15,8 @@ class _AppliedBodyState extends State<AppliedBody> {
         // app bar
         SliverAppBar(
           surfaceTintColor: Colors.transparent,
-          title: const Text('Applied'),
+          leading: const FilterButton(),
+          title: const Text('Chips'),
           centerTitle: true,
           floating: true,
           actions: [
@@ -27,6 +24,11 @@ class _AppliedBodyState extends State<AppliedBody> {
               tooltip: 'Search',
               onPressed: () {},
               icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              tooltip: 'Notifications',
+              onPressed: () {},
+              icon: const Badge(child: Icon(Icons.notifications_outlined)),
             ),
           ],
         ),

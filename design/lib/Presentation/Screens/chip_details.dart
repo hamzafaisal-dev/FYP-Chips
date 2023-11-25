@@ -1,5 +1,5 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/stats_banner.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/stats_banner.dart';
 import 'package:flutter/material.dart';
 
 class ChipDetails extends StatefulWidget {

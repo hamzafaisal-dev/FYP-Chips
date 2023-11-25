@@ -1,5 +1,5 @@
-import 'package:design/responsiveness.dart';
-import 'package:design/widgets/contact_us.dart';
+import 'package:design/Common/responsiveness.dart';
+import 'package:design/Presentation/Widgets/contact_us.dart';
 import 'package:flutter/material.dart';
 
 class HamburgerMenu extends StatelessWidget {
