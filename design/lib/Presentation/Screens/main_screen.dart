@@ -1,7 +1,7 @@
-import 'package:design/Presentation/Screens/applied_b.dart';
-import 'package:design/Presentation/Screens/favorites_b.dart';
-import 'package:design/Presentation/Screens/home_b.dart';
-import 'package:design/Presentation/Screens/profile_b2.dart';
+import 'package:design/Presentation/Screens/applied_screen.dart';
+import 'package:design/Presentation/Screens/favorites_screen.dart';
+import 'package:design/Presentation/Screens/home_screen.dart';
+import 'package:design/Presentation/Screens/profile_screen.dart';
 import 'package:design/Common/responsiveness.dart';
 import 'package:design/Presentation/Widgets/hamburger_menu.dart';
 import 'package:flutter/material.dart';

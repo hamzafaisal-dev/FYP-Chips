@@ -1,6 +1,6 @@
 import 'package:design/Common/responsiveness.dart';
-import 'package:design/Presentation/Widgets/chip_tile/chip_tile.dart';
-import 'package:design/Presentation/Widgets/chip_tile/edit_button.dart';
+import 'package:design/Presentation/Widgets/Chip%20Tile/chip_tile.dart';
+import 'package:design/Presentation/Widgets/Chip%20Tile/edit_button.dart';
 import 'package:flutter/material.dart';
 
 class ProfileBody2 extends StatelessWidget {
