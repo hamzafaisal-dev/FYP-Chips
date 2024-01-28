@@ -13,8 +13,7 @@ class CustomTextFormField extends StatefulWidget {
   final String label;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final String? Function(String?)? validatorFunction;
-  // final String? Function(String value) validatorFunction;
+  final String? Function(String?) validatorFunction;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -22,6 +21,13 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   final _textFormFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textFormFieldController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         widget.suffixIcon,
         context,
       ),
-      validator: widget.validatorFunction,
+      validator: (value) {
+        if (value == null || value == '') {
+          return 'Enter a valid value';
+        }
+
+        return widget.validatorFunction(value);
+      },
     );
   }
 }
