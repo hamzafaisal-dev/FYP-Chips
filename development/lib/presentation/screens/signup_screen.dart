@@ -1,26 +1,24 @@
 import 'package:development/constants/styles.dart';
-import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:development/constants/validators.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final _loginFormKey = GlobalKey<FormState>();
+  final _signUpFormKey = GlobalKey<FormState>();
 
-  void _handleLogin() {
+  void _handleSignUp() {
     // handle login code
 
     print(_emailController.text);
@@ -39,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Form(
-          key: _loginFormKey,
+          key: _signUpFormKey,
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
@@ -82,63 +80,45 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              //login button
+              //signup button
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: FilledButton(
                   onPressed: () {
-                    if (_loginFormKey.currentState!.validate()) {
-                      _handleLogin();
+                    if (_signUpFormKey.currentState!.validate()) {
+                      _handleSignUp();
                     }
                   },
                   style: Theme.of(context).filledButtonTheme.style,
                   child: const Text(
-                    'LOGIN',
+                    'SIGN UP',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
-              // buttons
-              Row(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(fontSize: 15, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: 'Sign Up',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(context, '/signup');
-                            },
-                        ),
-                      ],
+              RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: 'Already have an account? ',
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () => NavigationService.routeToNamed("/resetpass"),
-                    child: Text(
-                      'Forgot Password?',
+                    TextSpan(
+                      text: 'Login',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w900),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(context, '/login');
+                        },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
