@@ -44,12 +44,27 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(24),
             children: [
               //
+              SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+
+              // welcome back
+              const Text(
+                'Welcome Back',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+
+              // Jinnah quote
+              const Text(
+                'Some goofy ahh quote here',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+
+              const SizedBox(height: 20),
 
               // email form field
               TextFormField(
                 controller: _emailController,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter your IBA email address',
+                  'Enter IBA email address',
                   const Icon(Icons.email),
                   null,
                   context,

@@ -1,4 +1,5 @@
 import 'package:development/presentation/screens/login_screen.dart';
+import 'package:development/presentation/screens/profile_screen.dart';
 import 'package:development/presentation/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,6 @@ class RouteGenerator {
 
     switch (settings.name) {
       //
-
       case '/login':
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
@@ -18,6 +18,11 @@ class RouteGenerator {
       case '/signup':
         return MaterialPageRoute(
           builder: (context) => const SignUpScreen(),
+        );
+
+      case '/profile':
+        return MaterialPageRoute(
+          builder: (context) => const UserProfileScreen(),
         );
 
       default:
