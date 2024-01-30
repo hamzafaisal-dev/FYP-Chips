@@ -119,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // buttons
               Row(
                 children: [
+                  //
                   RichText(
                     text: TextSpan(
                       children: [
@@ -141,9 +142,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
+
                   const Spacer(),
+
                   InkWell(
-                    onTap: () => NavigationService.routeToNamed("/resetpass"),
+                    onTap: () =>
+                        NavigationService.routeToNamed("/reset-password"),
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(
