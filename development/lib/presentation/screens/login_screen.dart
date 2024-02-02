@@ -1,9 +1,10 @@
+import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:development/constants/validators.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,9 +23,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() {
     // handle login code
-
     print(_emailController.text);
     print(_passwordController.text);
+
+    BlocProvider.of<SignInBloc>(context).add(
+      SignInSubmittedEvent(
+        _emailController.text,
+        _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -98,20 +105,36 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
 
               //login button
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: FilledButton(
-                  onPressed: () {
-                    if (_loginFormKey.currentState!.validate()) {
-                      _handleLogin();
-                    }
-                  },
-                  style: Theme.of(context).filledButtonTheme.style,
-                  child: const Text(
-                    'LOGIN',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+              BlocConsumer<SignInBloc, SignInState>(
+                listener: (context, state) {
+                  print(state);
+                  if (state is SignInLoadingState) {
+                    print('sign in loading');
+                  } else if (state is SignInValidState) {
+                    print(state.authenticatedUser);
+
+                    NavigationService.routeToNamed('/profile');
+                  }
+                },
+                builder: (context, state) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: FilledButton(
+                      onPressed: () {
+                        if (_loginFormKey.currentState!.validate()) {
+                          _handleLogin();
+                        }
+                      },
+                      style: Theme.of(context).filledButtonTheme.style,
+                      child: (state is SignInLoadingState)
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'LOGIN',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 20),

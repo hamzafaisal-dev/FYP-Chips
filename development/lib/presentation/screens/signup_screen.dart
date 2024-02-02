@@ -1,7 +1,10 @@
+import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/constants/styles.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,20 +16,25 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
 
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _signUpFormKey = GlobalKey<FormState>();
 
   void _handleSignUp() {
-    // handle login code
-
-    print(_emailController.text);
-    print(_passwordController.text);
+    BlocProvider.of<SignUpBloc>(context).add(
+      SignUpSubmittedEvent(
+        _nameController.text,
+        _emailController.text,
+        _passwordController.text,
+      ),
+    );
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -54,6 +62,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const Text(
                 'Create your profile to start your journey',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+
+              const SizedBox(height: 20),
+
+              // name form field
+              TextFormField(
+                controller: _nameController,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Enter name',
+                  const Icon(Icons.person),
+                  null,
+                  context,
+                ),
+                validator: (value) => FormValidators.nameValidator(value),
               ),
 
               const SizedBox(height: 20),
@@ -95,21 +117,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 20),
 
-              //signup button
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: FilledButton(
-                  onPressed: () {
-                    if (_signUpFormKey.currentState!.validate()) {
-                      _handleSignUp();
-                    }
-                  },
-                  style: Theme.of(context).filledButtonTheme.style,
-                  child: const Text(
-                    'SIGN UP',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+              //sign up button
+              BlocConsumer<SignUpBloc, SignUpState>(
+                listener: (context, state) {
+                  if (state is SignUpLoadingState) {
+                    print('sign up loading');
+                  } else if (state is SignUpValidState) {
+                    print(state.newUser);
+
+                    NavigationService.routeToNamed('/profile');
+                  }
+                },
+                builder: (context, state) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: FilledButton(
+                      onPressed: () {
+                        if (_signUpFormKey.currentState!.validate()) {
+                          _handleSignUp();
+                        }
+                      },
+                      style: Theme.of(context).filledButtonTheme.style,
+                      child: (state is SignUpLoadingState)
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'SIGN UP',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 10),

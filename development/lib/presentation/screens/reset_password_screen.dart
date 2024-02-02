@@ -79,7 +79,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       //
                       filled: true,
 
-                      fillColor: const Color(0XFFFFF6ED),
+                      fillColor: const Color.fromARGB(255, 250, 243, 237),
 
                       hintText: 'j.doe.69420@khi.iba.edu.pk',
 
