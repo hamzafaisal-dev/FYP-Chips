@@ -1,3 +1,5 @@
+import 'package:development/presentation/screens/add_chip_screen.dart';
+import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/login_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
 import 'package:development/presentation/screens/user_profile_screen.dart';
@@ -19,6 +21,16 @@ class RouteGenerator {
       case '/signup':
         return MaterialPageRoute(
           builder: (context) => const SignUpScreen(),
+        );
+
+      case '/home':
+        return MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        );
+
+      case '/add-chip':
+        return MaterialPageRoute(
+          builder: (context) => const AddChipScreen(),
         );
 
       case '/profile':
