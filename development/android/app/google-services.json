@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "843237037706",
+    "project_id": "chips-dev-a0ceb",
+    "storage_bucket": "chips-dev-a0ceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843237037706:android:432365551c2b927739bf73",
+        "android_client_info": {
+          "package_name": "com.example.development"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR83z0nZZbr2rhxBSMNGO75lrvheJu_Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
