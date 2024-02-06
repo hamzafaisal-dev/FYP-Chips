@@ -2,6 +2,7 @@ import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/themes/custom_themes/text_form_field_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,6 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const Text(
                 'Some goofy ahh quote here',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+
+              const SizedBox(height: 20),
+
+              TextFormField(
+                decoration: CustomTextFieldTheme.lightTextFieldTheme(),
               ),
 
               const SizedBox(height: 20),
@@ -129,8 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: (state is SignInLoadingState)
                           ? const CircularProgressIndicator()
                           : const Text(
-                              'LOGIN',
-                              style: TextStyle(fontSize: 16),
+                              'Login',
+                              // style: TextStyle(fontSize: 16),
                             ),
                     ),
                   );

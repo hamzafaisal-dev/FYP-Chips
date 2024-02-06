@@ -50,18 +50,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: const EdgeInsets.all(24),
             children: [
               //
-              SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+              // SizedBox(height: MediaQuery.of(context).size.height / 4.5),
 
-              // Get On Board!
-              const Text(
-                'Get On Board!',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              // Image
+              Image.asset(
+                'assets/Chips - Create Your Account.png',
               ),
 
-              // Create your profile...
+              // Create Your Account
               const Text(
-                'Create your profile to start your journey',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                'CREATE YOUR ACCOUNT',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
 
               const SizedBox(height: 20),
@@ -69,6 +72,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // name form field
               TextFormField(
                 controller: _nameController,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
                   'Enter name',
                   const Icon(Icons.person),
@@ -141,33 +148,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: (state is SignUpLoadingState)
                           ? const CircularProgressIndicator()
                           : const Text(
-                              'SIGN UP',
-                              style: TextStyle(fontSize: 16),
+                              'Create Account',
+                              // style: TextStyle(fontSize: 16),
                             ),
                     ),
                   );
                 },
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
 
+              // Already have an account?
               RichText(
+                textAlign: TextAlign.center,
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: 'Already have an account? ',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                     ),
                     TextSpan(
-                      text: 'Login',
+                      text: 'Sign In',
                       style: TextStyle(
-                          fontSize: 15,
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.w900),
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w900,
+                      ),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, '/login');
-                        },
+                        ..onTap = () => Navigator.pushNamed(context, '/login'),
                     ),
                   ],
                 ),

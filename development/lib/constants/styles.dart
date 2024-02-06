@@ -9,18 +9,24 @@ class TextFormFieldStyles {
   ) {
     return InputDecoration(
       //
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(
+      filled: true,
+
+      fillColor: Theme.of(context).colorScheme.surface,
+
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
           width: 1.5,
-          color: Colors.grey,
+          color: Colors.transparent,
         ),
+        borderRadius: BorderRadius.circular(10.0),
       ),
 
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           width: 1.5,
-          color: Theme.of(context).colorScheme.primary,
+          color: Colors.transparent,
         ),
+        borderRadius: BorderRadius.circular(10.0),
       ),
 
       errorBorder: OutlineInputBorder(
@@ -28,6 +34,7 @@ class TextFormFieldStyles {
           width: 1.5,
           color: Theme.of(context).colorScheme.error,
         ),
+        borderRadius: BorderRadius.circular(10.0),
       ),
 
       focusedErrorBorder: OutlineInputBorder(
@@ -35,24 +42,29 @@ class TextFormFieldStyles {
           width: 1.5,
           color: Theme.of(context).colorScheme.error,
         ),
+        borderRadius: BorderRadius.circular(10.0),
       ),
 
-      floatingLabelStyle: TextStyle(
-        color: Theme.of(context).colorScheme.primary,
-        fontWeight: FontWeight.bold,
-      ),
+      // floatingLabelStyle: TextStyle(
+      //   color: Theme.of(context).colorScheme.onPrimary,
+      //   fontWeight: FontWeight.bold,
+      // ),
 
       floatingLabelBehavior: FloatingLabelBehavior.never,
 
       prefixIcon: prefixIcon,
 
       prefixIconConstraints: prefixIcon != null
-          ? const BoxConstraints.tightFor(width: 40)
+          ? const BoxConstraints.tightFor(width: 52)
           : const BoxConstraints.tightFor(width: 12),
 
       suffixIcon: suffixIcon,
 
       labelText: labelText,
+
+      labelStyle: TextStyle(
+        color: Theme.of(context).colorScheme.secondaryContainer,
+      ),
     );
   }
 }
