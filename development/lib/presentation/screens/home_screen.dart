@@ -37,75 +37,77 @@ class _HomeScreenState extends State<HomeScreen> {
           (signInBloc.state as SignInValidState).authenticatedUser;
     }
 
-    chipBloc.add(const FetchChipsStream());
+    if (chipBloc.state is! ChipsStreamLoaded) {
+      chipBloc.add(const FetchChipsStream());
+    }
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: BlocBuilder<ChipBloc, ChipState>(
-        builder: (context, state) {
-          if (state is ChipsStreamLoaded) {
-            return StreamBuilder(
-              stream: state.chips,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
+    return BlocBuilder<ChipBloc, ChipState>(
+      builder: (context, state) {
+        if (state is ChipsStreamLoaded) {
+          return StreamBuilder(
+            stream: state.chips,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                ));
+              }
 
-                if (snapshot.hasError) {
-                  return Text(
-                    snapshot.error.toString(),
+              if (snapshot.hasError) {
+                return Text(
+                  snapshot.error.toString(),
+                );
+              }
+
+              if (snapshot.hasData) {
+                if (snapshot.data!.isEmpty) {
+                  return const Text(
+                    'Could not find what you were looking for',
                   );
                 }
 
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
-                    return const Text(
-                      'Could not find what you were looking for',
-                    );
-                  }
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    List<ChipModel> chipData = snapshot.data!;
+                    var chipObject = chipData[index];
 
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      List<ChipModel> chipData = snapshot.data!;
-                      var chipObject = chipData[index];
-
-                      return Card(
-                        child: ListTile(
-                          title: Text(chipObject.chipId),
-                          trailing: IconButton(
-                            onPressed: () {
-                              BlocProvider.of<ChipBloc>(context).add(
-                                DeleteChipEvent(
-                                  chipId: chipObject.chipId,
-                                  user: _authenticedUser,
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
+                    return Card(
+                      child: ListTile(
+                        title: Text(chipObject.chipId),
+                        trailing: IconButton(
+                          onPressed: () {
+                            BlocProvider.of<ChipBloc>(context).add(
+                              DeleteChipEvent(
+                                chipId: chipObject.chipId,
+                                user: _authenticedUser,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
                         ),
-                      );
-                    },
-                  );
-                }
-                return const SizedBox();
-              },
-            );
-          }
+                      ),
+                    );
+                  },
+                );
+              }
+              return const SizedBox();
+            },
+          );
+        }
 
-          if (state is ChipEmpty) {
-            return const Text('khaali hai');
-          }
+        if (state is ChipEmpty) {
+          return const Text('khaali hai');
+        }
 
-          return const Text('Chips loading...');
-        },
-      ),
+        return const SizedBox.shrink();
+      },
     );
   }
 }

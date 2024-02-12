@@ -1,4 +1,5 @@
 import 'package:development/presentation/screens/add_chip_screen.dart';
+import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/login_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
@@ -21,6 +22,11 @@ class RouteGenerator {
       case '/signup':
         return MaterialPageRoute(
           builder: (context) => const SignUpScreen(),
+        );
+
+      case '/layout':
+        return MaterialPageRoute(
+          builder: (context) => const AppLayout(),
         );
 
       case '/home':

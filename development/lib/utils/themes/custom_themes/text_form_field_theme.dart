@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFieldTheme {
-  static InputDecoration lightTextFieldTheme({Widget? prefixIcon}) {
+  static InputDecoration lightTextFieldTheme(
+      {Widget? prefixIcon, Widget? suffixIcon}) {
     return InputDecoration(
       //
       filled: true,
@@ -45,6 +46,8 @@ class CustomTextFieldTheme {
       errorStyle: const TextStyle(fontWeight: FontWeight.w600),
 
       prefixIcon: prefixIcon,
+
+      suffixIcon: suffixIcon,
     );
   }
 }

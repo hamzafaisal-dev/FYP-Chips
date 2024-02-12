@@ -2,7 +2,6 @@ import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
-import 'package:development/utils/themes/custom_themes/text_form_field_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,12 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              TextFormField(
-                decoration: CustomTextFieldTheme.lightTextFieldTheme(),
-              ),
-
-              const SizedBox(height: 20),
-
               // email form field
               TextFormField(
                 controller: _emailController,
@@ -118,9 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (state is SignInLoadingState) {
                     print('sign in loading');
                   } else if (state is SignInValidState) {
-                    print(state.authenticatedUser);
+                    // print(state.authenticatedUser);
 
-                    NavigationService.routeToNamed('/profile');
+                    NavigationService.routeToReplacementNamed('/layout');
                   }
                 },
                 builder: (context, state) {
@@ -134,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignInLoadingState)
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator.adaptive()
                           : const Text(
                               'Login',
                               // style: TextStyle(fontSize: 16),

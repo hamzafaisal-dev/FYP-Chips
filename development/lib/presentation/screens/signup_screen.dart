@@ -132,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   } else if (state is SignUpValidState) {
                     print(state.newUser);
 
-                    NavigationService.routeToNamed('/profile');
+                    NavigationService.routeToReplacementNamed('/layout');
                   }
                 },
                 builder: (context, state) {
