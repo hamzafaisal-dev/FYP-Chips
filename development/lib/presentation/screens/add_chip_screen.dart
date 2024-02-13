@@ -17,8 +17,6 @@ class _AddChipScreenState extends State<AddChipScreen> {
 
   @override
   void initState() {
-    print('siuuuuuuuuuuuuuuuuuuu');
-
     // access the auth blok using the context
     final authBloc = BlocProvider.of<AuthBloc>(context);
 
@@ -32,39 +30,33 @@ class _AddChipScreenState extends State<AddChipScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        print('salaam saab state is $state');
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: FilledButton(
-                onPressed: () {
-                  BlocProvider.of<ChipBloc>(context).add(
-                    UploadChipEvent(
-                      jobTitle: 'Pishi Maker',
-                      companyName: 'Pishi Limited',
-                      description: 'We make the best pishi in Karachi',
-                      jobMode: 'on-site',
-                      locations: const [],
-                      jobType: 'full-time',
-                      experienceRequired: 20,
-                      deadline: DateTime.now(),
-                      skills: [],
-                      salary: 0,
-                      updatedUser: _authenticatedUser,
-                      uploaderAvatar: _authenticatedUser.userName,
-                    ),
-                  );
-                },
-                child: const Text('Create New Chip'),
-              ),
-            ),
-          ],
-        );
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: FilledButton(
+            onPressed: () {
+              BlocProvider.of<ChipBloc>(context).add(
+                UploadChipEvent(
+                  jobTitle: 'Pishi Maker',
+                  companyName: 'Pishi Limited',
+                  description: 'We make the best pishi in Karachi',
+                  jobMode: 'on-site',
+                  locations: const [],
+                  jobType: 'full-time',
+                  experienceRequired: 20,
+                  deadline: DateTime.now(),
+                  skills: [],
+                  salary: 0,
+                  updatedUser: _authenticatedUser,
+                  uploaderAvatar: _authenticatedUser.userName,
+                ),
+              );
+            },
+            child: const Text('Create New Chip'),
+          ),
+        ),
+      ],
     );
   }
 }

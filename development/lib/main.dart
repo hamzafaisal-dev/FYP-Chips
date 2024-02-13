@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Chips',
+        debugShowCheckedModeBanner: false,
         theme: CustomAppTheme.lightTheme,
         onGenerateRoute: RouteGenerator.generateRoutes,
         navigatorKey: NavigationService.navigatorKey,
