@@ -119,6 +119,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //
+
             Center(
               child: Text(_authenticatedUser?.userName ?? 'a.u'),
             ),

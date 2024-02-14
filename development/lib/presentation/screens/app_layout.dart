@@ -1,3 +1,4 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
@@ -16,6 +17,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   int currentIndex = 0;
+  final _potty = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +83,26 @@ class _AppLayoutState extends State<AppLayout> {
           ),
         ),
         centerTitle: true,
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://preview.redd.it/is-there-a-lore-reason-why-kid-named-finger-is-voicing-v0-bj5zipugk4fb1.jpg?width=640&crop=smart&auto=webp&s=0efa1df13a414ee1611c067e6a0631d6f0af1e9d',
-              ),
+            padding: const EdgeInsets.only(top: 5, right: 15),
+            child: AnimSearchBar(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 200,
+              boxShadow: false,
+              textController: _potty,
+              onSuffixTap: () {},
+              onSubmitted: (value) {},
             ),
           ),
+          // Padding(
+          //   padding: EdgeInsets.only(right: 18),
+          //   child: CircleAvatar(
+          //     backgroundImage: NetworkImage(
+          //       'https://preview.redd.it/is-there-a-lore-reason-why-kid-named-finger-is-voicing-v0-bj5zipugk4fb1.jpg?width=640&crop=smart&auto=webp&s=0efa1df13a414ee1611c067e6a0631d6f0af1e9d',
+          //     ),
+          //   ),
+          // ),
         ],
       );
     }
