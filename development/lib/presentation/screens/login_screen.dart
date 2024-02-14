@@ -127,11 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignInLoadingState)
-                          ? const CircularProgressIndicator.adaptive()
-                          : const Text(
-                              'Login',
-                              // style: TextStyle(fontSize: 16),
-                            ),
+                          ? const Text('....')
+                          : const Text('Login'),
                     ),
                   );
                 },

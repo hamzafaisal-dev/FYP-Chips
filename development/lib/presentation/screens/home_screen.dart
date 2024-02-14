@@ -6,6 +6,7 @@ import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
@@ -178,7 +179,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondaryContainer,
-                                                    // fontWeight: FontWeight.w500,
                                                     fontSize: 13,
                                                   ),
                                                 ),
@@ -221,34 +221,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
 
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
                                       child: Text(
                                         'lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur...',
                                       ),
                                     ),
 
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        //
-                                        Image.asset('assets/HeartLike.png',
-                                            scale: 0.8),
-
-                                        SizedBox(width: 4),
-
-                                        Text(
-                                          '3.1k',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
+                                    Divider(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      thickness: 2,
                                     ),
 
-                                    const SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          //
+                                          // Chip(
+                                          //   color: MaterialStateProperty
+                                          //       .all<Color>(Theme.of(context)
+                                          //           .colorScheme
+                                          //           .primary),
+                                          //   padding: EdgeInsets.zero,
+                                          //   label: Text('Flutter'),
+                                          // ),
+
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              //
+
+                                              Icon(
+                                                CupertinoIcons.heart_fill,
+                                                size: 16,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+
+                                              const SizedBox(width: 3),
+
+                                              const Text(
+                                                '3.1k',
+                                                style: TextStyle(
+                                                  // fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    // const SizedBox(height: 10),
                                   ],
                                 ),
                               ),

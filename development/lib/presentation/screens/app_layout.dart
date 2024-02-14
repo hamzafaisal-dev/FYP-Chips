@@ -17,7 +17,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   int currentIndex = 0;
-  final _potty = TextEditingController();
+  final _searchBarController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +83,30 @@ class _AppLayoutState extends State<AppLayout> {
           ),
         ),
         centerTitle: true,
+
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 5, left: 15),
+          child: CircleAvatar(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            radius: 0,
+            child: Icon(
+              Icons.menu,
+              color: Theme.of(context).colorScheme.onSecondary,
+              size: 22,
+            ),
+          ),
+        ),
+
+        leadingWidth: 60,
+
         actions: [
           Padding(
             padding: const EdgeInsets.only(top: 5, right: 15),
             child: AnimSearchBar(
               color: Theme.of(context).colorScheme.secondary,
-              width: 200,
+              width: MediaQuery.of(context).size.width / 1.8,
               boxShadow: false,
-              textController: _potty,
+              textController: _searchBarController,
               onSuffixTap: () {},
               onSubmitted: (value) {},
             ),
