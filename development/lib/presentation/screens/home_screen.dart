@@ -6,6 +6,7 @@ import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -134,157 +135,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             List<ChipModel> chipData = snapshot.data!;
                             var chipObject = chipData[index];
 
-                            return Card(
-                              elevation: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    //
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        //
-                                        Row(
-                                          children: [
-                                            //
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 8),
-                                              child: CircleAvatar(
-                                                radius: 16,
-                                                child: Icon(Icons.person_3),
-                                              ),
-                                            ),
-
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  chipObject.postedBy,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '41m ago',
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondaryContainer,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-
-                                        CircleAvatar(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          child: Icon(
-                                            Icons.bookmark_outline,
-                                            size: 22,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-
-                                    Divider(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      thickness: 2,
-                                    ),
-
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 3, 0, 4),
-                                      child: Text(
-                                        chipObject.jobTitle,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 10),
-                                      child: Text(
-                                        'lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur...',
-                                      ),
-                                    ),
-
-                                    Divider(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      thickness: 2,
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          //
-                                          // Chip(
-                                          //   color: MaterialStateProperty
-                                          //       .all<Color>(Theme.of(context)
-                                          //           .colorScheme
-                                          //           .primary),
-                                          //   padding: EdgeInsets.zero,
-                                          //   label: Text('Flutter'),
-                                          // ),
-
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              //
-
-                                              Icon(
-                                                CupertinoIcons.heart_fill,
-                                                size: 16,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-
-                                              const SizedBox(width: 3),
-
-                                              const Text(
-                                                '3.1k',
-                                                style: TextStyle(
-                                                  // fontSize: 13,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    // const SizedBox(height: 10),
-                                  ],
-                                ),
-                              ),
+                            return ChipTile(
+                              postedBy: chipObject.postedBy,
+                              jobTitle: chipObject.jobTitle,
+                              description: chipObject.description,
                             );
                           },
                         ),
