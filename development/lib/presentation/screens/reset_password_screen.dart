@@ -36,7 +36,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
             // Image
             Image.asset(
-              'assets/Chips - Forgot Password Image.png',
+              'assets/images/Chips - Forgot Password Image.png',
             ),
 
             const SizedBox(height: 40),

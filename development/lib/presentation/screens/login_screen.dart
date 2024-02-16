@@ -2,7 +2,6 @@ import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,21 +53,24 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: MediaQuery.of(context).size.height / 4.5),
 
               // welcome back
-              const Text(
+              Text(
                 'Welcome Back',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
 
               // Jinnah quote
-              const Text(
-                'Some goofy ahh quote here',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              Text(
+                'goofy ahh quote - nami, probably',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
 
               const SizedBox(height: 20),
 
               // email form field
               TextFormField(
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
                 controller: _emailController,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
                   'Enter IBA email address',
@@ -84,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // password form field
               TextFormField(
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
@@ -136,45 +141,42 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
-              // buttons
+              // forgot password
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(fontSize: 15, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: 'Sign Up',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(context, '/signup');
-                            },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const Spacer(),
-
                   InkWell(
                     onTap: () =>
                         NavigationService.routeToNamed("/reset-password"),
                     child: Text(
                       'Forgot Password?',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 6),
+
+              // don't have an account? sign up
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Don\'t have an account? ',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  InkWell(
+                    onTap: () => NavigationService.routeToNamed("/signup"),
+                    child: Text(
+                      'Sign Up',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                 ],

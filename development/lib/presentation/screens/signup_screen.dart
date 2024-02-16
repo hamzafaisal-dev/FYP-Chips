@@ -54,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               // Image
               Image.asset(
-                'assets/Chips - Create Your Account.png',
+                'assets/images/Chips - Create Your Account.png',
               ),
 
               // Create Your Account

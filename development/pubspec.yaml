@@ -34,4 +34,12 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/images/
+
+  fonts:
+    - family: KlasikRegular
+      fonts:
+        - asset: assets/fonts/klasik_regular.otf
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/manrope_regular.ttf
