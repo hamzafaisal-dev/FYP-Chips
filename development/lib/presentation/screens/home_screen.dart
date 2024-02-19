@@ -10,7 +10,6 @@ import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,13 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15, bottom: 10),
                       child: Container(
-                        height: 150,
+                        height: MediaQuery.of(context).size.height / 5,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           image: const DecorationImage(
-                            image: AssetImage(
-                                'assets/images/HomeScreenIllustration.png'),
+                            image: AssetImage('assets/images/home_banner.png'),
                             fit: BoxFit.cover,
                           ),
                         ),

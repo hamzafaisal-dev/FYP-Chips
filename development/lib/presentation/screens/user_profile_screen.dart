@@ -1,8 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
-import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
-import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/services/navigation_service.dart';
+import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -81,18 +80,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   void initState() {
-    final authBlocBloc = BlocProvider.of<AuthBloc>(context);
-    final signUpBloc = BlocProvider.of<SignUpBloc>(context);
-    final signInBloc = BlocProvider.of<SignInBloc>(context);
+    AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
 
-    if (authBlocBloc.state is AuthStateAuthenticated) {
+    if (authBloc.state is AuthStateAuthenticated) {
       _authenticatedUser =
-          (authBlocBloc.state as AuthStateAuthenticated).authenticatedUser;
-    } else if (signUpBloc.state is SignUpValidState) {
-      _authenticatedUser = (signUpBloc.state as SignUpValidState).newUser;
-    } else if (signInBloc.state is SignInValidState) {
-      _authenticatedUser =
-          (signInBloc.state as SignInValidState).authenticatedUser;
+          (authBloc.state as AuthStateAuthenticated).authenticatedUser;
     }
 
     super.initState();
@@ -101,46 +93,150 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthStateAuthenticated) {
-            print(state.authenticatedUser.userName);
-          }
-
-          if (state is AuthError) {
-            NavigationService.routeToReplacementNamed('/login');
-          }
-
-          if (state is AuthStateUnauthenticated) {
-            NavigationService.routeToReplacementNamed('/login');
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        body: Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SafeArea(
+        child: ListView(
           children: [
             //
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
+                  child: Container(
+                    height: 146,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(18),
+                      // image: const DecorationImage(
+                      //   image: AssetImage('assets/images/home_banner.png'),
+                      //   fit: BoxFit.cover,
+                      // ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 20.0,
+                  left: 20.0,
+                  child: SizedBox(
+                    width: 250,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 4),
+                          child: Text(
+                            "Check Your Profile",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
 
-            Center(
-              child: Text(_authenticatedUser?.userName ?? 'a.u'),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            _authenticatedUser?.email ?? '',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondary
+                                  .withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: FilledButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(0),
+                            ),
+                            child: const Text(
+                              'View',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
 
-            FilledButton(
-              onPressed: () => NavigationService.routeToNamed('/home'),
-              child: const Text('hOME'),
+            // 'General'
+            const Padding(
+              padding: EdgeInsets.fromLTRB(4, 6, 4, 10),
+              child: Text(
+                'General',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
 
-            FilledButton(
-              onPressed: () => NavigationService.routeToNamed('/add-chip'),
-              child: const Text('add chip'),
+            // const SizedBox(height: 16),
+
+            // 'Notifications'
+            const SettingsActionTile(
+              title: 'Notifications',
+              subTitle: 'Customize notifications',
+              leadingIcon: Icons.notifications,
+              trailingIcon: Icons.arrow_forward_ios,
             ),
 
-            FilledButton(
-              onPressed: logOut,
-              child: const Text('Sign Out'),
+            // 'More customization'
+            const SettingsActionTile(
+              title: 'More customization',
+              subTitle: 'Customize it more to fit to your usage',
+              leadingIcon: Icons.more_horiz,
+              trailingIcon: Icons.arrow_forward_ios,
+            ),
+
+            // 'Support'
+            const Padding(
+              padding: EdgeInsets.fromLTRB(4, 6, 4, 10),
+              child: Text(
+                'Support',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            // 'Contact'
+            const SettingsActionTile(
+              title: 'Contact',
+              leadingIcon: Icons.notifications,
+              trailingIcon: Icons.arrow_forward_ios,
+            ),
+
+            // 'Feedback'
+            const SettingsActionTile(
+              title: 'Feedback',
+              leadingIcon: Icons.notifications,
+              trailingIcon: Icons.arrow_forward_ios,
+            ),
+
+            // 'Privacy Policy'
+            const SettingsActionTile(
+              title: 'Privacy Policy',
+              leadingIcon: Icons.notifications,
+              trailingIcon: Icons.arrow_forward_ios,
+            ),
+
+            // 'About'
+            const SettingsActionTile(
+              title: 'About',
+              leadingIcon: Icons.notifications,
+              trailingIcon: Icons.arrow_forward_ios,
             ),
           ],
         ),
       ),
-    );
+    ));
   }
 }

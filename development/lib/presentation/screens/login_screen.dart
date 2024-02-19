@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
 
-              // Jinnah quote
+              // quote
               Text(
                 'goofy ahh quote - nami, probably',
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -132,7 +132,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignInLoadingState)
-                          ? const Text('....')
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(),
+                            )
                           : const Text('Login'),
                     ),
                   );
@@ -151,8 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Forgot Password?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSecondary,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -167,14 +170,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(
                     'Don\'t have an account? ',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
                   ),
                   InkWell(
                     onTap: () => NavigationService.routeToNamed("/signup"),
                     child: Text(
                       'Sign Up',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w700,
                           ),
                     ),

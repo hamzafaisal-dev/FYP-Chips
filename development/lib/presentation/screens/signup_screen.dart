@@ -2,7 +2,6 @@ import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,20 +49,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: const EdgeInsets.all(24),
             children: [
               //
-              // SizedBox(height: MediaQuery.of(context).size.height / 4.5),
 
               // Image
               Image.asset(
-                'assets/images/Chips - Create Your Account.png',
+                'assets/images/create_account.png',
               ),
 
               // Create Your Account
-              const Text(
+              Text(
                 'CREATE YOUR ACCOUNT',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
 
@@ -72,17 +67,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // name form field
               TextFormField(
                 controller: _nameController,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w700,
-                ),
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter name',
-                  const Icon(Icons.person),
+                  'Full Name',
+                  const Icon(Icons.person_outline),
                   null,
                   context,
                 ),
                 validator: (value) => FormValidators.nameValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
               ),
 
               const SizedBox(height: 20),
@@ -91,13 +85,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _emailController,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter IBA email address',
-                  const Icon(Icons.email),
+                  'IBA Email',
+                  const Icon(Icons.email_outlined),
                   null,
                   context,
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => FormValidators.emailValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
               ),
 
               const SizedBox(height: 20),
@@ -107,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter password',
+                  'Password',
                   const Icon(Icons.lock_outline),
                   IconButton(
                     onPressed: () {
@@ -120,6 +117,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   context,
                 ),
                 validator: (value) => FormValidators.passwordValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
               ),
 
               const SizedBox(height: 20),
@@ -146,10 +146,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignUpLoadingState)
-                          ? const CircularProgressIndicator()
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(),
+                            )
                           : const Text(
                               'Create Account',
-                              // style: TextStyle(fontSize: 16),
                             ),
                     ),
                   );
@@ -159,29 +162,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 16),
 
               // Already have an account?
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Already have an account? ',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account? ",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(context, '/login'),
+                    child: Text(
+                      "Sign In",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
-                    TextSpan(
-                      text: 'Sign In',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.w900,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => Navigator.pushNamed(context, '/login'),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
