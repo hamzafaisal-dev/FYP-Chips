@@ -1,82 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   late UserModel? _authenticatedUser;
-
-  void logOut() {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              //
-              const Text(
-                'Are you sure you want to log out?',
-                style: TextStyle(fontSize: 20),
-              ),
-
-              const SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.9,
-                    child: FilledButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthBloc>(context).add(
-                          SignOutRequestedEvent(),
-                        );
-                      },
-                      child: const Text(
-                        'Yes',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 20),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.9,
-                    child: FilledButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'No',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -154,7 +92,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           height: 40,
                           width: MediaQuery.of(context).size.width / 3,
                           child: FilledButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                NavigationService.routeToNamed('/profile'),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(0),
                             ),
@@ -186,8 +125,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             const SettingsActionTile(
               title: 'Notifications',
               subTitle: 'Customize notifications',
-              leadingIcon: Icons.notifications,
-              trailingIcon: Icons.arrow_forward_ios,
+              leadingIcon: CustomIcons.notificationsicon,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             // 'More customization'
@@ -195,7 +134,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               title: 'More customization',
               subTitle: 'Customize it more to fit to your usage',
               leadingIcon: Icons.more_horiz,
-              trailingIcon: Icons.arrow_forward_ios,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             // 'Support'
@@ -210,29 +149,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             // 'Contact'
             const SettingsActionTile(
               title: 'Contact',
-              leadingIcon: Icons.notifications,
-              trailingIcon: Icons.arrow_forward_ios,
+              leadingIcon: CustomIcons.contacticon,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             // 'Feedback'
             const SettingsActionTile(
               title: 'Feedback',
-              leadingIcon: Icons.notifications,
-              trailingIcon: Icons.arrow_forward_ios,
+              leadingIcon: CustomIcons.feedbackicon,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             // 'Privacy Policy'
             const SettingsActionTile(
               title: 'Privacy Policy',
-              leadingIcon: Icons.notifications,
-              trailingIcon: Icons.arrow_forward_ios,
+              leadingIcon: CustomIcons.privacypolicyicon,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             // 'About'
             const SettingsActionTile(
               title: 'About',
-              leadingIcon: Icons.notifications,
-              trailingIcon: Icons.arrow_forward_ios,
+              leadingIcon: CustomIcons.abouticon,
+              trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
           ],
         ),

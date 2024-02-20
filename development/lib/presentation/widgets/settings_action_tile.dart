@@ -7,12 +7,14 @@ class SettingsActionTile extends StatelessWidget {
     this.subTitle,
     required this.leadingIcon,
     required this.trailingIcon,
+    this.onTap,
   });
 
   final String title;
   final String? subTitle;
   final IconData leadingIcon;
   final IconData trailingIcon;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class SettingsActionTile extends StatelessWidget {
               )
             : null,
 
-        onTap: () {},
+        onTap: onTap,
       ),
     );
   }
