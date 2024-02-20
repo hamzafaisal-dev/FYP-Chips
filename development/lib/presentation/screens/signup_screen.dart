@@ -4,6 +4,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -45,144 +46,151 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SafeArea(
         child: Form(
           key: _signUpFormKey,
-          child: ListView(
+          child: RPadding(
             padding: const EdgeInsets.all(24),
-            children: [
-              //
+            child: ListView(
+              children: [
+                const RSizedBox.vertical(24),
 
-              // Image
-              Image.asset(
-                'assets/images/create_account.png',
-              ),
-
-              // Create Your Account
-              Text(
-                'CREATE YOUR ACCOUNT',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 20),
-
-              // name form field
-              TextFormField(
-                controller: _nameController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Full Name',
-                  const Icon(Icons.person_outline),
-                  null,
-                  context,
+                // Image
+                Image.asset(
+                  height: 200.h,
+                  width: 187.76.w,
+                  'assets/images/create_account.png',
                 ),
-                validator: (value) => FormValidators.nameValidator(value),
-                onTapOutside: (event) {
-                  FocusScope.of(context).unfocus();
-                },
-              ),
 
-              const SizedBox(height: 20),
+                const RSizedBox.vertical(21),
 
-              // email form field
-              TextFormField(
-                controller: _emailController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'IBA Email',
-                  const Icon(Icons.email_outlined),
-                  null,
-                  context,
+                // Create Your Account
+                Text(
+                  'CREATE YOUR ACCOUNT',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.center,
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => FormValidators.emailValidator(value),
-                onTapOutside: (event) {
-                  FocusScope.of(context).unfocus();
-                },
-              ),
 
-              const SizedBox(height: 20),
+                const RSizedBox.vertical(32),
 
-              // password form field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: !_isPasswordVisible,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Password',
-                  const Icon(Icons.lock_outline),
-                  IconButton(
-                    onPressed: () {
-                      setState(() => _isPasswordVisible = !_isPasswordVisible);
-                    },
-                    icon: _isPasswordVisible
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
+                // name form field
+                TextFormField(
+                  controller: _nameController,
+                  decoration: TextFormFieldStyles.textFormFieldDecoration(
+                    'Full Name',
+                    const Icon(Icons.person_outline),
+                    null,
+                    context,
                   ),
-                  context,
+                  validator: (value) => FormValidators.nameValidator(value),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
                 ),
-                validator: (value) => FormValidators.passwordValidator(value),
-                onTapOutside: (event) {
-                  FocusScope.of(context).unfocus();
-                },
-              ),
 
-              const SizedBox(height: 20),
+                const RSizedBox.vertical(8),
 
-              //sign up button
-              BlocConsumer<SignUpBloc, SignUpState>(
-                listener: (context, state) {
-                  if (state is SignUpLoadingState) {
-                    print('sign up loading');
-                  } else if (state is SignUpValidState) {
-                    print(state.newUser);
+                // email form field
+                TextFormField(
+                  controller: _emailController,
+                  decoration: TextFormFieldStyles.textFormFieldDecoration(
+                    'IBA Email',
+                    const Icon(Icons.email_outlined),
+                    null,
+                    context,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) => FormValidators.emailValidator(value),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
 
-                    NavigationService.routeToReplacementNamed('/layout');
-                  }
-                },
-                builder: (context, state) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: FilledButton(
+                const RSizedBox.vertical(8),
+
+                // password form field
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: !_isPasswordVisible,
+                  decoration: TextFormFieldStyles.textFormFieldDecoration(
+                    'Password',
+                    const Icon(Icons.lock_outline),
+                    IconButton(
                       onPressed: () {
-                        if (_signUpFormKey.currentState!.validate()) {
-                          _handleSignUp();
-                        }
+                        setState(
+                            () => _isPasswordVisible = !_isPasswordVisible);
                       },
-                      style: Theme.of(context).filledButtonTheme.style,
-                      child: (state is SignUpLoadingState)
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text(
-                              'Create Account',
-                            ),
+                      icon: _isPasswordVisible
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
                     ),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Already have an account?
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account? ",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
+                    context,
                   ),
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/login'),
-                    child: Text(
-                      "Sign In",
+                  validator: (value) => FormValidators.passwordValidator(value),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
+
+                const RSizedBox.vertical(28),
+
+                //sign up button
+                BlocConsumer<SignUpBloc, SignUpState>(
+                  listener: (context, state) {
+                    if (state is SignUpLoadingState) {
+                      print('sign up loading');
+                    } else if (state is SignUpValidState) {
+                      print(state.newUser);
+
+                      NavigationService.routeToReplacementNamed('/layout');
+                    }
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_signUpFormKey.currentState!.validate()) {
+                            _handleSignUp();
+                          }
+                        },
+                        style: Theme.of(context).filledButtonTheme.style,
+                        child: (state is SignUpLoadingState)
+                            ? const SizedBox(
+                                height: 22,
+                                width: 22,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text(
+                                'Create Account',
+                              ),
+                      ),
+                    );
+                  },
+                ),
+
+                const RSizedBox.vertical(144),
+
+                // Already have an account?
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account? ",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w400,
                           ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    InkWell(
+                      onTap: () => Navigator.pushNamed(context, '/login'),
+                      child: Text(
+                        "Sign In",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -46,146 +47,150 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Form(
           key: _loginFormKey,
-          child: ListView(
+          child: RPadding(
             padding: const EdgeInsets.all(24),
-            children: [
-              //
-              SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+            child: ListView(
+              // padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+              children: [
+                // SizedBox(height: 302.h),
+                const RSizedBox.vertical(302),
 
-              // welcome back
-              Text(
-                'Welcome Back',
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-
-              // quote
-              Text(
-                'goofy ahh quote - nami, probably',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-
-              const SizedBox(height: 20),
-
-              // email form field
-              TextFormField(
-                onTapOutside: (event) {
-                  FocusScope.of(context).unfocus();
-                },
-                controller: _emailController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter IBA email address',
-                  const Icon(Icons.email),
-                  null,
-                  context,
+                // welcome back
+                Text(
+                  'Welcome Back',
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => FormValidators.emailValidator(value),
-              ),
 
-              const SizedBox(height: 20),
+                // quote
+                Text(
+                  'goofy ahh quote - nami, probably',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
 
-              // password form field
-              TextFormField(
-                onTapOutside: (event) {
-                  FocusScope.of(context).unfocus();
-                },
-                controller: _passwordController,
-                obscureText: !_isPasswordVisible,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
-                  'Enter password',
-                  const Icon(Icons.lock_outline),
-                  IconButton(
-                    onPressed: () {
-                      setState(() => _isPasswordVisible = !_isPasswordVisible);
-                    },
-                    icon: _isPasswordVisible
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
+                const RSizedBox.vertical(25),
+
+                // email form field
+                TextFormField(
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  controller: _emailController,
+                  decoration: TextFormFieldStyles.textFormFieldDecoration(
+                    'Enter IBA email address',
+                    const Icon(Icons.email),
+                    null,
+                    context,
                   ),
-                  context,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) => FormValidators.emailValidator(value),
                 ),
-                validator: (value) => FormValidators.passwordValidator(value),
-              ),
 
-              const SizedBox(height: 20),
+                const RSizedBox.vertical(8),
 
-              //login button
-              BlocConsumer<SignInBloc, SignInState>(
-                listener: (context, state) {
-                  print(state);
-                  if (state is SignInLoadingState) {
-                    print('sign in loading');
-                  } else if (state is SignInValidState) {
-                    // print(state.authenticatedUser);
-
-                    NavigationService.routeToReplacementNamed('/layout');
-                  }
-                },
-                builder: (context, state) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: FilledButton(
+                // password form field
+                TextFormField(
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  controller: _passwordController,
+                  obscureText: !_isPasswordVisible,
+                  decoration: TextFormFieldStyles.textFormFieldDecoration(
+                    'Enter password',
+                    const Icon(Icons.lock_outline),
+                    IconButton(
                       onPressed: () {
-                        if (_loginFormKey.currentState!.validate()) {
-                          _handleLogin();
-                        }
+                        setState(
+                            () => _isPasswordVisible = !_isPasswordVisible);
                       },
-                      style: Theme.of(context).filledButtonTheme.style,
-                      child: (state is SignInLoadingState)
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Login'),
+                      icon: _isPasswordVisible
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
                     ),
-                  );
-                },
-              ),
+                    context,
+                  ),
+                  validator: (value) => FormValidators.passwordValidator(value),
+                ),
 
-              const SizedBox(height: 20),
+                const RSizedBox.vertical(21),
 
-              // forgot password
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () =>
-                        NavigationService.routeToNamed("/reset-password"),
-                    child: Text(
-                      'Forgot Password?',
+                //login button
+                BlocConsumer<SignInBloc, SignInState>(
+                  listener: (context, state) {
+                    print(state);
+                    if (state is SignInLoadingState) {
+                      print('sign in loading');
+                    } else if (state is SignInValidState) {
+                      // print(state.authenticatedUser);
+
+                      NavigationService.routeToReplacementNamed('/layout');
+                    }
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_loginFormKey.currentState!.validate()) {
+                            _handleLogin();
+                          }
+                        },
+                        style: Theme.of(context).filledButtonTheme.style,
+                        child: (state is SignInLoadingState)
+                            ? const SizedBox(
+                                height: 22,
+                                width: 22,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text('Login'),
+                      ),
+                    );
+                  },
+                ),
+
+                const RSizedBox.vertical(13),
+
+                // forgot password
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () =>
+                          NavigationService.routeToNamed("/reset-password"),
+                      child: Text(
+                        'Forgot Password?',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const RSizedBox.vertical(6),
+
+                // don't have an account? sign up
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Don\'t have an account? ',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w400,
                           ),
                     ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 6),
-
-              // don't have an account? sign up
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Don\'t have an account? ',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  ),
-                  InkWell(
-                    onTap: () => NavigationService.routeToNamed("/signup"),
-                    child: Text(
-                      'Sign Up',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                    InkWell(
+                      onTap: () => NavigationService.routeToNamed("/signup"),
+                      child: Text(
+                        'Sign Up',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
