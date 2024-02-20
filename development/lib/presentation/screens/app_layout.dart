@@ -2,7 +2,7 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
-import 'package:development/presentation/screens/user_profile_screen.dart';
+import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class _AppLayoutState extends State<AppLayout> {
           );
           break;
         case 1:
-          widget = const UserProfileScreen();
+          widget = const SettingsScreen();
           break;
         // case 2:
         //   widget = const AddChipScreen();
@@ -61,7 +61,7 @@ class _AppLayoutState extends State<AppLayout> {
         case 0:
           title = 'Homepage';
         case 1:
-          title = 'Add';
+          title = 'Settings';
         case 2:
           title = 'Profile';
         // case 3:
@@ -100,17 +100,19 @@ class _AppLayoutState extends State<AppLayout> {
         leadingWidth: 60,
 
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 5, right: 15),
-            child: AnimSearchBar(
-              color: Theme.of(context).colorScheme.secondary,
-              width: MediaQuery.of(context).size.width / 1.8,
-              boxShadow: false,
-              textController: _searchBarController,
-              onSuffixTap: () {},
-              onSubmitted: (value) {},
-            ),
-          ),
+          currentIndex == 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 5, right: 15),
+                  child: AnimSearchBar(
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: MediaQuery.of(context).size.width / 1.8,
+                    boxShadow: false,
+                    textController: _searchBarController,
+                    onSuffixTap: () {},
+                    onSubmitted: (value) {},
+                  ),
+                )
+              : const SizedBox()
           // Padding(
           //   padding: EdgeInsets.only(right: 18),
           //   child: CircleAvatar(
@@ -137,18 +139,20 @@ class _AppLayoutState extends State<AppLayout> {
           currentIndex: currentIndex,
           items: [
             BottomNavigationBarItem(
-                icon: Transform.scale(
-                  scale: 1.1,
-                  child: const Icon(CupertinoIcons.home),
-                ),
-                label: 'Home'),
-            // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
+              icon: Transform.scale(
+                scale: 1.1,
+                child: const Icon(CupertinoIcons.home),
+              ),
+              label: 'Home',
+            ),
+            // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add',),
             BottomNavigationBarItem(
-                icon: Transform.scale(
-                  scale: 1.1,
-                  child: const Icon(CupertinoIcons.settings),
-                ),
-                label: 'Settings'),
+              icon: Transform.scale(
+                scale: 1.1,
+                child: const Icon(CupertinoIcons.settings),
+              ),
+              label: 'Settings',
+            ),
           ],
         ),
       ),

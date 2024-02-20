@@ -2,8 +2,9 @@ import 'package:development/presentation/screens/add_chip_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/login_screen.dart';
+import 'package:development/presentation/screens/profile_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
-import 'package:development/presentation/screens/user_profile_screen.dart';
+import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -39,9 +40,14 @@ class RouteGenerator {
           builder: (context) => const AddChipScreen(),
         );
 
+      case '/settings':
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
+        );
+
       case '/profile':
         return MaterialPageRoute(
-          builder: (context) => const UserProfileScreen(),
+          builder: (context) => const ProfileScreen(),
         );
 
       case '/reset-password':
