@@ -8,6 +8,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "anim_search_bar",
+      "rootUri": "file:///C:/Users/hamza/AppData/Local/Pub/Cache/hosted/pub.dev/anim_search_bar-2.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///C:/Users/hamza/AppData/Local/Pub/Cache/hosted/pub.dev/archive-3.4.10",
       "packageUri": "lib/",
@@ -392,7 +398,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-02-06T08:50:42.548965Z",
+  "generated": "2024-02-20T08:26:30.284642Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }
