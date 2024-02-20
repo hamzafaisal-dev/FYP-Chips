@@ -34,9 +34,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       // get error statement from util and emit it
       String firebaseAuthError =
           FirebaseAuthExceptionErrors.getFirebaseError(error);
-
+      print(error);
       emit(SignInInErrorState(firebaseAuthError));
     } catch (e) {
+      print(e);
+
       emit(SignInInErrorState(e.toString()));
     }
   }

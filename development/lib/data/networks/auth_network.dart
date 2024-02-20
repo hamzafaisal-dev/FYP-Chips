@@ -46,7 +46,7 @@ class UserFirebaseClient {
       UserModel authenticatedUser =
           UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>);
 
-      print(authenticatedUser);
+      // print(authenticatedUser);
 
       return authenticatedUser;
     } catch (error) {

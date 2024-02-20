@@ -1,5 +1,4 @@
 import 'package:development/utils/themes/custom_themes/filled_button_theme.dart';
-import 'package:development/utils/themes/custom_themes/text_themes.dart';
 import 'package:flutter/material.dart';
 
 // For instructions on how to use color scehem, refer to: https://m3.material.io/styles/color/roles
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 class CustomAppTheme {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: 'Poppins',
     colorScheme: const ColorScheme(
       //
       brightness: Brightness.light,
@@ -31,10 +29,21 @@ class CustomAppTheme {
       onBackground: Colors.grey, // to be decided
     ),
     scaffoldBackgroundColor: const Color(0XFFFFF3E9),
-    textTheme: CustomTextTheme.lightTextTheme,
+    textTheme: const TextTheme(
+      headlineLarge:
+          TextStyle(fontFamily: 'KlasikRegular', fontWeight: FontWeight.w400),
+      headlineMedium:
+          TextStyle(fontFamily: 'KlasikRegular', fontWeight: FontWeight.w400),
+      headlineSmall:
+          TextStyle(fontFamily: 'KlasikRegular', fontWeight: FontWeight.w400),
+      bodyLarge: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w500),
+      bodyMedium: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w500),
+      bodySmall: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w500),
+      // other styles can be added as needed
+    ),
     filledButtonTheme: CustomFilledButtonTheme.lightFilledButtonTheme,
   );
 
-  // to be implemented in the future
+  // to be implemented
   // static ThemeData darkTheme = ThemeData();
 }

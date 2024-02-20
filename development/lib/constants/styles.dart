@@ -45,11 +45,6 @@ class TextFormFieldStyles {
         borderRadius: BorderRadius.circular(10.0),
       ),
 
-      // floatingLabelStyle: TextStyle(
-      //   color: Theme.of(context).colorScheme.onPrimary,
-      //   fontWeight: FontWeight.bold,
-      // ),
-
       floatingLabelBehavior: FloatingLabelBehavior.never,
 
       prefixIcon: prefixIcon,
@@ -63,6 +58,9 @@ class TextFormFieldStyles {
       labelText: labelText,
 
       labelStyle: TextStyle(
+        fontFamily: 'Manrope',
+        fontWeight: FontWeight.w500,
+        fontSize: 16.0,
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
     );

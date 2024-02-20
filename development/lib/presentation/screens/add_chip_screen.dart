@@ -30,11 +30,11 @@ class _AddChipScreenState extends State<AddChipScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          FilledButton(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: FilledButton(
             onPressed: () {
               BlocProvider.of<ChipBloc>(context).add(
                 UploadChipEvent(
@@ -55,8 +55,8 @@ class _AddChipScreenState extends State<AddChipScreen> {
             },
             child: const Text('Create New Chip'),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
