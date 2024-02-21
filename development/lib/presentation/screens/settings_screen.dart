@@ -1,10 +1,12 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
-import 'package:development/presentation/widgets/settings_action_tile.dart';
+import 'package:development/presentation/widgets/general_settings_action_tile%20copy.dart';
+import 'package:development/presentation/widgets/support_settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -32,74 +34,80 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: SafeArea(
         child: ListView(
           children: [
-            //
+            SizedBox(height: 20.h),
+
+            // check your profile banner
             Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
-                  child: Container(
-                    height: 146,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(18),
-                      // image: const DecorationImage(
-                      //   image: AssetImage('assets/images/home_banner.png'),
-                      //   fit: BoxFit.cover,
-                      // ),
+                // background image
+                Container(
+                  height: 146.h,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(18.r),
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/home_banner.png'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
+
+                // column containing the text and button
                 Positioned(
-                  top: 20.0,
-                  left: 20.0,
+                  top: 20.0.h,
+                  left: 33.0.w,
                   child: SizedBox(
-                    width: 250,
+                    width: 180.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 20, 0, 4),
-                          child: Text(
-                            "Check Your Profile",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        // check your profile text
+                        Text(
+                          "Check Your Profile",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20.0.sp,
+                                  ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(
-                            _authenticatedUser?.email ?? '',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondary
-                                  .withOpacity(0.7),
-                            ),
-                          ),
+                        SizedBox(height: 4.h),
+
+                        // email
+                        Text(
+                          _authenticatedUser?.email ?? '',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary
+                                        .withOpacity(0.5),
+                                  ),
                         ),
 
+                        SizedBox(height: 22.h),
+
+                        // view button
                         SizedBox(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width / 3,
+                          height: 40.h,
+                          width: 120.w,
                           child: FilledButton(
                             onPressed: () =>
                                 NavigationService.routeToNamed('/profile'),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(0),
                             ),
-                            child: const Text(
+                            child: Text(
                               'View',
-                              style: TextStyle(fontSize: 14),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
@@ -110,69 +118,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
 
+            SizedBox(height: 17.h),
+
             // 'General'
-            const Padding(
-              padding: EdgeInsets.fromLTRB(4, 6, 4, 10),
-              child: Text(
-                'General',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              'General',
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
 
-            // const SizedBox(height: 16),
+            SizedBox(height: 20.h),
 
             // 'Notifications'
-            const SettingsActionTile(
+            const GeneralSettingsActionTile(
               title: 'Notifications',
               subTitle: 'Customize notifications',
               leadingIcon: CustomIcons.notificationsicon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
+            SizedBox(height: 8.h),
+
             // 'More customization'
-            const SettingsActionTile(
+            const GeneralSettingsActionTile(
               title: 'More customization',
               subTitle: 'Customize it more to fit to your usage',
               leadingIcon: Icons.more_horiz,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
+            SizedBox(height: 16.h),
+
             // 'Support'
-            const Padding(
-              padding: EdgeInsets.fromLTRB(4, 6, 4, 10),
-              child: Text(
-                'Support',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            Text(
+              'Support',
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
 
+            SizedBox(height: 20.h),
+
             // 'Contact'
-            const SettingsActionTile(
+            const SupportSettingsActionTile(
               title: 'Contact',
               leadingIcon: CustomIcons.contacticon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
+            SizedBox(height: 8.h),
+
             // 'Feedback'
-            const SettingsActionTile(
+            const SupportSettingsActionTile(
               title: 'Feedback',
               leadingIcon: CustomIcons.feedbackicon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
+            SizedBox(height: 8.h),
+
             // 'Privacy Policy'
-            const SettingsActionTile(
+            const SupportSettingsActionTile(
               title: 'Privacy Policy',
               leadingIcon: CustomIcons.privacypolicyicon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
+            SizedBox(height: 8.h),
+
             // 'About'
-            const SettingsActionTile(
+            const SupportSettingsActionTile(
               title: 'About',
               leadingIcon: CustomIcons.abouticon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
+
+            SizedBox(height: 20.h),
           ],
         ),
       ),

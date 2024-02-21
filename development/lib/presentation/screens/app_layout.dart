@@ -75,6 +75,8 @@ class _AppLayoutState extends State<AppLayout> {
       return AppBar(
         // automaticallyImplyLeading: false,
         iconTheme: Theme.of(context).iconTheme,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text(
           title,
