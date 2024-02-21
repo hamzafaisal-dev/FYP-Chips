@@ -46,151 +46,148 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SafeArea(
         child: Form(
           key: _signUpFormKey,
-          child: RPadding(
-            padding: const EdgeInsets.all(24),
-            child: ListView(
-              children: [
-                const RSizedBox.vertical(24),
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+            children: [
+              SizedBox(height: 24.h),
 
-                // Image
-                Image.asset(
-                  height: 200.h,
-                  width: 187.76.w,
-                  'assets/images/create_account.png',
+              // Image
+              Image.asset(
+                height: 200.h,
+                width: 187.76.w,
+                'assets/images/create_account.png',
+              ),
+
+              SizedBox(height: 21.h),
+
+              // Create Your Account
+              Text(
+                'CREATE YOUR ACCOUNT',
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+
+              SizedBox(height: 32.h),
+
+              // name form field
+              TextFormField(
+                controller: _nameController,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Full Name',
+                  const Icon(Icons.person_outline),
+                  null,
+                  context,
                 ),
+                validator: (value) => FormValidators.nameValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
 
-                const RSizedBox.vertical(21),
+              SizedBox(height: 8.h),
 
-                // Create Your Account
-                Text(
-                  'CREATE YOUR ACCOUNT',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
+              // email form field
+              TextFormField(
+                controller: _emailController,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'IBA Email',
+                  const Icon(Icons.email_outlined),
+                  null,
+                  context,
                 ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => FormValidators.emailValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
 
-                const RSizedBox.vertical(32),
+              SizedBox(height: 8.h),
 
-                // name form field
-                TextFormField(
-                  controller: _nameController,
-                  decoration: TextFormFieldStyles.textFormFieldDecoration(
-                    'Full Name',
-                    const Icon(Icons.person_outline),
-                    null,
-                    context,
+              // password form field
+              TextFormField(
+                controller: _passwordController,
+                obscureText: !_isPasswordVisible,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Password',
+                  const Icon(Icons.lock_outline),
+                  IconButton(
+                    onPressed: () {
+                      setState(() => _isPasswordVisible = !_isPasswordVisible);
+                    },
+                    icon: _isPasswordVisible
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
                   ),
-                  validator: (value) => FormValidators.nameValidator(value),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
+                  context,
                 ),
+                validator: (value) => FormValidators.passwordValidator(value),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
 
-                const RSizedBox.vertical(8),
+              SizedBox(height: 28.h),
 
-                // email form field
-                TextFormField(
-                  controller: _emailController,
-                  decoration: TextFormFieldStyles.textFormFieldDecoration(
-                    'IBA Email',
-                    const Icon(Icons.email_outlined),
-                    null,
-                    context,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) => FormValidators.emailValidator(value),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
+              //sign up button
+              BlocConsumer<SignUpBloc, SignUpState>(
+                listener: (context, state) {
+                  if (state is SignUpLoadingState) {
+                    print('sign up loading');
+                  } else if (state is SignUpValidState) {
+                    print(state.newUser);
 
-                const RSizedBox.vertical(8),
-
-                // password form field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: TextFormFieldStyles.textFormFieldDecoration(
-                    'Password',
-                    const Icon(Icons.lock_outline),
-                    IconButton(
+                    NavigationService.routeToReplacementNamed('/layout');
+                  }
+                },
+                builder: (context, state) {
+                  return SizedBox(
+                    width: double.maxFinite,
+                    child: FilledButton(
                       onPressed: () {
-                        setState(
-                            () => _isPasswordVisible = !_isPasswordVisible);
+                        if (_signUpFormKey.currentState!.validate()) {
+                          _handleSignUp();
+                        }
                       },
-                      icon: _isPasswordVisible
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
+                      style: Theme.of(context).filledButtonTheme.style,
+                      child: (state is SignUpLoadingState)
+                          ? SizedBox(
+                              height: 23.4.h,
+                              width: 23.4.w,
+                              child: const CircularProgressIndicator(),
+                            )
+                          : const Text(
+                              'Create Account',
+                            ),
                     ),
-                    context,
+                  );
+                },
+              ),
+
+              SizedBox(height: 144.h),
+
+              // Already have an account?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account? ",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
                   ),
-                  validator: (value) => FormValidators.passwordValidator(value),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
-
-                const RSizedBox.vertical(28),
-
-                //sign up button
-                BlocConsumer<SignUpBloc, SignUpState>(
-                  listener: (context, state) {
-                    if (state is SignUpLoadingState) {
-                      print('sign up loading');
-                    } else if (state is SignUpValidState) {
-                      print(state.newUser);
-
-                      NavigationService.routeToReplacementNamed('/layout');
-                    }
-                  },
-                  builder: (context, state) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: FilledButton(
-                        onPressed: () {
-                          if (_signUpFormKey.currentState!.validate()) {
-                            _handleSignUp();
-                          }
-                        },
-                        style: Theme.of(context).filledButtonTheme.style,
-                        child: (state is SignUpLoadingState)
-                            ? const SizedBox(
-                                height: 22,
-                                width: 22,
-                                child: CircularProgressIndicator(),
-                              )
-                            : const Text(
-                                'Create Account',
-                              ),
-                      ),
-                    );
-                  },
-                ),
-
-                const RSizedBox.vertical(144),
-
-                // Already have an account?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Already have an account? ",
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(context, '/login'),
+                    child: Text(
+                      "Sign In",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
                           ),
                     ),
-                    InkWell(
-                      onTap: () => Navigator.pushNamed(context, '/login'),
-                      child: Text(
-                        "Sign In",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

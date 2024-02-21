@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         designSize: const Size(414, 896),
         minTextAdapt: true,
         splitScreenMode: true,
-        child: MaterialApp(
+        builder: (_, child) => MaterialApp(
           title: 'Chips',
           debugShowCheckedModeBanner: false,
           theme: CustomAppTheme.lightTheme,

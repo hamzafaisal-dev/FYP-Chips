@@ -13,116 +13,113 @@ class ResetPasswordScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         forceMaterialTransparency: true,
-        foregroundColor: const Color(0XFF573353),
         leading: const BackButton(
           color: Color(0XFF573353),
         ),
         surfaceTintColor: Colors.transparent,
       ),
       body: SafeArea(
-        child: RPadding(
-          padding: const EdgeInsets.all(24),
-          child: ListView(
-            children: [
-              // FORGOT YOUR PASSWORD?
-              Text(
-                'FORGOT YOUR PASSWORD?',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+          children: [
+            // FORGOT YOUR PASSWORD?
+            Text(
+              'FORGOT YOUR PASSWORD?',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+
+            SizedBox(height: 39.h),
+
+            // Image
+            Image.asset('assets/images/forgot_password.png'),
+
+            SizedBox(height: 45.h),
+
+            Container(
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: const Color(0XFFFFFFFF),
+                borderRadius: BorderRadius.circular(12.r),
               ),
-
-              const RSizedBox.vertical(39),
-
-              // Image
-              Image.asset('assets/images/forgot_password.png'),
-
-              const RSizedBox.vertical(45),
-
-              Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  color: const Color(0XFFFFFFFF),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: RPadding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      // Enter your registered...
-                      Text(
-                        'Enter your registered email below to receive password reset instruction',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-
-                      const RSizedBox.vertical(30),
-
-                      // Email text field
-                      TextFormField(
-                        onTapOutside: (event) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        // controller: _emailController,
-                        decoration: TextFormFieldStyles.textFormFieldDecoration(
-                          'j.doe.36963@khi.iba.edu.pk',
-                          null,
-                          null,
-                          context,
-                        ).copyWith(
-                          fillColor: const Color(0XFFFFF6ED),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) =>
-                            FormValidators.emailValidator(value),
-                      ),
-
-                      const RSizedBox.vertical(10),
-
-                      // Send Reset Link button
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: FilledButton(
-                          onPressed: () {},
-                          style: Theme.of(context).filledButtonTheme.style,
-                          child: Text(
-                            'Send Reset Link',
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const RSizedBox.vertical(100),
-
-              // Remember password?
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Remember password? ',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  ),
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/login'),
-                    child: Text(
-                      'Login',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 20.h),
+                child: Column(
+                  children: [
+                    // Enter your registered...
+                    Text(
+                      'Enter your registered email below to receive password reset instruction',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                  ),
-                ],
+
+                    SizedBox(height: 30.h),
+
+                    // Email text field
+                    TextFormField(
+                      onTapOutside: (event) {
+                        FocusScope.of(context).unfocus();
+                      },
+                      // controller: _emailController,
+                      decoration: TextFormFieldStyles.textFormFieldDecoration(
+                        'j.doe.36963@khi.iba.edu.pk',
+                        null,
+                        null,
+                        context,
+                      ).copyWith(
+                        fillColor: const Color(0XFFFFF6ED),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) =>
+                          FormValidators.emailValidator(value),
+                    ),
+
+                    SizedBox(height: 10.h),
+
+                    // Send Reset Link button
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: FilledButton(
+                        onPressed: () {},
+                        style: Theme.of(context).filledButtonTheme.style,
+                        child: Text(
+                          'Send Reset Link',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+
+            SizedBox(height: 100.h),
+
+            // Remember password?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Remember password? ',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                ),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, '/login'),
+                  child: Text(
+                    'Login',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

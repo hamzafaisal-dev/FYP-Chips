@@ -47,150 +47,145 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Form(
           key: _loginFormKey,
-          child: RPadding(
-            padding: const EdgeInsets.all(24),
-            child: ListView(
-              // padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
-              children: [
-                // SizedBox(height: 302.h),
-                const RSizedBox.vertical(302),
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+            children: [
+              SizedBox(height: 302.h),
 
-                // welcome back
-                Text(
-                  'Welcome Back',
-                  style: Theme.of(context).textTheme.headlineLarge,
+              // welcome back
+              Text(
+                'Welcome Back',
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+
+              // quote
+              Text(
+                'goofy ahh quote - nami, probably',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+
+              SizedBox(height: 25.h),
+
+              // email form field
+              TextFormField(
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+                controller: _emailController,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Enter IBA email address',
+                  const Icon(Icons.email_outlined),
+                  null,
+                  context,
                 ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => FormValidators.emailValidator(value),
+              ),
 
-                // quote
-                Text(
-                  'goofy ahh quote - nami, probably',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+              SizedBox(height: 8.h),
 
-                const RSizedBox.vertical(25),
-
-                // email form field
-                TextFormField(
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-                  controller: _emailController,
-                  decoration: TextFormFieldStyles.textFormFieldDecoration(
-                    'Enter IBA email address',
-                    const Icon(Icons.email),
-                    null,
-                    context,
+              // password form field
+              TextFormField(
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+                controller: _passwordController,
+                obscureText: !_isPasswordVisible,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Enter password',
+                  const Icon(Icons.lock_outline),
+                  IconButton(
+                    onPressed: () {
+                      setState(() => _isPasswordVisible = !_isPasswordVisible);
+                    },
+                    icon: _isPasswordVisible
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) => FormValidators.emailValidator(value),
+                  context,
                 ),
+                validator: (value) => FormValidators.passwordValidator(value),
+              ),
 
-                const RSizedBox.vertical(8),
+              SizedBox(height: 21.h),
 
-                // password form field
-                TextFormField(
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-                  controller: _passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: TextFormFieldStyles.textFormFieldDecoration(
-                    'Enter password',
-                    const Icon(Icons.lock_outline),
-                    IconButton(
+              //login button
+              BlocConsumer<SignInBloc, SignInState>(
+                listener: (context, state) {
+                  print(state);
+                  if (state is SignInLoadingState) {
+                    print('sign in loading');
+                  } else if (state is SignInValidState) {
+                    // print(state.authenticatedUser);
+
+                    NavigationService.routeToReplacementNamed('/layout');
+                  }
+                },
+                builder: (context, state) {
+                  return SizedBox(
+                    width: double.maxFinite,
+                    child: FilledButton(
                       onPressed: () {
-                        setState(
-                            () => _isPasswordVisible = !_isPasswordVisible);
+                        if (_loginFormKey.currentState!.validate()) {
+                          _handleLogin();
+                        }
                       },
-                      icon: _isPasswordVisible
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
+                      style: Theme.of(context).filledButtonTheme.style,
+                      child: (state is SignInLoadingState)
+                          ? SizedBox(
+                              height: 23.4.w,
+                              width: 23.4.h,
+                              child: const CircularProgressIndicator(),
+                            )
+                          : const Text('Login'),
                     ),
-                    context,
-                  ),
-                  validator: (value) => FormValidators.passwordValidator(value),
-                ),
+                  );
+                },
+              ),
 
-                const RSizedBox.vertical(21),
+              SizedBox(height: 13.h),
 
-                //login button
-                BlocConsumer<SignInBloc, SignInState>(
-                  listener: (context, state) {
-                    print(state);
-                    if (state is SignInLoadingState) {
-                      print('sign in loading');
-                    } else if (state is SignInValidState) {
-                      // print(state.authenticatedUser);
-
-                      NavigationService.routeToReplacementNamed('/layout');
-                    }
-                  },
-                  builder: (context, state) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: FilledButton(
-                        onPressed: () {
-                          if (_loginFormKey.currentState!.validate()) {
-                            _handleLogin();
-                          }
-                        },
-                        style: Theme.of(context).filledButtonTheme.style,
-                        child: (state is SignInLoadingState)
-                            ? const SizedBox(
-                                height: 22,
-                                width: 22,
-                                child: CircularProgressIndicator(),
-                              )
-                            : const Text('Login'),
-                      ),
-                    );
-                  },
-                ),
-
-                const RSizedBox.vertical(13),
-
-                // forgot password
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () =>
-                          NavigationService.routeToNamed("/reset-password"),
-                      child: Text(
-                        'Forgot Password?',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w400,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const RSizedBox.vertical(6),
-
-                // don't have an account? sign up
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Don\'t have an account? ',
+              // forgot password
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () =>
+                        NavigationService.routeToNamed("/reset-password"),
+                    child: Text(
+                      'Forgot Password?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w400,
                           ),
                     ),
-                    InkWell(
-                      onTap: () => NavigationService.routeToNamed("/signup"),
-                      child: Text(
-                        'Sign Up',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 6.h),
+
+              // don't have an account? sign up
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Don\'t have an account? ',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                  InkWell(
+                    onTap: () => NavigationService.routeToNamed("/signup"),
+                    child: Text(
+                      'Sign Up',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
