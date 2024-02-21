@@ -4,6 +4,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,10 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _loginFormKey,
           child: ListView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
             children: [
-              //
-              SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+              SizedBox(height: 302.h),
 
               // welcome back
               Text(
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 25.h),
 
               // email form field
               TextFormField(
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 decoration: TextFormFieldStyles.textFormFieldDecoration(
                   'Enter IBA email address',
-                  const Icon(Icons.email),
+                  const Icon(Icons.email_outlined),
                   null,
                   context,
                 ),
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) => FormValidators.emailValidator(value),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 8.h),
 
               // password form field
               TextFormField(
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) => FormValidators.passwordValidator(value),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 21.h),
 
               //login button
               BlocConsumer<SignInBloc, SignInState>(
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 builder: (context, state) {
                   return SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: double.maxFinite,
                     child: FilledButton(
                       onPressed: () {
                         if (_loginFormKey.currentState!.validate()) {
@@ -132,10 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignInLoadingState)
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(),
+                          ? SizedBox(
+                              height: 23.4.w,
+                              width: 23.4.h,
+                              child: const CircularProgressIndicator(),
                             )
                           : const Text('Login'),
                     ),
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 13.h),
 
               // forgot password
               Row(
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
 
-              const SizedBox(height: 6),
+              SizedBox(height: 6.h),
 
               // don't have an account? sign up
               Row(

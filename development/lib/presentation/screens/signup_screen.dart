@@ -4,6 +4,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -46,14 +47,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Form(
           key: _signUpFormKey,
           child: ListView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
             children: [
-              //
+              SizedBox(height: 24.h),
 
               // Image
               Image.asset(
+                height: 200.h,
+                width: 187.76.w,
                 'assets/images/create_account.png',
               ),
+
+              SizedBox(height: 21.h),
 
               // Create Your Account
               Text(
@@ -62,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 32.h),
 
               // name form field
               TextFormField(
@@ -79,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 8.h),
 
               // email form field
               TextFormField(
@@ -97,7 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 8.h),
 
               // password form field
               TextFormField(
@@ -122,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 28.h),
 
               //sign up button
               BlocConsumer<SignUpBloc, SignUpState>(
@@ -137,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 builder: (context, state) {
                   return SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: double.maxFinite,
                     child: FilledButton(
                       onPressed: () {
                         if (_signUpFormKey.currentState!.validate()) {
@@ -146,10 +151,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       style: Theme.of(context).filledButtonTheme.style,
                       child: (state is SignUpLoadingState)
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(),
+                          ? SizedBox(
+                              height: 23.4.h,
+                              width: 23.4.w,
+                              child: const CircularProgressIndicator(),
                             )
                           : const Text(
                               'Create Account',
@@ -159,7 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: 144.h),
 
               // Already have an account?
               Row(

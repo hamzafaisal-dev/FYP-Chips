@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   // transparent status bar
@@ -74,13 +75,18 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp(
-        title: 'Chips',
-        debugShowCheckedModeBanner: false,
-        theme: CustomAppTheme.lightTheme,
-        onGenerateRoute: RouteGenerator.generateRoutes,
-        navigatorKey: NavigationService.navigatorKey,
-        home: const LoginScreen(),
+      child: ScreenUtilInit(
+        designSize: const Size(414, 896),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, child) => MaterialApp(
+          title: 'Chips',
+          debugShowCheckedModeBanner: false,
+          theme: CustomAppTheme.lightTheme,
+          onGenerateRoute: RouteGenerator.generateRoutes,
+          navigatorKey: NavigationService.navigatorKey,
+          home: const LoginScreen(),
+        ),
       ),
     );
   }

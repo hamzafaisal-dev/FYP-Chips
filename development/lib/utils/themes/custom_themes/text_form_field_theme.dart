@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFieldTheme {
   static InputDecoration lightTextFieldTheme(
@@ -10,35 +11,35 @@ class CustomTextFieldTheme {
       fillColor: Colors.white,
 
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
+        borderSide: BorderSide(
+          width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
+        borderSide: BorderSide(
+          width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       errorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
-          color: Color(0XFFF65B4E),
+        borderSide: BorderSide(
+          width: 1.5.w,
+          color: const Color(0XFFF65B4E),
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
-          color: Color(0XFFF65B4E),
+        borderSide: BorderSide(
+          width: 1.5.w,
+          color: const Color(0XFFF65B4E),
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       floatingLabelBehavior: FloatingLabelBehavior.never,

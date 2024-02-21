@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormFieldStyles {
   static InputDecoration textFormFieldDecoration(
@@ -14,35 +15,35 @@ class TextFormFieldStyles {
       fillColor: Theme.of(context).colorScheme.surface,
 
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
+        borderSide: BorderSide(
+          width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-          width: 1.5,
+        borderSide: BorderSide(
+          width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          width: 1.5,
+          width: 1.5.w,
           color: Theme.of(context).colorScheme.error,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          width: 1.5,
+          width: 1.5.w,
           color: Theme.of(context).colorScheme.error,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10.0.r),
       ),
 
       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -50,8 +51,8 @@ class TextFormFieldStyles {
       prefixIcon: prefixIcon,
 
       prefixIconConstraints: prefixIcon != null
-          ? const BoxConstraints.tightFor(width: 52)
-          : const BoxConstraints.tightFor(width: 12),
+          ? BoxConstraints.tightFor(width: 52.w)
+          : BoxConstraints.tightFor(width: 12.w),
 
       suffixIcon: suffixIcon,
 
@@ -60,7 +61,7 @@ class TextFormFieldStyles {
       labelStyle: TextStyle(
         fontFamily: 'Manrope',
         fontWeight: FontWeight.w500,
-        fontSize: 16.0,
+        fontSize: 16.0.sp,
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
     );
