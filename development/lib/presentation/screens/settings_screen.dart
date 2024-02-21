@@ -1,8 +1,7 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
-import 'package:development/presentation/widgets/general_settings_action_tile%20copy.dart';
-import 'package:development/presentation/widgets/support_settings_action_tile.dart';
+import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,10 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(18.r),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/images/home_banner.png'),
-                      fit: BoxFit.cover,
-                    ),
+                    // image: const DecorationImage(
+                    //   image: AssetImage('assets/images/home_banner.png'),
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
 
@@ -129,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20.h),
 
             // 'Notifications'
-            const GeneralSettingsActionTile(
+            const SettingsActionTile(
               title: 'Notifications',
               subTitle: 'Customize notifications',
               leadingIcon: CustomIcons.notificationsicon,
@@ -139,9 +138,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 8.h),
 
             // 'More customization'
-            const GeneralSettingsActionTile(
+            const SettingsActionTile(
               title: 'More customization',
-              subTitle: 'Customize it more to fit to your usage',
+              subTitle: 'Customize more',
               leadingIcon: Icons.more_horiz,
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
@@ -157,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20.h),
 
             // 'Contact'
-            const SupportSettingsActionTile(
+            const SettingsActionTile(
               title: 'Contact',
               leadingIcon: CustomIcons.contacticon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
@@ -166,7 +165,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 8.h),
 
             // 'Feedback'
-            const SupportSettingsActionTile(
+            const SettingsActionTile(
               title: 'Feedback',
               leadingIcon: CustomIcons.feedbackicon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
@@ -175,7 +174,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 8.h),
 
             // 'Privacy Policy'
-            const SupportSettingsActionTile(
+            const SettingsActionTile(
               title: 'Privacy Policy',
               leadingIcon: CustomIcons.privacypolicyicon,
               trailingIcon: Icons.arrow_forward_ios_rounded,
@@ -184,7 +183,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 8.h),
 
             // 'About'
-            const SupportSettingsActionTile(
+            const SettingsActionTile(
               title: 'About',
               leadingIcon: CustomIcons.abouticon,
               trailingIcon: Icons.arrow_forward_ios_rounded,

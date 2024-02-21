@@ -1,6 +1,7 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/my_flutter_app_icons.dart';
-import 'package:development/presentation/widgets/support_settings_action_tile.dart';
+import 'package:development/presentation/widgets/settings_action_tile.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,124 +83,132 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(title: const Text('Profile'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            //
-            Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 4),
-              child: Container(
-                //
-                height: 260,
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthStateUnauthenticated) {
+              NavigationService.routeToReplacementNamed('/login');
+            }
+          },
+          child: Column(
+            children: [
+              //
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 4),
+                child: Container(
+                  //
+                  height: 260,
 
-                width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width,
 
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(18),
-                  // image: const DecorationImage(
-                  //   image: AssetImage('assets/images/home_banner.png'),
-                  //   fit: BoxFit.cover,
-                  // ),
-                ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(18),
+                    // image: const DecorationImage(
+                    //   image: AssetImage('assets/images/home_banner.png'),
+                    //   fit: BoxFit.cover,
+                    // ),
+                  ),
 
-                child: Column(
-                  children: [
-                    //
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                  child: Column(
+                    children: [
+                      //
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          children: [
+                            //
+                            const CircleAvatar(
+                              radius: 30,
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //
+                                  const Text(
+                                    'Marilyn Aminoff',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    'm.aminoff.22971@khi.iba.edu.pk',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondaryContainer,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Row(
+
+                      Divider(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        thickness: 2,
+                        height: 0,
+                      ),
+
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //
-                          const CircleAvatar(
-                            radius: 30,
+                          const Expanded(
+                            child: UserStatSection(
+                              statisticName: 'Total Work Hours',
+                              statisticValue: 18,
+                            ),
                           ),
 
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //
-                                const Text(
-                                  'Marilyn Aminoff',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                          SizedBox(
+                            height: 85, // change ye value for responsiveness
+                            child: VerticalDivider(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              thickness: 2,
+                              width: 0,
+                            ),
+                          ),
 
-                                Text(
-                                  'm.aminoff.22971@khi.iba.edu.pk',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondaryContainer,
-                                  ),
-                                ),
-                              ],
+                          const Expanded(
+                            child: UserStatSection(
+                              statisticName: 'Task Completed',
+                              statisticValue: 12,
                             ),
                           ),
                         ],
                       ),
-                    ),
 
-                    Divider(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      thickness: 2,
-                      height: 0,
-                    ),
-
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //
-                        const Expanded(
-                          child: UserStatSection(
-                            statisticName: 'Total Work Hours',
-                            statisticValue: 18,
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 85, // change ye value for responsiveness
-                          child: VerticalDivider(
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                            thickness: 2,
-                            width: 0,
-                          ),
-                        ),
-
-                        const Expanded(
-                          child: UserStatSection(
-                            statisticName: 'Task Completed',
-                            statisticValue: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Divider(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      thickness: 2,
-                      height: 0,
-                    ),
-                  ],
+                      Divider(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        thickness: 2,
+                        height: 0,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            const SupportSettingsActionTile(
-              title: 'Sign Out',
-              leadingIcon: CustomIcons.logout,
-              trailingIcon: Icons.arrow_forward_ios_rounded,
-              // onTap: logOut,
-            ),
-          ],
+              SettingsActionTile(
+                title: 'Sign Out',
+                leadingIcon: CustomIcons.logout,
+                trailingIcon: Icons.arrow_forward_ios_rounded,
+                onTap: logOut,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -238,10 +247,12 @@ class UserStatSection extends StatelessWidget {
 
               Text(
                 statisticValue.toString(),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
+
+                // style: const TextStyle(
+                //   fontSize: 24,
+                //   fontWeight: FontWeight.bold,
+                // ),
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:development/utils/themes/custom_themes/app_bar_theme.dart';
+import 'package:development/utils/themes/custom_themes/divider_theme.dart';
 import 'package:development/utils/themes/custom_themes/filled_button_theme.dart';
 import 'package:development/utils/themes/custom_themes/text_themes.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,8 @@ class CustomAppTheme {
     textTheme: CustomTextTheme.lightTextTheme,
 
     filledButtonTheme: CustomFilledButtonTheme.lightFilledButtonTheme,
+
+    dividerTheme: CustomDividerTheme.lightDividerTheme,
   );
 
   // to be implemented
