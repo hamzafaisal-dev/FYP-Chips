@@ -79,14 +79,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text('Profile'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             //
             Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 4),
+              padding: const EdgeInsets.only(top: 8, bottom: 4),
               child: Container(
                 //
                 height: 260,
@@ -153,24 +153,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 0,
                     ),
 
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //
-                        UserStatSection(
-                          statisticName: 'Total Work Hours',
-                          statisticValue: 18,
+                        const Expanded(
+                          child: UserStatSection(
+                            statisticName: 'Total Work Hours',
+                            statisticValue: 18,
+                          ),
                         ),
 
-                        // VerticalDivider(
-                        //   color: Colors.red,
-                        //   thickness: 19,
-                        //   width: 0,
-                        // ),
+                        SizedBox(
+                          height: 85, // change ye value for responsiveness
+                          child: VerticalDivider(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            thickness: 2,
+                            width: 0,
+                          ),
+                        ),
 
-                        UserStatSection(
-                          statisticName: 'Total Work Hours',
-                          statisticValue: 18,
+                        const Expanded(
+                          child: UserStatSection(
+                            statisticName: 'Task Completed',
+                            statisticValue: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -206,60 +214,54 @@ class UserStatSection extends StatelessWidget {
   });
 
   final String statisticName;
-  final double statisticValue;
+  final int statisticValue;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 15,
-      ),
-      child: Container(
-        color: Colors.red,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //
-                Text(
-                  'Total Work Hours',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                  ),
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          //
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //
+              Text(
+                statisticName,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
+              ),
 
-                const Text(
-                  '18',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Text(
+                statisticValue.toString(),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
+            ],
+          ),
+
+          Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(30),
+              ),
             ),
-
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
-                ),
-              ),
-              child: Icon(
-                CustomIcons.feedbackicon,
-                color: Theme.of(context).colorScheme.primary,
-                size: 18,
-              ),
-            )
-          ],
-        ),
+            child: Icon(
+              CustomIcons.feedbackicon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 18,
+            ),
+          )
+        ],
       ),
     );
   }
