@@ -68,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           image: const DecorationImage(
-                            image: AssetImage('assets/images/home_banner.png'),
+                            image: AssetImage(
+                                'assets/imagesbanners/home_banner.png'),
                             fit: BoxFit.cover,
                           ),
                         ),

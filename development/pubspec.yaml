@@ -24,6 +24,7 @@ dependencies:
   google_fonts: ^6.1.0
   anim_search_bar: ^2.0.3
   flutter_screenutil: ^5.9.0
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -35,7 +36,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
+    - assets/images/banners/
+    - assets/images/icons/
 
   fonts:
     - family: KlasikRegular

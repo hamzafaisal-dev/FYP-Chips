@@ -1,11 +1,11 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -48,11 +48,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(18.r),
-                    // image: const DecorationImage(
-                    //   image: AssetImage('assets/images/home_banner.png'),
-                    //   fit: BoxFit.cover,
-                    // ),
+                    borderRadius: BorderRadius.circular(12.r),
+                    image: const DecorationImage(
+                      image:
+                          AssetImage('assets/images/banners/home_banner.png'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
 
@@ -61,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   top: 20.0.h,
                   left: 33.0.w,
                   child: SizedBox(
-                    width: 180.w,
+                    width: 234.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -128,20 +129,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20.h),
 
             // 'Notifications'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'Notifications',
               subTitle: 'Customize notifications',
-              leadingIcon: CustomIcons.notificationsicon,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/bell_icon.svg',
+                width: 18.w,
+                height: 18.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             SizedBox(height: 8.h),
 
             // 'More customization'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'More customization',
               subTitle: 'Customize more',
-              leadingIcon: Icons.more_horiz,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/more_icon.svg',
+                width: 18.w,
+                height: 3.63.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
@@ -156,36 +165,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20.h),
 
             // 'Contact'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'Contact',
-              leadingIcon: CustomIcons.contacticon,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/contact_icon.svg',
+                width: 18.w,
+                height: 18.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             SizedBox(height: 8.h),
 
             // 'Feedback'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'Feedback',
-              leadingIcon: CustomIcons.feedbackicon,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/feedback_icon.svg',
+                width: 18.w,
+                height: 18.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             SizedBox(height: 8.h),
 
             // 'Privacy Policy'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'Privacy Policy',
-              leadingIcon: CustomIcons.privacypolicyicon,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/privacy_policy_icon.svg',
+                width: 18.w,
+                height: 18.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 
             SizedBox(height: 8.h),
 
             // 'About'
-            const SettingsActionTile(
+            SettingsActionTile(
               title: 'About',
-              leadingIcon: CustomIcons.abouticon,
+              leadingIcon: SvgPicture.asset(
+                'assets/images/icons/about_icon.svg',
+                width: 16.w,
+                height: 16.h,
+              ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
             ),
 

@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Image.asset(
                 height: 200.h,
                 width: 187.76.w,
-                'assets/images/create_account.png',
+                'assets/images/banners/create_account.png',
               ),
 
               SizedBox(height: 21.h),

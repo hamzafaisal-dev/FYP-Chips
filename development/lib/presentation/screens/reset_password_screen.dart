@@ -1,7 +1,9 @@
 import 'package:development/constants/styles.dart';
+import 'package:development/presentation/widgets/custom_app_bar_button.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
@@ -9,19 +11,25 @@ class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        forceMaterialTransparency: true,
-        leading: const BackButton(
-          color: Color(0XFF573353),
-        ),
-        surfaceTintColor: Colors.transparent,
-      ),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+          padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0.h),
           children: [
+            // back button
+            Align(
+              alignment: Alignment.centerLeft,
+              child: CustomAppBarButton(
+                onTap: () => Navigator.pop(context),
+                icon: SvgPicture.asset(
+                  'assets/images/icons/back_icon.svg',
+                  width: 16.5.w,
+                  height: 12.h,
+                ),
+              ),
+            ),
+
+            SizedBox(height: 25.h),
+
             // FORGOT YOUR PASSWORD?
             Text(
               'FORGOT YOUR PASSWORD?',
@@ -32,7 +40,7 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 39.h),
 
             // Image
-            Image.asset('assets/images/forgot_password.png'),
+            Image.asset('assets/images/banners/forgot_password.png'),
 
             SizedBox(height: 45.h),
 

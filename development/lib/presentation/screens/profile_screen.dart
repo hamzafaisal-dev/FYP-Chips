@@ -4,6 +4,8 @@ import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -203,7 +205,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               SettingsActionTile(
                 title: 'Sign Out',
-                leadingIcon: CustomIcons.logout,
+                leadingIcon: SvgPicture.asset(
+                  // this icon will change later on
+                  'assets/images/icons/bell_icon.svg',
+                  width: 18.w,
+                  height: 18.h,
+                ),
                 trailingIcon: Icons.arrow_forward_ios_rounded,
                 onTap: logOut,
               ),
