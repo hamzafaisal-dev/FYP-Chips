@@ -25,6 +25,7 @@ class CustomAppBarButton extends StatelessWidget {
         ),
         InkWell(
           borderRadius: BorderRadius.circular(22.r),
+          radius: 22.r,
           onTap: onTap,
           child: CircleAvatar(
             backgroundColor: Colors.transparent,

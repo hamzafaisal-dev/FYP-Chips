@@ -3,10 +3,13 @@ import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
+import 'package:development/presentation/widgets/custom_app_bar_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -73,56 +76,57 @@ class _AppLayoutState extends State<AppLayout> {
       }
 
       return AppBar(
-        // automaticallyImplyLeading: false,
         iconTheme: Theme.of(context).iconTheme,
         elevation: 0,
+        shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Colors.transparent,
         title: Text(
           title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: 18.sp,
+              ),
         ),
         centerTitle: true,
 
+        //
+        leadingWidth: 64.w,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            radius: 0,
-            child: Icon(
-              Icons.menu,
-              color: Theme.of(context).colorScheme.onSecondary,
-              size: 22,
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: CustomAppBarButton(
+              icon: SvgPicture.asset(
+                'assets/images/icons/hamburger_menu_icon.svg',
+                width: 44.w,
+                height: 44.h,
+              ),
+              onTap: () {},
             ),
           ),
         ),
 
-        leadingWidth: 60,
-
+        //
         actions: [
           currentIndex == 0
               ? Padding(
-                  padding: const EdgeInsets.only(top: 5, right: 15),
-                  child: AnimSearchBar(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: MediaQuery.of(context).size.width / 1.8,
-                    boxShadow: false,
-                    textController: _searchBarController,
-                    onSuffixTap: () {},
-                    onSubmitted: (value) {},
+                  padding: EdgeInsets.fromLTRB(0.w, 0.h, 20.w, 0.w),
+                  child: SizedBox(
+                    height: 44.h,
+                    child: AnimSearchBar(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: MediaQuery.of(context).size.width * 0.72,
+                      boxShadow: false,
+                      textController: _searchBarController,
+
+                      //
+                      onSuffixTap: () {},
+                      onSubmitted: (value) {},
+                    ),
                   ),
                 )
-              : const SizedBox()
-          // Padding(
-          //   padding: EdgeInsets.only(right: 18),
-          //   child: CircleAvatar(
-          //     backgroundImage: NetworkImage(
-          //       'https://preview.redd.it/is-there-a-lore-reason-why-kid-named-finger-is-voicing-v0-bj5zipugk4fb1.jpg?width=640&crop=smart&auto=webp&s=0efa1df13a414ee1611c067e6a0631d6f0af1e9d',
-          //     ),
-          //   ),
-          // ),
+              : const SizedBox.shrink(),
         ],
       );
     }

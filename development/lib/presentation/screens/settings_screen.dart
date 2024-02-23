@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: SafeArea(
         child: ListView(
           children: [
-            SizedBox(height: 20.h),
+            SizedBox(height: 8.1.h),
 
             // check your profile banner
             Stack(
