@@ -122,23 +122,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 builder: (context, state) {
-                  return SizedBox(
-                    width: double.maxFinite,
-                    child: FilledButton(
-                      onPressed: () {
-                        if (_loginFormKey.currentState!.validate()) {
-                          _handleLogin();
-                        }
-                      },
-                      style: Theme.of(context).filledButtonTheme.style,
-                      child: (state is SignInLoadingState)
-                          ? SizedBox(
-                              height: 23.4.w,
-                              width: 23.4.h,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : const Text('Login'),
-                    ),
+                  return FilledButton(
+                    onPressed: (state is SignInLoadingState)
+                        ? null
+                        : () {
+                            if (_loginFormKey.currentState!.validate()) {
+                              _handleLogin();
+                            }
+                          },
+                    child: (state is SignInLoadingState)
+                        ? SizedBox(
+                            height: 23.4.w,
+                            width: 23.4.h,
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Login'),
                   );
                 },
               ),

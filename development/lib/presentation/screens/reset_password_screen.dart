@@ -11,6 +11,9 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var copyWith = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        );
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -90,19 +93,9 @@ class ResetPasswordScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
 
                     // Send Reset Link button
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: FilledButton(
-                        onPressed: () {},
-                        style: Theme.of(context).filledButtonTheme.style,
-                        child: Text(
-                          'Send Reset Link',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                        ),
-                      ),
+                    FilledButton(
+                      onPressed: () {},
+                      child: const Text('Send Reset Link'),
                     ),
                   ],
                 ),

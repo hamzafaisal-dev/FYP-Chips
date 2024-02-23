@@ -8,14 +8,12 @@ class CustomFilledButtonTheme {
       maximumSize: Size(double.maxFinite, 60.h),
       backgroundColor: const Color(0XFFFDA758),
       foregroundColor: const Color(0XFF573353),
-      padding: EdgeInsets.symmetric(vertical: 18.h),
       textStyle: TextStyle(
         fontFamily: 'Manrope',
         fontWeight: FontWeight.w700,
         fontSize: 16.sp,
       ),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0.r)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       disabledBackgroundColor: Colors.grey,
       disabledForegroundColor: Colors.white,
     ),

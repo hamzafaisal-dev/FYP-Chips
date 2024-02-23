@@ -104,10 +104,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             child: Text(
                               'View',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.sp,
+                              ),
                             ),
                           ),
                         ),

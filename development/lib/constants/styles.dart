@@ -19,7 +19,7 @@ class TextFormFieldStyles {
           width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0.r),
+        borderRadius: BorderRadius.circular(12.r),
       ),
 
       focusedBorder: OutlineInputBorder(
@@ -27,7 +27,7 @@ class TextFormFieldStyles {
           width: 1.5.w,
           color: Colors.transparent,
         ),
-        borderRadius: BorderRadius.circular(10.0.r),
+        borderRadius: BorderRadius.circular(12.0.r),
       ),
 
       errorBorder: OutlineInputBorder(
@@ -35,7 +35,7 @@ class TextFormFieldStyles {
           width: 1.5.w,
           color: Theme.of(context).colorScheme.error,
         ),
-        borderRadius: BorderRadius.circular(10.0.r),
+        borderRadius: BorderRadius.circular(12.0.r),
       ),
 
       focusedErrorBorder: OutlineInputBorder(
@@ -43,7 +43,7 @@ class TextFormFieldStyles {
           width: 1.5.w,
           color: Theme.of(context).colorScheme.error,
         ),
-        borderRadius: BorderRadius.circular(10.0.r),
+        borderRadius: BorderRadius.circular(12.0.r),
       ),
 
       floatingLabelBehavior: FloatingLabelBehavior.never,

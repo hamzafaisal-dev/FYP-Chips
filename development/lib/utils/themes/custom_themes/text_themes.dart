@@ -33,6 +33,24 @@ class CustomTextTheme {
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,
     ),
-    // other styles can be added as needed
+
+    // for the filled button
+    labelLarge: TextStyle(
+      fontFamily: 'Manrope',
+      fontWeight: FontWeight.w700,
+      fontSize: 16.sp,
+    ),
+    labelMedium: TextStyle(
+      fontFamily: 'Manrope',
+      fontWeight: FontWeight.w700,
+      fontSize: 14.sp,
+    ),
+    labelSmall: TextStyle(
+      fontFamily: 'Manrope',
+      fontWeight: FontWeight.w700,
+      fontSize: 12.sp,
+    ),
+
+    // other can be added as needed
   );
 }

@@ -142,25 +142,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                 },
                 builder: (context, state) {
-                  return SizedBox(
-                    width: double.maxFinite,
-                    child: FilledButton(
-                      onPressed: () {
-                        if (_signUpFormKey.currentState!.validate()) {
-                          _handleSignUp();
-                        }
-                      },
-                      style: Theme.of(context).filledButtonTheme.style,
-                      child: (state is SignUpLoadingState)
-                          ? SizedBox(
-                              height: 23.4.h,
-                              width: 23.4.w,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : const Text(
-                              'Create Account',
+                  return FilledButton(
+                    onPressed: (state is SignUpLoadingState)
+                        ? null
+                        : () {
+                            if (_signUpFormKey.currentState!.validate()) {
+                              _handleSignUp();
+                            }
+                          },
+                    child: (state is SignUpLoadingState)
+                        ? SizedBox(
+                            height: 23.4.h,
+                            width: 23.4.w,
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
                             ),
-                    ),
+                          )
+                        : const Text('Create Account'),
                   );
                 },
               ),
