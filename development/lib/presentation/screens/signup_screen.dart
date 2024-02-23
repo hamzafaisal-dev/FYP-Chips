@@ -1,4 +1,5 @@
 import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
@@ -53,9 +54,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               // Image
               Image.asset(
+                AssetPaths.signupScreenBannerPath,
                 height: 200.h,
                 width: 187.76.w,
-                'assets/images/banners/create_account.png',
               ),
 
               SizedBox(height: 21.h),

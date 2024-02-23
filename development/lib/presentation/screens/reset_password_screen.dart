@@ -1,3 +1,4 @@
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/presentation/widgets/custom_app_bar_button.dart';
 import 'package:development/utils/form_validators.dart';
@@ -21,7 +22,7 @@ class ResetPasswordScreen extends StatelessWidget {
               child: CustomAppBarButton(
                 onTap: () => Navigator.pop(context),
                 icon: SvgPicture.asset(
-                  'assets/images/icons/back_icon.svg',
+                  AssetPaths.leftArrowIconPath,
                   width: 16.5.w,
                   height: 12.h,
                 ),
@@ -40,7 +41,11 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 39.h),
 
             // Image
-            Image.asset('assets/images/banners/forgot_password.png'),
+            Image.asset(
+              AssetPaths.resetPasswordScreenBannerPath,
+              width: double.maxFinite,
+              height: 264.h,
+            ),
 
             SizedBox(height: 45.h),
 

@@ -1,4 +1,5 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
@@ -50,8 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12.r),
                     image: const DecorationImage(
-                      image:
-                          AssetImage('assets/images/banners/home_banner.png'),
+                      image: AssetImage(AssetPaths.homeScreenBannerPath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -133,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Notifications',
               subTitle: 'Customize notifications',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/bell_icon.svg',
+                AssetPaths.notificationBellIconPath,
                 width: 18.w,
                 height: 18.h,
               ),
@@ -147,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'More customization',
               subTitle: 'Customize more',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/more_icon.svg',
+                AssetPaths.moreIconPath,
                 width: 18.w,
                 height: 3.63.h,
               ),
@@ -168,7 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SettingsActionTile(
               title: 'Contact',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/contact_icon.svg',
+                AssetPaths.contactIconPath,
                 width: 18.w,
                 height: 18.h,
               ),
@@ -181,7 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SettingsActionTile(
               title: 'Feedback',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/feedback_icon.svg',
+                AssetPaths.feedbackIconPath,
                 width: 18.w,
                 height: 18.h,
               ),
@@ -194,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SettingsActionTile(
               title: 'Privacy Policy',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/privacy_policy_icon.svg',
+                AssetPaths.privacyPolicyIconPath,
                 width: 18.w,
                 height: 18.h,
               ),
@@ -207,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SettingsActionTile(
               title: 'About',
               leadingIcon: SvgPicture.asset(
-                'assets/images/icons/about_icon.svg',
+                AssetPaths.aboutIconPath,
                 width: 16.w,
                 height: 16.h,
               ),

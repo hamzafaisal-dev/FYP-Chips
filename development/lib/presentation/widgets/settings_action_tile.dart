@@ -1,3 +1,4 @@
+import 'package:development/constants/asset_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,7 +60,7 @@ class SettingsActionTile extends StatelessWidget {
           ),
         ]),
         child: SvgPicture.asset(
-          'assets/images/icons/forward_arrow_icon.svg',
+          AssetPaths.rightArrowIconPath,
           width: 20.w,
           height: 20.h,
         ),

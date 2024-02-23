@@ -46,7 +46,7 @@ class _AddChipScreenState extends State<AddChipScreen> {
                   jobType: 'full-time',
                   experienceRequired: 20,
                   deadline: DateTime.now(),
-                  skills: [],
+                  skills: const [],
                   salary: 0,
                   updatedUser: _authenticatedUser,
                   uploaderAvatar: _authenticatedUser.userName,

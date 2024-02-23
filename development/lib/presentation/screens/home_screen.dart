@@ -4,12 +4,13 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,13 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15, bottom: 10),
                       child: Container(
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: MediaQuery.of(context).size.width,
+                        width: 374.w,
+                        height: 146.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           image: const DecorationImage(
-                            image: AssetImage(
-                                'assets/images/banners/home_banner.png'),
+                            image: AssetImage(AssetPaths.homeScreenBannerPath),
                             fit: BoxFit.cover,
                           ),
                         ),

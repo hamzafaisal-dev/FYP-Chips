@@ -48,4 +48,4 @@ flutter:
         - asset: assets/fonts/manrope_regular.ttf
     - family: CustomIcons
       fonts:
-        - asset: fonts/CustomIcons.ttf
+        - asset: assets/fonts/custom_icons.ttf

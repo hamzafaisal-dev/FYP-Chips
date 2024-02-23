@@ -1,5 +1,6 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
@@ -98,7 +99,7 @@ class _AppLayoutState extends State<AppLayout> {
             alignment: Alignment.centerLeft,
             child: CustomAppBarButton(
               icon: SvgPicture.asset(
-                'assets/images/icons/hamburger_menu_icon.svg',
+                AssetPaths.hamburgerMenuIconPath,
                 width: 44.w,
                 height: 44.h,
               ),

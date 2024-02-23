@@ -1,4 +1,5 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
@@ -207,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: 'Sign Out',
                 leadingIcon: SvgPicture.asset(
                   // this icon will change later on
-                  'assets/images/icons/bell_icon.svg',
+                  AssetPaths.notificationBellIconPath,
                   width: 18.w,
                   height: 18.h,
                 ),
