@@ -63,6 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   left: 33.0.w,
                   child: SizedBox(
                     width: 234.w,
+                    height: 106.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -76,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                         ),
 
-                        SizedBox(height: 4.h),
+                        // SizedBox(height: 4.h),
 
                         // email
                         Text(
@@ -90,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                         ),
 
-                        SizedBox(height: 22.h),
+                        const Spacer(),
 
                         // view button
                         SizedBox(
@@ -104,11 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             child: Text(
                               'View',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14.sp,
-                              ),
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),
                         ),
