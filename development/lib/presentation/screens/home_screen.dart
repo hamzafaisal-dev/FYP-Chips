@@ -61,24 +61,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 //
                 Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 10),
-                      child: Container(
-                        width: 374.w,
-                        height: 146.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          image: const DecorationImage(
-                            image: AssetImage(AssetPaths.homeScreenBannerPath),
-                            fit: BoxFit.cover,
-                          ),
+                    Container(
+                      width: 374.w,
+                      height: 146.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21.r),
+                        image: const DecorationImage(
+                          image: AssetImage(AssetPaths.homeScreenBannerPath),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    const Positioned(
-                      top: 20.0,
-                      left: 20.0,
-                      child: SizedBox(
+                    Positioned(
+                      left: 20.0.w,
+                      child: Container(
+                        color: Colors.pinkAccent,
                         width: 250,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

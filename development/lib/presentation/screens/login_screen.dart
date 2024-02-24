@@ -132,8 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                     child: (state is SignInLoadingState)
                         ? SizedBox(
-                            height: 23.4.w,
-                            width: 23.4.h,
+                            width: 23.4.w,
+                            height: 23.4.h,
                             child: const CircularProgressIndicator(
                               color: Colors.white,
                             ),

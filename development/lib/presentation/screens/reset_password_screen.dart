@@ -1,6 +1,6 @@
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
-import 'package:development/presentation/widgets/custom_app_bar_button.dart';
+import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,9 +11,6 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var copyWith = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          fontWeight: FontWeight.w700,
-        );
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -22,7 +19,7 @@ class ResetPasswordScreen extends StatelessWidget {
             // back button
             Align(
               alignment: Alignment.centerLeft,
-              child: CustomAppBarButton(
+              child: CustomIconButton(
                 onTap: () => Navigator.pop(context),
                 icon: SvgPicture.asset(
                   AssetPaths.leftArrowIconPath,

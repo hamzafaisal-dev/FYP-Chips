@@ -4,7 +4,7 @@ import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
-import 'package:development/presentation/widgets/custom_app_bar_button.dart';
+import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class _AppLayoutState extends State<AppLayout> {
           padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: CustomAppBarButton(
+            child: CustomIconButton(
               icon: SvgPicture.asset(
                 AssetPaths.hamburgerMenuIconPath,
                 width: 44.w,

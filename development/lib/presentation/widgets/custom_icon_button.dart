@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomAppBarButton extends StatelessWidget {
-  const CustomAppBarButton({
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
     super.key,
     required this.icon,
     required this.onTap,
