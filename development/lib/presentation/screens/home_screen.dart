@@ -4,7 +4,6 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
-import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
@@ -52,49 +51,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: BlocBuilder<ChipBloc, ChipState>(
         builder: (context, state) {
           if (state is ChipsStreamLoaded) {
             return Column(
               children: [
-                //
+                // banner
                 Stack(
                   children: [
+                    // background image
                     Container(
-                      width: 374.w,
                       height: 146.h,
+                      width: double.maxFinite,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(21.r),
-                        image: const DecorationImage(
-                          image: AssetImage(AssetPaths.homeScreenBannerPath),
-                          fit: BoxFit.cover,
-                        ),
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(12.r),
+                        // image: const DecorationImage(
+                        //   image: AssetImage(AssetPaths.homeScreenBannerPath),
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                     ),
+
+                    // text on top of image
                     Positioned(
-                      left: 20.0.w,
-                      child: Container(
-                        color: Colors.pinkAccent,
-                        width: 250,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Habit Courses",
-                              style: TextStyle(
-                                fontSize: 38.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      top: 26.h,
+                      left: 12.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'SOME TEXT',
+                            style: TextStyle(
+                              fontSize: 36.sp,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'RobotoRegular',
                             ),
-                            Text(
-                              "Find what fascinates you as you explore these habit courses.",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -104,23 +99,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   stream: state.chips,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.black,
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
                       );
                     }
 
                     if (snapshot.hasError) {
-                      return Text(
-                        snapshot.error.toString(),
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            snapshot.error.toString(),
+                          ),
+                        ),
                       );
                     }
 
                     if (snapshot.hasData) {
                       if (snapshot.data!.isEmpty) {
-                        return const Text(
-                          'Could not find what you were looking for',
+                        return const Expanded(
+                          child: Center(
+                            child: Text(
+                              'Could not find what you were looking for',
+                            ),
+                          ),
                         );
                       }
 

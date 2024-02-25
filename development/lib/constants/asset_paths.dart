@@ -1,8 +1,9 @@
 class AssetPaths {
   // fonts
   static const String customIconsPath = 'assets/fonts/custom_icons.ttf';
-  static const String klasikRegularPath = 'assets/fonts/custom_icons.ttf';
-  static const String manropeRegularPath = 'assets/fonts/custom_icons.ttf';
+  static const String klasikRegularPath = 'assets/fonts/klasik_regular.ttf';
+  static const String manropeRegularPath = 'assets/fonts/manrope_regular.ttf';
+  static const String robotoRegularPath = 'assets/fonts/roboto_regular.ttf';
 
   // images: banners
   static const String homeScreenBannerPath =

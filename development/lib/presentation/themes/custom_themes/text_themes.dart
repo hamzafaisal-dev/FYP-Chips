@@ -19,34 +19,34 @@ class CustomTextTheme {
       fontSize: 24.sp,
     ),
     bodyLarge: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w500,
       fontSize: 16.sp,
     ),
     bodyMedium: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w500,
       fontSize: 14.sp,
     ),
     bodySmall: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w500,
       fontSize: 12.sp,
     ),
 
     // for the filled button
     labelLarge: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w700,
       fontSize: 16.sp,
     ),
     labelMedium: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w700,
       fontSize: 14.sp,
     ),
     labelSmall: TextStyle(
-      fontFamily: 'Manrope',
+      fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w700,
       fontSize: 12.sp,
     ),

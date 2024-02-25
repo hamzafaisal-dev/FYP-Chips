@@ -1,7 +1,7 @@
-import 'package:development/utils/themes/custom_themes/app_bar_theme.dart';
-import 'package:development/utils/themes/custom_themes/divider_theme.dart';
-import 'package:development/utils/themes/custom_themes/filled_button_theme.dart';
-import 'package:development/utils/themes/custom_themes/text_themes.dart';
+import 'package:development/presentation/themes/custom_themes/app_bar_theme.dart';
+import 'package:development/presentation/themes/custom_themes/divider_theme.dart';
+import 'package:development/presentation/themes/custom_themes/filled_button_theme.dart';
+import 'package:development/presentation/themes/custom_themes/text_themes.dart';
 import 'package:flutter/material.dart';
 
 // For instructions on how to use color scehem, refer to: https://m3.material.io/styles/color/roles

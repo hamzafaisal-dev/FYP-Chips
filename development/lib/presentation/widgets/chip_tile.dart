@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChipTile extends StatefulWidget {
   const ChipTile({
@@ -21,11 +22,15 @@ class _ChipTileState extends State<ChipTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      // color: Colors.orange,
       elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 12.h,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,11 +45,11 @@ class _ChipTileState extends State<ChipTile> {
                     //
 
                     // user profile picture
-                    const Padding(
-                      padding: EdgeInsets.only(right: 8),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
                       child: CircleAvatar(
-                        radius: 16,
-                        child: Icon(Icons.person_3),
+                        radius: 16.r,
+                        child: const Icon(Icons.person_4_outlined),
                       ),
                     ),
 
@@ -92,12 +97,13 @@ class _ChipTileState extends State<ChipTile> {
 
             Divider(
               color: Theme.of(context).colorScheme.primaryContainer,
-              thickness: 2,
+              thickness: 1,
             ),
 
             // job title
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 3, 0, 4),
+              // padding: const EdgeInsets.fromLTRB(0, 3, 0, 4),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Text(
                 widget.jobTitle,
                 style: const TextStyle(
@@ -124,16 +130,6 @@ class _ChipTileState extends State<ChipTile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  //
-                  // Chip(
-                  //   color: MaterialStateProperty
-                  //       .all<Color>(Theme.of(context)
-                  //           .colorScheme
-                  //           .primary),
-                  //   padding: EdgeInsets.zero,
-                  //   label: Text('Flutter'),
-                  // ),
-
                   // heart icon + post likes
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

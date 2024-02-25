@@ -59,7 +59,7 @@ class TextFormFieldStyles {
       labelText: labelText,
 
       labelStyle: TextStyle(
-        fontFamily: 'Manrope',
+        fontFamily: 'ManropeRegular',
         fontWeight: FontWeight.w500,
         fontSize: 16.0.sp,
         color: Theme.of(context).colorScheme.secondaryContainer,

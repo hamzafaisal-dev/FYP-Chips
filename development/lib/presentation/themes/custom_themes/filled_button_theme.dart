@@ -9,7 +9,7 @@ class CustomFilledButtonTheme {
       backgroundColor: const Color(0XFFFDA758),
       foregroundColor: const Color(0XFF573353),
       textStyle: TextStyle(
-        fontFamily: 'Manrope',
+        fontFamily: 'ManropeRegular',
         fontWeight: FontWeight.w700,
         fontSize: 16.sp,
       ),
