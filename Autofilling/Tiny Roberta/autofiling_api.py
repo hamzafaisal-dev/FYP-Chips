@@ -111,7 +111,7 @@ def validate_and_format_answer(answer, field_type):
             answer ="Full-time"
         elif 'parttime' or 'part-time' in lower_answer: 
             answer = "Part-time"
-        elif 'intership' in lower_answer: 
+        elif 'internship' in lower_answer: 
             answer = "Internship"
         elif 'contract' or "contractual" in lower_answer: 
             answer = "Contractual"
