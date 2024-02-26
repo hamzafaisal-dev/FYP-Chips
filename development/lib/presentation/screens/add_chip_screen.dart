@@ -28,35 +28,124 @@ class _AddChipScreenState extends State<AddChipScreen> {
     super.initState();
   }
 
+//  BlocProvider.of<ChipBloc>(context).add(
+//                 UploadChipEvent(
+//                   jobTitle: 'Pishi Maker',
+//                   companyName: 'Pishi Limited',
+//                   description: 'We make the best pishi in Karachi',
+//                   jobMode: 'on-site',
+//                   locations: const [],
+//                   jobType: 'full-time',
+//                   experienceRequired: 20,
+//                   deadline: DateTime.now(),
+//                   skills: const [],
+//                   salary: 0,
+//                   updatedUser: _authenticatedUser,
+//                   uploaderAvatar: _authenticatedUser.userName,
+//                 ),
+//               );
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: FilledButton(
-            onPressed: () {
-              BlocProvider.of<ChipBloc>(context).add(
-                UploadChipEvent(
-                  jobTitle: 'Pishi Maker',
-                  companyName: 'Pishi Limited',
-                  description: 'We make the best pishi in Karachi',
-                  jobMode: 'on-site',
-                  locations: const [],
-                  jobType: 'full-time',
-                  experienceRequired: 20,
-                  deadline: DateTime.now(),
-                  skills: const [],
-                  salary: 0,
-                  updatedUser: _authenticatedUser,
-                  uploaderAvatar: _authenticatedUser.userName,
-                ),
-              );
-            },
-            child: const Text('Create New Chip'),
+    return Scaffold(
+      // appBar: AppBar(
+      //     //
+      //     // leading: IconButton(
+      //     //   onPressed: () {},
+      //     //   icon: const Icon(Icons.close),
+      //     // ),
+
+      //     // actions: [
+      //     //   SizedBox(
+      //     //     width: 120,
+      //     //     child: FilledButton(
+      //     //       onPressed: () {},
+      //     //       child: Text('Post'),
+      //     //     ),
+      //     //   ),
+      //     // ],
+      //     ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 14,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //
+              Column(
+                children: [
+                  // close icon + circle avatar + post btn
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.close),
+                        iconSize: 26,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  const TextField(
+                    decoration: InputDecoration.collapsed(
+                      hintText: "Paste job details",
+                    ),
+                    scrollPadding: EdgeInsets.all(20.0),
+                    autofocus: true,
+                  ),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: const Text('✨ Post with autofill AI ✨'),
+                  ),
+                ],
+              ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     //
+              //     OutlinedButton(
+              //       onPressed: () {},
+              //       child: const Text('✨ Autofill AI ✨'),
+              //     ),
+
+              //     Row(
+              //       children: [
+              //         //
+              //         IconButton(
+              //           onPressed: () {},
+              //           icon: const Icon(Icons.add_circle_outline),
+              //         ),
+
+              //         IconButton(
+              //           onPressed: () {},
+              //           icon: const Icon(Icons.add_a_photo),
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

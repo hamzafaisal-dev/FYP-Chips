@@ -1,6 +1,8 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
+import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
@@ -16,68 +18,37 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void logOut() {
+  late UserModel? _authenticatedUser;
+
+  void _logOut() {
     showDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              //
-              const Text(
-                'Are you sure you want to log out?',
-                style: TextStyle(fontSize: 18),
-              ),
-
-              const SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.9,
-                    child: FilledButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthBloc>(context).add(
-                          SignOutRequestedEvent(),
-                        );
-                      },
-                      child: const Text(
-                        'Yes',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 20),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.9,
-                    child: FilledButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'No',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+        child: CustomDialog(
+          onPressed: () {
+            BlocProvider.of<AuthBloc>(context).add(
+              SignOutRequestedEvent(),
+            );
+          },
+          dialogTitle: 'Are you sure you want to log out?',
+          buttonOneText: 'Yes',
+          buttonTwoText: 'No',
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+
+    if (authBloc.state is AuthStateAuthenticated) {
+      _authenticatedUser =
+          (authBloc.state as AuthStateAuthenticated).authenticatedUser;
+    }
   }
 
   @override
@@ -133,16 +104,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   //
-                                  const Text(
-                                    'Marilyn Aminoff',
-                                    style: TextStyle(
+                                  Text(
+                                    _authenticatedUser?.userName ?? '',
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
 
                                   Text(
-                                    'm.aminoff.22971@khi.iba.edu.pk',
+                                    _authenticatedUser?.email ?? '',
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Theme.of(context)
@@ -167,15 +138,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //
-                          const Expanded(
+                          Expanded(
                             child: UserStatSection(
-                              statisticName: 'Total Work Hours',
-                              statisticValue: 18,
+                              statisticName: 'Posted Chips',
+                              statisticValue:
+                                  _authenticatedUser?.postedChips.length ?? 0,
                             ),
                           ),
 
                           SizedBox(
-                            height: 85, // change ye value for responsiveness
+                            height: 85, // change ye value if shit looks off
                             child: VerticalDivider(
                               color: Theme.of(context)
                                   .colorScheme
@@ -185,10 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
 
-                          const Expanded(
+                          Expanded(
                             child: UserStatSection(
-                              statisticName: 'Task Completed',
-                              statisticValue: 12,
+                              statisticName: 'Saved Chips',
+                              statisticValue:
+                                  _authenticatedUser?.favoritedChips.length ??
+                                      0,
                             ),
                           ),
                         ],
@@ -213,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 18.h,
                 ),
                 trailingIcon: Icons.arrow_forward_ios_rounded,
-                onTap: logOut,
+                onTap: _logOut,
               ),
             ],
           ),
