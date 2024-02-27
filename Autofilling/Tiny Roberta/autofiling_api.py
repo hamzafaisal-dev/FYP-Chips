@@ -14,7 +14,9 @@ questions = ["What is the job title?",
              "Is the job mode physical , online, hybrid?",
              "Is the job type full time, part time or contractual?",
              "Is the job for males, females or both?",
-             "Years of experience required?"
+             "Years of experience required?",
+             "What is the email mentioned in this job description?",
+             "What is the phone number mentioned in this job description?"
             ]
 
 questions2 = ["What is the title of the job position being advertised?",
@@ -26,7 +28,9 @@ questions2 = ["What is the title of the job position being advertised?",
               "Is the job described as on-site, remote, or hybrid?",
               "Is the job full-time, part-time, or contractual as mentioned in the description?",
               "Does the job specify a preferred gender, if any?",
-              "How many years of experience are required for the job?"
+              "How many years of experience are required for the job?",
+              "What is the email mentioned in this job description?",
+              "What is the phone number mentioned in this job description?"
             ]
 
 field_dict = {  0: "job_title",
@@ -38,7 +42,9 @@ field_dict = {  0: "job_title",
                 6: "mode",
                 7: "type",
                 8: "sex",
-                9: "experience"
+                9: "experience",
+                10: "email",
+                11: "phone"
             }
 
 def clean_text(text):
@@ -61,8 +67,28 @@ def validate_and_format_answer(answer, field_type):
         pass
 
     elif field_type == 'salary':
-        if "Rs" not in lower_answer:
-            answer = None
+        if '000' in lower_answer:
+            answer = answer
+        else:
+            pattern1 = r'\b(?:\d{1,3}(,\d{3})*){1}(?:,?\d*)\s?-\s?(?:\d{1,3}(,\d{3})*){1}(?:,?\d*)000\b'
+            pattern2 = r'\b\d{1,3}(,\d{3})*,?\d*000\b'
+            pattern3 = r'(\b\d{4,}(?=[a-zA-Z])|\b\d{5,}\b)'
+
+            match1 = re.search(pattern1, answer)
+            match2 = re.search(pattern2, answer)
+            match3 = re.search(pattern3, answer)
+
+            if match1:
+                print(match1.group(0))
+                answer = match1.group() 
+            elif match2:
+                print(match2.group(0))
+                answer = match2.group()
+            elif match3:
+                print(match3.group(0))
+                answer = match3.group()
+            else :
+                answer = None
 
     elif field_type == 'deadline':
         temp = answer
@@ -107,9 +133,9 @@ def validate_and_format_answer(answer, field_type):
             answer = None
     
     elif field_type == 'type':
-        if 'fulltime' or 'full-time' in lower_answer: 
+        if 'fulltime' or 'full-time' or 'full time' in lower_answer: 
             answer ="Full-time"
-        elif 'parttime' or 'part-time' in lower_answer: 
+        elif 'parttime' or 'part-time' or 'part time' in lower_answer: 
             answer = "Part-time"
         elif 'internship' in lower_answer: 
             answer = "Internship"
@@ -135,6 +161,26 @@ def validate_and_format_answer(answer, field_type):
     elif field_type == 'experience':
         matches = re.search(r'\b\d+\s+years\b', answer, re.IGNORECASE)
         answer = matches.group() if matches else None
+    
+    elif field_type == 'email':
+        pattern_email = r'[\w\.-]+@[\w\.-]+\.\w+'
+
+        match_email = re.search(pattern_email, answer)
+
+        if match_email:
+            answer = match_email.group()
+        else:
+            answer = None
+    
+    elif field_type == 'phone':
+        pattern_number = r'(?:(?:\+|00)92)?\s*0*3\d{2}(?:-|\s*)\d{7}'
+    
+        match_number = re.search(pattern_number, answer)
+
+        if match_number:
+            answer = match_number.group()
+        else:
+            answer = None
 
     return answer
 
@@ -146,11 +192,15 @@ def extract_fields(context):
     context = clean_text(context)
     
     extracted_data = []
-    #extracted_data2 = {}
     for idx, question in enumerate(questions):
         if idx == 2:
             extracted_data.append(f"{field_dict[idx]}, {context}")
-            #extracted_data2[field_dict[idx]] = context
+        elif idx == 10:
+            validated_answer = validate_and_format_answer(context, field_dict[idx])
+            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+        elif idx == 11:
+            validated_answer = validate_and_format_answer(context, field_dict[idx])
+            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
         else:
             # Ask the model each question, providing the entire cleaned context
             result = nlp(question=question, context=context)
@@ -161,9 +211,8 @@ def extract_fields(context):
             
             # Store the answer, use 'Unknown' if validation failed
             extracted_data.append(f"{field_dict[idx]}: {validated_answer if validated_answer else 'Unknown'}")
-            #extracted_data2[field_dict[idx]] = validated_answer if validated_answer else 'Unknown'
         
-    return extracted_data#, extracted_data2
+    return extracted_data
 
 def extract_fields2(context):
     # Initialize the QA model pipeline
@@ -173,11 +222,16 @@ def extract_fields2(context):
     context = clean_text(context)
     
     extracted_data = []
-    #extracted_data2 = {}
     for idx, question in enumerate(questions2):
+        print(field_dict[idx])
         if idx == 2:
             extracted_data.append(f"{field_dict[idx]}, {context}")
-            #extracted_data2[field_dict[idx]] = context
+        elif idx == 10:
+            validated_answer = validate_and_format_answer(context, field_dict[idx])
+            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+        elif idx == 11:
+            validated_answer = validate_and_format_answer(context, field_dict[idx])
+            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
         else:
             # Ask the model each question, providing the entire cleaned context
             result = nlp(question=question, context=context)
@@ -188,9 +242,8 @@ def extract_fields2(context):
             
             # Store the answer, use 'Unknown' if validation failed
             extracted_data.append(f"{field_dict[idx]}: {validated_answer if validated_answer else 'Unknown'}")
-            #extracted_data2[field_dict[idx]] = validated_answer if validated_answer else 'Unknown'
         
-    return extracted_data#, extracted_data2
+    return extracted_data
 
 def goofy_ahh(context):
     fields = extract_fields(context)
