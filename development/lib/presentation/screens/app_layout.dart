@@ -1,4 +1,3 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/screens/error_screen.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -82,6 +80,7 @@ class _AppLayoutState extends State<AppLayout> {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.pinkAccent,
         title: Text(
           title,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -91,44 +90,42 @@ class _AppLayoutState extends State<AppLayout> {
         ),
         centerTitle: true,
 
-        //
+        // leading
         leadingWidth: 64.w,
         leading: Padding(
           padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
-              icon: SvgPicture.asset(
-                AssetPaths.hamburgerMenuIconPath,
-                width: 44.w,
-                height: 44.h,
-              ),
+              iconSvgPath: AssetPaths.hamburgerMenuIconPath,
+              iconWidth: 44.w,
+              iconHeight: 44.h,
               onTap: () {},
             ),
           ),
         ),
 
-        //
-        actions: [
-          currentIndex == 0
-              ? Padding(
-                  padding: EdgeInsets.fromLTRB(0.w, 0.h, 20.w, 0.w),
-                  child: SizedBox(
-                    height: 44.h,
-                    child: AnimSearchBar(
-                      color: Theme.of(context).colorScheme.secondary,
-                      width: MediaQuery.of(context).size.width * 0.72,
-                      boxShadow: false,
-                      textController: _searchBarController,
+        // trailing
+        // actions: [
+        //   currentIndex == 0
+        //       ? Padding(
+        //           padding: EdgeInsets.fromLTRB(0.w, 0.h, 20.w, 0.w),
+        //           child: SizedBox(
+        //             height: 44.h,
+        //             child: AnimSearchBar(
+        //               color: Theme.of(context).colorScheme.secondary,
+        //               width: MediaQuery.of(context).size.width * 0.72,
+        //               boxShadow: false,
+        //               textController: _searchBarController,
 
-                      //
-                      onSuffixTap: () {},
-                      onSubmitted: (value) {},
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
-        ],
+        //               //
+        //               onSuffixTap: () {},
+        //               onSubmitted: (value) {},
+        //             ),
+        //           ),
+        //         )
+        //       : const SizedBox.shrink(),
+        // ],
       );
     }
 

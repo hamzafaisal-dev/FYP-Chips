@@ -4,7 +4,6 @@ import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
@@ -20,12 +19,10 @@ class ResetPasswordScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: CustomIconButton(
+                iconSvgPath: AssetPaths.leftArrowIconPath,
+                iconWidth: 16.5.w,
+                iconHeight: 12.h,
                 onTap: () => Navigator.pop(context),
-                icon: SvgPicture.asset(
-                  AssetPaths.leftArrowIconPath,
-                  width: 16.5.w,
-                  height: 12.h,
-                ),
               ),
             ),
 

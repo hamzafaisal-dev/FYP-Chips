@@ -56,44 +56,83 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           if (state is ChipsStreamLoaded) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // banner
-                Stack(
-                  children: [
-                    // background image
-                    Container(
-                      height: 146.h,
-                      width: double.maxFinite,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(12.r),
-                        // image: const DecorationImage(
-                        //   image: AssetImage(AssetPaths.homeScreenBannerPath),
-                        //   fit: BoxFit.cover,
-                        // ),
-                      ),
-                    ),
+                //
+                SizedBox(height: 16.h),
 
-                    // text on top of image
-                    Positioned(
-                      top: 26.h,
-                      left: 12.w,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'SOME TEXT',
-                            style: TextStyle(
+                // hey, user name
+                RichText(
+                  text: TextSpan(
+                    text: 'hello, ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 36.sp,
+                        ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        // text: 'Farhan Mushi',
+                        text: _authenticedUser.userName,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
                               fontSize: 36.sp,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'RobotoRegular',
+                              color: Theme.of(context).primaryColor,
                             ),
-                          ),
-                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+
+                RichText(
+                  text: TextSpan(
+                    text: 'here are some ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18.sp,
+                        ),
+                    children: [
+                      TextSpan(
+                        text: 'Chips',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18.sp,
+                            ),
+                      ),
+                      TextSpan(
+                        text: ' for you',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18.sp,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 23.4.h),
+
+                // search bar
+                TextFormField(
+                  controller: _potty,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    hintText: 'Search',
+                    hintStyle: Theme.of(context).textTheme.bodyLarge,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      size: 20.w,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 0.w,
+                      vertical: 0.h,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 23.4.h),
 
                 StreamBuilder(
                   stream: state.chips,
@@ -134,10 +173,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             List<ChipModel> chipData = snapshot.data!;
                             var chipObject = chipData[index];
 
-                            return ChipTile(
-                              postedBy: chipObject.postedBy,
-                              jobTitle: chipObject.jobTitle,
-                              description: chipObject.description,
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 10.8.h),
+                              child: ChipTile(
+                                postedBy: chipObject.postedBy,
+                                jobTitle: chipObject.jobTitle,
+                                description: chipObject.description,
+                              ),
                             );
                           },
                         ),

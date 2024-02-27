@@ -5,6 +5,9 @@ class AssetPaths {
   static const String manropeRegularPath = 'assets/fonts/manrope_regular.ttf';
   static const String robotoRegularPath = 'assets/fonts/roboto_regular.ttf';
 
+  // images: logo
+  static const String appLogoPath = 'assets/images/logo/app_logo.png';
+
   // images: banners
   static const String homeScreenBannerPath =
       'assets/images/banners/home_screen_banner.png';
@@ -31,4 +34,6 @@ class AssetPaths {
   static const String rightArrowIconPath =
       'assets/images/icons/right_arrow_icon.svg';
   static const String searchIconPath = 'assets/images/icons/search_icon.svg';
+  static const String bookmarkIconPath =
+      'assets/images/icons/bookmark_icon.svg';
 }
