@@ -48,9 +48,6 @@ flutter:
     - family: ManropeRegular
       fonts:
         - asset: assets/fonts/manrope_regular.ttf
-    - family: RobotoRegular
-      fonts:
-        - asset: assets/fonts/roboto_regular.ttf
     - family: CustomIcons
       fonts:
         - asset: assets/fonts/custom_icons.ttf

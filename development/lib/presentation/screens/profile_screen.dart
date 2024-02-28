@@ -3,6 +3,7 @@ import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
+import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
@@ -21,21 +22,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late UserModel? _authenticatedUser;
 
   void _logOut() {
+    // "are you sure" alert dialog
     showDialog(
       context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: CustomDialog(
-          onPressed: () {
+      builder: (context) {
+        return CustomDialog(
+          dialogTitle: 'Are you sure?',
+          dialogContent: 'Do you want to log out?',
+          buttonOneText: 'Cancel',
+          buttonTwoText: 'Log Out',
+          buttonOneOnPressed: () {
+            Navigator.pop(context);
+          },
+          buttonTwoOnPressed: () {
             BlocProvider.of<AuthBloc>(context).add(
               SignOutRequestedEvent(),
             );
+            Navigator.pop(context);
           },
-          dialogTitle: 'Are you sure you want to log out?',
-          buttonOneText: 'Yes',
-          buttonTwoText: 'No',
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -54,9 +60,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        centerTitle: true,
+
+        // back button
+        leadingWidth: 64.w,
+        leading: Padding(
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: CustomIconButton(
+              iconSvgPath: AssetPaths.leftArrowIconPath,
+              iconWidth: 16.5.w,
+              iconHeight: 12.h,
+              onTap: () => Navigator.pop(context),
+            ),
+          ),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthStateUnauthenticated) {
@@ -67,59 +91,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               //
               Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 4),
+                padding: EdgeInsets.only(top: 5.h, bottom: 9.h),
                 child: Container(
-                  //
-                  height: 260,
-
-                  width: MediaQuery.of(context).size.width,
-
+                  width: double.maxFinite,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(18),
-                    // image: const DecorationImage(
-                    //   image: AssetImage('assets/images/home_banner.png'),
-                    //   fit: BoxFit.cover,
-                    // ),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
-
                   child: Column(
                     children: [
-                      //
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
                         ),
                         child: Row(
                           children: [
                             //
-                            const CircleAvatar(
-                              radius: 30,
-                            ),
+                            CircleAvatar(radius: 30.r),
 
+                            //
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
+                              padding: EdgeInsets.only(left: 10.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  //
+                                  // name
                                   Text(
                                     _authenticatedUser?.userName ?? '',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(fontWeight: FontWeight.w700),
                                   ),
 
+                                  // email
                                   Text(
                                     _authenticatedUser?.email ?? '',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondaryContainer,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondaryContainer
+                                              .withOpacity(0.5),
+                                        ),
                                   ),
                                 ],
                               ),
@@ -128,50 +145,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
 
+                      //
                       Divider(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        thickness: 2,
-                        height: 0,
+                        thickness: 1,
+                        height: 0.h,
                       ),
 
+                      //
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           //
-                          Expanded(
-                            child: UserStatSection(
-                              statisticName: 'Posted Chips',
-                              statisticValue:
-                                  _authenticatedUser?.postedChips.length ?? 0,
-                            ),
+                          UserStatSection(
+                            statisticName: 'Posted Chips',
+                            statisticValue:
+                                _authenticatedUser?.postedChips.length ?? 0,
                           ),
 
+                          // divider
                           SizedBox(
-                            height: 85, // change ye value if shit looks off
+                            height: 70.73.h,
                             child: VerticalDivider(
                               color: Theme.of(context)
                                   .colorScheme
                                   .primaryContainer,
-                              thickness: 2,
+                              thickness: 1,
                               width: 0,
                             ),
                           ),
 
-                          Expanded(
-                            child: UserStatSection(
-                              statisticName: 'Saved Chips',
-                              statisticValue:
-                                  _authenticatedUser?.favoritedChips.length ??
-                                      0,
-                            ),
+                          UserStatSection(
+                            statisticName: 'Saved Chips',
+                            statisticValue:
+                                _authenticatedUser?.favoritedChips.length ?? 0,
                           ),
                         ],
-                      ),
-
-                      Divider(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        thickness: 2,
-                        height: 0,
                       ),
                     ],
                   ),
@@ -209,53 +217,50 @@ class UserStatSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          //
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //
-              Text(
-                statisticName,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                ),
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        //
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              statisticName,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondaryContainer
+                        .withOpacity(0.5),
+                  ),
+            ),
+            Text(
+              statisticValue.toString(),
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ],
+        ),
 
-              Text(
-                statisticValue.toString(),
-                style: Theme.of(context).textTheme.headlineMedium,
-
-                // style: const TextStyle(
-                //   fontSize: 24,
-                //   fontWeight: FontWeight.bold,
-                // ),
-              ),
-            ],
-          ),
-
-          Container(
-            height: 40,
-            width: 40,
+        Padding(
+          padding: EdgeInsets.only(left: 25.w),
+          child: Container(
+            height: 40.h,
+            width: 40.w,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(30),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
               ),
             ),
             child: Icon(
               CustomIcons.feedbackicon,
               color: Theme.of(context).colorScheme.primary,
-              size: 18,
+              size: 18.dg,
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

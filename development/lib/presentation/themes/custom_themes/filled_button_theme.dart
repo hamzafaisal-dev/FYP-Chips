@@ -14,8 +14,6 @@ class CustomFilledButtonTheme {
         fontSize: 16.sp,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-      disabledBackgroundColor: Colors.grey,
-      disabledForegroundColor: Colors.white,
     ),
   );
 }

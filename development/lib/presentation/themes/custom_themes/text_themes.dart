@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextTheme {
   static TextTheme lightTextTheme = TextTheme(
+    // for the headline
     headlineLarge: TextStyle(
       fontFamily: 'KlasikRegular',
       fontWeight: FontWeight.w400,
@@ -18,6 +19,8 @@ class CustomTextTheme {
       fontWeight: FontWeight.w400,
       fontSize: 24.sp,
     ),
+
+    // for the body text
     bodyLarge: TextStyle(
       fontFamily: 'ManropeRegular',
       fontWeight: FontWeight.w500,

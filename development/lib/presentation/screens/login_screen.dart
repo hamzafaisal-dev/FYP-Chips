@@ -1,10 +1,12 @@
 import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,6 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
             children: [
               SizedBox(height: 302.h),
+
+              // bannner
+              // SvgPicture.asset(
+              //   AssetPaths.loginScreenBannerPath,
+              // ),
 
               // welcome back
               Text(

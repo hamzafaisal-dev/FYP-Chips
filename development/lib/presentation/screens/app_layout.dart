@@ -19,7 +19,6 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   int currentIndex = 0;
-  final _searchBarController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +74,7 @@ class _AppLayoutState extends State<AppLayout> {
       }
 
       return AppBar(
-        iconTheme: Theme.of(context).iconTheme,
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        // backgroundColor: Colors.pinkAccent,
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                fontSize: 18.sp,
-              ),
-        ),
-        centerTitle: true,
+        title: Text(title),
 
         // leading
         leadingWidth: 64.w,
@@ -104,28 +90,6 @@ class _AppLayoutState extends State<AppLayout> {
             ),
           ),
         ),
-
-        // trailing
-        // actions: [
-        //   currentIndex == 0
-        //       ? Padding(
-        //           padding: EdgeInsets.fromLTRB(0.w, 0.h, 20.w, 0.w),
-        //           child: SizedBox(
-        //             height: 44.h,
-        //             child: AnimSearchBar(
-        //               color: Theme.of(context).colorScheme.secondary,
-        //               width: MediaQuery.of(context).size.width * 0.72,
-        //               boxShadow: false,
-        //               textController: _searchBarController,
-
-        //               //
-        //               onSuffixTap: () {},
-        //               onSubmitted: (value) {},
-        //             ),
-        //           ),
-        //         )
-        //       : const SizedBox.shrink(),
-        // ],
       );
     }
 
