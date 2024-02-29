@@ -194,13 +194,13 @@ def extract_fields(context):
     extracted_data = []
     for idx, question in enumerate(questions):
         if idx == 2:
-            extracted_data.append(f"{field_dict[idx]}, {context}")
+            extracted_data.append(f"{context}")
         elif idx == 10:
             validated_answer = validate_and_format_answer(context, field_dict[idx])
-            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
         elif idx == 11:
             validated_answer = validate_and_format_answer(context, field_dict[idx])
-            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
         else:
             # Ask the model each question, providing the entire cleaned context
             result = nlp(question=question, context=context)
@@ -210,7 +210,7 @@ def extract_fields(context):
             validated_answer = validate_and_format_answer(answer, field_dict[idx])
             
             # Store the answer, use 'Unknown' if validation failed
-            extracted_data.append(f"{field_dict[idx]}: {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
         
     return extracted_data
 
@@ -225,13 +225,13 @@ def extract_fields2(context):
     for idx, question in enumerate(questions2):
         print(field_dict[idx])
         if idx == 2:
-            extracted_data.append(f"{field_dict[idx]}, {context}")
+            extracted_data.append(f"{context}")
         elif idx == 10:
             validated_answer = validate_and_format_answer(context, field_dict[idx])
-            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
         elif idx == 11:
             validated_answer = validate_and_format_answer(context, field_dict[idx])
-            extracted_data.append(f"{field_dict[idx]}, {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
         else:
             # Ask the model each question, providing the entire cleaned context
             result = nlp(question=question, context=context)
@@ -241,7 +241,8 @@ def extract_fields2(context):
             validated_answer = validate_and_format_answer(answer, field_dict[idx])
             
             # Store the answer, use 'Unknown' if validation failed
-            extracted_data.append(f"{field_dict[idx]}: {validated_answer if validated_answer else 'Unknown'}")
+            extracted_data.append(f"{validated_answer if validated_answer else 'Unknown'}")
+
         
     return extracted_data
 
@@ -249,12 +250,19 @@ def goofy_ahh(context):
     fields = extract_fields(context)
     context = clean_text(context)
     nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
-    for i in  range (len(fields)):
+    
+    response_data = {}
+    
+    for i in range(len(fields)):
         if "Unknown" in fields[i] and i != 2:
             result = nlp(question=questions2[i], context=context)
             validated_answer = validate_and_format_answer(result['answer'], field_dict[i])
-            fields[i] = f"{field_dict[i]}: {validated_answer if validated_answer else 'Unknown'}"
-    return fields
+            response_data[field_dict[i]] = validated_answer if validated_answer else 'Unknown'
+        else:
+            response_data[field_dict[i]] = fields[i]
+    
+    return response_data
+
 
 @app.route('/autofilling', methods=['POST'])
 def autofill_fields():
