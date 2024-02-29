@@ -14,6 +14,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/presentation/themes/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,7 @@ void main() async {
     chipsFirestoreClient: ChipsFirestoreClient(
       firestore: FirebaseFirestore.instance,
       firebaseAuth: FirebaseAuth.instance,
+      firebaseStorage: FirebaseStorage.instance,
     ),
   );
 
@@ -49,8 +51,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(
-      {super.key, required this.authRepository, required this.chipRepository});
+  const MyApp({
+    super.key,
+    required this.authRepository,
+    required this.chipRepository,
+  });
 
   final AuthRepository authRepository;
   final ChipRepository chipRepository;

@@ -54,20 +54,15 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               SizedBox(height: 302.h),
 
-              // bannner
-              // SvgPicture.asset(
-              //   AssetPaths.loginScreenBannerPath,
-              // ),
-
-              // welcome back
+              // welcome
               Text(
-                'Welcome Back',
+                'Welcome To Chips',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
 
               // quote
               Text(
-                'goofy ahh quote - nami, probably',
+                'A one stop shop for internChips and job sauce',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
 
@@ -84,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Icon(Icons.email_outlined),
                   null,
                   context,
+                  null,
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => FormValidators.emailValidator(value),
@@ -110,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         : const Icon(Icons.visibility_off),
                   ),
                   context,
+                  null,
                 ),
                 validator: (value) => FormValidators.passwordValidator(value),
               ),

@@ -7,9 +7,11 @@ import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -109,28 +111,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                SizedBox(height: 23.4.h),
+                // SizedBox(height: 23.4.h),
 
                 // search bar
-                TextFormField(
-                  controller: _potty,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: 'Search',
-                    hintStyle: Theme.of(context).textTheme.bodyLarge,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 20.w,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 0.w,
-                      vertical: 0.h,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                ),
+                // TextFormField(
+                //   controller: _potty,
+                //   decoration: InputDecoration(
+                //     fillColor: Colors.white,
+                //     hintText: 'Search',
+                //     hintStyle: Theme.of(context).textTheme.bodyLarge,
+                //     prefixIcon: Icon(
+                //       Icons.search,
+                //       size: 20.w,
+                //     ),
+                //     contentPadding: EdgeInsets.symmetric(
+                //       horizontal: 0.w,
+                //       vertical: 0.h,
+                //     ),
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(12.r),
+                //     ),
+                //   ),
+                // ),
 
                 SizedBox(height: 23.4.h),
 
@@ -143,6 +145,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CircularProgressIndicator(),
                         ),
                       );
+                      // return Skeletonizer(
+                      //   enabled: true,
+                      //   child: ListView.builder(
+                      //     // itemCount: 7,
+                      //     itemBuilder: (context, index) {
+                      //       return const ChipTile(
+                      //         postedBy: '',
+                      //         jobTitle: '',
+                      //         description: '',
+                      //       );
+                      //     },
+                      //   ),
+                      // );
                     }
 
                     if (snapshot.hasError) {
@@ -176,9 +191,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Padding(
                               padding: EdgeInsets.only(bottom: 10.8.h),
                               child: ChipTile(
-                                postedBy: chipObject.postedBy,
-                                jobTitle: chipObject.jobTitle,
-                                description: chipObject.description,
+                                chipData: chipObject,
+                                onTap: () => NavigationService.routeToNamed(
+                                    '/view-chip',
+                                    arguments: {"chipData": chipObject}),
                               ),
                             );
                           },

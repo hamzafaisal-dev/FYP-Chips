@@ -5,15 +5,17 @@ class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
     super.key,
     required this.label,
+    this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     required this.validatorFunction,
   });
 
   final String label;
+  final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final String? Function(String?) validatorFunction;
+  final String? Function(String value) validatorFunction;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -38,13 +40,17 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         widget.prefixIcon,
         widget.suffixIcon,
         context,
+        widget.hintText,
       ),
       validator: (value) {
         if (value == null || value == '') {
           return 'Enter a valid value';
         }
+        widget.validatorFunction(value);
 
-        return widget.validatorFunction(value);
+        _textFormFieldController.clear();
+
+        return null;
       },
     );
   }

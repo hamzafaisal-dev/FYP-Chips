@@ -7,6 +7,7 @@ class TextFormFieldStyles {
     Widget? prefixIcon,
     Widget? suffixIcon,
     BuildContext context,
+    String? hintText,
   ) {
     return InputDecoration(
       //
@@ -46,7 +47,9 @@ class TextFormFieldStyles {
         borderRadius: BorderRadius.circular(12.0.r),
       ),
 
-      floatingLabelBehavior: FloatingLabelBehavior.never,
+      floatingLabelBehavior: hintText == null
+          ? FloatingLabelBehavior.never
+          : FloatingLabelBehavior.always,
 
       prefixIcon: prefixIcon,
 
@@ -58,11 +61,17 @@ class TextFormFieldStyles {
 
       labelText: labelText,
 
+      hintText: hintText,
+
       labelStyle: TextStyle(
         fontFamily: 'ManropeRegular',
         fontWeight: FontWeight.w500,
         fontSize: 16.0.sp,
-        color: Theme.of(context).colorScheme.secondaryContainer,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+        // backgroundColor: Colors.red,
+        letterSpacing: hintText == null ? 0 : 3,
+        backgroundColor:
+            hintText == null ? Colors.transparent : const Color(0XFFFFF3E9),
       ),
     );
   }

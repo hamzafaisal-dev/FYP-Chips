@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
@@ -23,6 +25,8 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     });
 
     on<UploadChipEvent>((event, emit) async {
+      print('ass is ${event.chipFile}');
+
       await _uploadChip(
         event.jobTitle,
         event.companyName,
@@ -32,6 +36,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         event.jobType,
         event.experienceRequired,
         event.deadline,
+        event.chipFile,
         event.skills,
         event.salary,
         event.updatedUser,
@@ -69,6 +74,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     String jobType,
     int experienceRequired,
     DateTime deadline,
+    File? chipFile,
     List<dynamic> skills,
     double salary,
     UserModel updatedUser,
@@ -83,6 +89,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         companyName: companyName,
         description: description,
         jobMode: jobMode,
+        chipFile: chipFile,
         locations: locations,
         jobType: jobType,
         experienceRequired: experienceRequired,
@@ -98,6 +105,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
       print(updatedUser);
       authBloc.add(AuthStateUpdatedEvent(newUpdatedUser));
     } catch (error) {
+      print(error.toString());
       emit(ChipError(errorMsg: error.toString()));
     }
   }

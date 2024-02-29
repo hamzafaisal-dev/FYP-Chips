@@ -1,15 +1,22 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 
 class ChipsFirestoreClient {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
+  final FirebaseStorage firebaseStorage;
 
   ChipsFirestoreClient({
     required this.firestore,
     required this.firebaseAuth,
+    required this.firebaseStorage,
   });
 
   Future<List<ChipModel>> getAllChips() async {
@@ -40,11 +47,44 @@ class ChipsFirestoreClient {
         );
   }
 
+  // returns the download URL of given file
+  Future<String> uploadToFirebaseStorage(
+    File file,
+    String userId,
+  ) async {
+    String currentTimeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String fileName = basename(file.path);
+
+    if (file.path == '') return '';
+
+    final storageRef = firebaseStorage
+        .ref()
+        .child('documents')
+        .child(userId)
+        .child('$fileName-$currentTimeStamp');
+
+    // will set metadata with the original file name
+    final metadata = SettableMetadata(
+      customMetadata: {'originalName': fileName},
+      contentType: Helpers.getMimeType(file),
+    );
+
+    await storageRef.putFile(
+      file,
+      metadata,
+    );
+
+    String fileUrl = await storageRef.getDownloadURL();
+
+    return fileUrl;
+  }
+
   Future<UserModel> uploadChip(
     String jobTitle,
     String companyName,
     String description,
     String jobMode,
+    File chipFile,
     List<String> locations,
     String jobType,
     int experienceRequired,
@@ -56,18 +96,15 @@ class ChipsFirestoreClient {
   ) async {
     String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // final String? currentUserId = firebaseAuth.currentUser?.uid;
-
-    // DocumentSnapshot userSnapshot =
-    //     await firestore.collection('users').doc(currentUserId).get();
-
-    // if (!userSnapshot.exists) throw Exception('User does not exist');
-
-    // Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
-
-    // String username = userData['userName'];
-
     String username = updatedUser.userName;
+
+    print('siu1 $chipFile');
+
+    String chipFileUrl =
+        await uploadToFirebaseStorage(chipFile, updatedUser.userId);
+
+    print('siu2');
+    print('url is $chipFileUrl');
 
     ChipModel newChip = ChipModel(
       chipId: '$jobTitle-$timeStamp',
@@ -75,6 +112,7 @@ class ChipsFirestoreClient {
       companyName: companyName,
       description: description,
       jobMode: jobMode,
+      imageUrl: chipFileUrl,
       locations: locations,
       jobType: jobType,
       experienceRequired: experienceRequired,

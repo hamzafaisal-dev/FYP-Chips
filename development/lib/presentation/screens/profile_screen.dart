@@ -31,14 +31,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           dialogContent: 'Do you want to log out?',
           buttonOneText: 'Cancel',
           buttonTwoText: 'Log Out',
-          buttonOneOnPressed: () {
-            Navigator.pop(context);
-          },
+          buttonOneOnPressed: () => Navigator.pop(context),
           buttonTwoOnPressed: () {
             BlocProvider.of<AuthBloc>(context).add(
               SignOutRequestedEvent(),
             );
-            Navigator.pop(context);
           },
         );
       },
@@ -72,9 +69,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
               iconSvgPath: AssetPaths.leftArrowIconPath,
-              iconWidth: 16.5.w,
-              iconHeight: 12.h,
-              onTap: () => Navigator.pop(context),
+              iconWidth: 16.w,
+              iconHeight: 16.h,
+              onTap: () => Navigator.of(context).pop(),
             ),
           ),
         ),

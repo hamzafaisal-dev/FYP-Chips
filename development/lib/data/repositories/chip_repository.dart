@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/networks/chip_network.dart';
@@ -20,6 +22,7 @@ class ChipRepository {
     required String companyName,
     required String description,
     required String jobMode,
+    File? chipFile,
     required List<String> locations,
     required String jobType,
     required int experienceRequired,
@@ -34,6 +37,7 @@ class ChipRepository {
       companyName,
       description,
       jobMode,
+      chipFile ?? File(''),
       locations,
       jobType,
       experienceRequired,

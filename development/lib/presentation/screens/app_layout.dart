@@ -128,47 +128,7 @@ class _AppLayoutState extends State<AppLayout> {
       body: getContent(currentIndex),
 
       floatingActionButton: FloatingActionButton(
-        // onPressed: () => NavigationService.routeToNamed('/add-chip'),
-
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //
-                        FilledButton(
-                          onPressed: () =>
-                              NavigationService.routeToNamed('/add-chip'),
-                          child: const Text('Text auto-fill'),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        FilledButton(
-                          onPressed: () {},
-                          child: const Text('Photo auto-fill'),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        FilledButton(
-                          onPressed: () {},
-                          child: const Text('Manual fill'),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              });
-        },
-
+        onPressed: () => NavigationService.routeToNamed('/add-chip1'),
         elevation: 5,
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,

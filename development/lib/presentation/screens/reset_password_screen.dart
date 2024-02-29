@@ -76,6 +76,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         null,
                         null,
                         context,
+                        null,
                       ).copyWith(
                         fillColor: const Color(0XFFFFF6ED),
                       ),

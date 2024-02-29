@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:development/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,6 +26,7 @@ class UploadChipEvent extends ChipEvent {
   final String companyName;
   final String description;
   final String jobMode;
+  final File? chipFile;
   final List<String> locations;
   final String jobType;
   final int experienceRequired;
@@ -38,6 +41,7 @@ class UploadChipEvent extends ChipEvent {
     required this.companyName,
     required this.description,
     required this.jobMode,
+    this.chipFile,
     required this.locations,
     required this.jobType,
     required this.experienceRequired,

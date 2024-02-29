@@ -1,4 +1,5 @@
-import 'package:development/presentation/screens/add_chip_screen.dart';
+import 'package:development/presentation/screens/add_chip_screen_1.dart';
+import 'package:development/presentation/screens/add_chip_screen_2.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/login_screen.dart';
@@ -6,6 +7,7 @@ import 'package:development/presentation/screens/profile_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/screens/signup_screen.dart';
+import 'package:development/presentation/screens/view_chip_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -35,10 +37,32 @@ class RouteGenerator {
           builder: (context) => const HomeScreen(),
         );
 
-      case '/add-chip':
+      case '/add-chip1':
         return MaterialPageRoute(
-          builder: (context) => const AddChipScreen(),
+          builder: (context) => const AddChipScreen1(),
         );
+
+      case '/add-chip2':
+        {
+          // extracts the arguments from the current AddResourceScreen settings and cast them as a Map.
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) => AddChipScreen2(arguments: receivedArguments),
+          );
+        }
+
+      case '/view-chip':
+        {
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) =>
+                ChipDetailsScreen(arguments: receivedArguments),
+          );
+        }
 
       case '/settings':
         return MaterialPageRoute(
