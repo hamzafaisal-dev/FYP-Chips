@@ -1,7 +1,12 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
+import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
+import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/constants/asset_paths.dart';
+// import 'package:development/constants/custom_colors.dart';
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
+import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
@@ -22,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late UserModel? _authenticatedUser;
 
   void _logOut() {
-    // "are you sure" alert dialog
     showDialog(
       context: context,
       builder: (context) {
@@ -46,8 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
-    AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+    // final chipBloc = BlocProvider.of<ChipBloc>(context);
 
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     if (authBloc.state is AuthStateAuthenticated) {
       _authenticatedUser =
           (authBloc.state as AuthStateAuthenticated).authenticatedUser;
@@ -88,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               //
               Padding(
-                padding: EdgeInsets.only(top: 5.h, bottom: 9.h),
+                padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
                 child: Container(
                   width: double.maxFinite,
                   decoration: BoxDecoration(
@@ -183,16 +188,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-              SettingsActionTile(
-                title: 'Sign Out',
-                leadingIcon: SvgPicture.asset(
-                  // this icon will change later on
-                  AssetPaths.notificationBellIconPath,
-                  width: 18.w,
-                  height: 18.h,
+              // sign out
+              // Padding(
+              //   padding: EdgeInsets.only(bottom: 10.h),
+              //   child: SettingsActionTile(
+              //     title: 'Sign Out',
+              //     leadingIcon: SvgPicture.asset(
+              //       // this icon will change later on
+              //       AssetPaths.notificationBellIconPath,
+              //       width: 18.w,
+              //       height: 18.h,
+              //     ),
+              //     trailingIcon: Icons.arrow_forward_ios_rounded,
+              //     onTap: _logOut,
+              //   ),
+              // ),
+
+              // your chips
+              Padding(
+                padding: EdgeInsets.only(bottom: 6.h),
+                child: Text(
+                  'Your Chips',
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                trailingIcon: Icons.arrow_forward_ios_rounded,
-                onTap: _logOut,
+              ),
+
+              // user's chips
+              BlocBuilder<ChipBloc, ChipState>(
+                builder: (context, state) {
+                  if (state is ChipsStreamLoaded) {
+                    return StreamBuilder(
+                      stream: state.chips,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Expanded(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        if (snapshot.hasError) {
+                          return const Expanded(
+                            child: Center(
+                              child: Text('An error occurred...'),
+                            ),
+                          );
+                        }
+
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.isEmpty) {
+                            return const Expanded(
+                              child: Center(
+                                child: Text('No chips found...'),
+                              ),
+                            );
+                          }
+
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: _authenticatedUser?.postedChips.length,
+                              itemBuilder: (context, index) {
+                                List userChipIds =
+                                    _authenticatedUser?.postedChips ?? [];
+                                List<ChipModel> chips = snapshot.data!;
+                                List<ChipModel> userChips = chips
+                                    .where((chip) =>
+                                        userChipIds.contains(chip.chipId))
+                                    .toList();
+                                var chipObject = userChips[index];
+
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 10.8.h),
+                                  child: ChipTile(
+                                    chipData: chipObject,
+                                    onTap: () => NavigationService.routeToNamed(
+                                      '/view-chip',
+                                      arguments: {"chipData": chipObject},
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      },
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ],
           ),

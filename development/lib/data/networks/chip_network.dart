@@ -97,6 +97,7 @@ class ChipsFirestoreClient {
     String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     String username = updatedUser.userName;
+    // String username = updatedUser.email.split('@')[0];
 
     print('siu1 $chipFile');
 

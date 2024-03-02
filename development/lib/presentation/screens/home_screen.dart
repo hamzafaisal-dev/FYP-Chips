@@ -11,7 +11,6 @@ import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late UserModel _authenticedUser;
 
-  final _potty = TextEditingController();
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -115,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // search bar
                 // TextFormField(
-                //   controller: _potty,
+                //   controller: _searchController,
                 //   decoration: InputDecoration(
                 //     fillColor: Colors.white,
                 //     hintText: 'Search',
@@ -145,19 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CircularProgressIndicator(),
                         ),
                       );
-                      // return Skeletonizer(
-                      //   enabled: true,
-                      //   child: ListView.builder(
-                      //     // itemCount: 7,
-                      //     itemBuilder: (context, index) {
-                      //       return const ChipTile(
-                      //         postedBy: '',
-                      //         jobTitle: '',
-                      //         description: '',
-                      //       );
-                      //     },
-                      //   ),
-                      // );
                     }
 
                     if (snapshot.hasError) {
@@ -193,8 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: ChipTile(
                                 chipData: chipObject,
                                 onTap: () => NavigationService.routeToNamed(
-                                    '/view-chip',
-                                    arguments: {"chipData": chipObject}),
+                                  '/view-chip',
+                                  arguments: {"chipData": chipObject},
+                                ),
                               ),
                             );
                           },
