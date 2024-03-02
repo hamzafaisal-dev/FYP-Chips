@@ -9,9 +9,11 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class AddChipScreen2 extends StatefulWidget {
   const AddChipScreen2({super.key, this.arguments});
@@ -32,15 +34,18 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
   late String _chipTitle;
   late String _companyTitle;
-  late DateTime? _chipDeadline;
+  DateTime? _chipDeadline = null;
 
   void _createChip() {
-    if (_addChipFormKey.currentState!.validate()) {
-      print(_chipTitle);
-      print(_companyTitle);
+    if (_chipDeadline == null) {
+      HelperWidgets.showSnackbar(
+        context,
+        'Please select a valid deadline',
+        'error',
+      );
+    }
 
-      print(_chipDeadline);
-
+    if (_addChipFormKey.currentState!.validate() && _chipDeadline != null) {
       BlocProvider.of<ChipBloc>(context).add(
         UploadChipEvent(
           jobTitle: _chipTitle,
@@ -70,7 +75,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       _selectedImage = widget.arguments!["chipImage"];
     }
 
-    // access the auth blok using the context
     final authBloc = BlocProvider.of<AuthBloc>(context);
 
     if (authBloc.state is AuthStateAuthenticated) {
@@ -91,7 +95,19 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           child: BlocConsumer<ChipBloc, ChipState>(
             listener: (context, state) {
               if (state is ChipSuccess) {
+                HelperWidgets.showSnackbar(
+                  context,
+                  'Chip created successfully!',
+                  'success',
+                );
+
                 NavigationService.routeToReplacementNamed('/layout');
+              } else if (state is ChipError) {
+                HelperWidgets.showSnackbar(
+                  context,
+                  state.errorMsg,
+                  'error',
+                );
               }
             },
             builder: (context, state) {
@@ -147,37 +163,49 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                     const SizedBox(height: 20),
 
+                    CustomTextFormField(
+                      label: ' Company Title ',
+                      validatorFunction: (value) {
+                        _companyTitle = value;
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
+
                     Row(
                       children: [
                         //
-                        SizedBox(
-                          width: 320,
-                          child: CustomTextFormField(
-                            label: ' Company Title ',
-                            validatorFunction: (value) {
-                              _companyTitle = value;
-
-                              return null;
-                            },
-                          ),
-                        ),
-
-                        const Spacer(),
-
                         IconButton(
                           onPressed: () async {
-                            _chipDeadline = await showDatePicker(
+                            final selectedDate = await showDatePicker(
                               helpText: 'Select Chip Deadline',
                               context: context,
                               firstDate: DateTime(2023),
                               lastDate: DateTime(2025),
                             );
+
+                            if (selectedDate != null &&
+                                selectedDate != _chipDeadline) {
+                              print(_chipDeadline);
+                              setState(() {
+                                _chipDeadline = selectedDate;
+                              });
+                            }
                           },
                           icon: const Icon(Icons.calendar_month),
                           iconSize: 26,
                         ),
 
-                        const Spacer(),
+                        // const SizedBox(width: 8),
+
+                        Text(
+                          _chipDeadline == null
+                              ? 'Select Chip Deadline'
+                              : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       ],
                     ),
 
@@ -195,7 +223,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       readOnly: true,
                       controller: _chipDetailsController,
                       decoration: InputDecoration.collapsed(
-                        hintText: "Paste chip sauce here",
+                        hintText: "Chip sauce here",
                         hintStyle:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   color: Theme.of(context)

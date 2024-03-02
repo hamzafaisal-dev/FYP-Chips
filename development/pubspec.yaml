@@ -28,6 +28,7 @@ dependencies:
   image_picker: ^1.0.7
   skeletonizer: ^1.1.0
   toastification: ^1.2.1
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

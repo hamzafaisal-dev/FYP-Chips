@@ -250,14 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ListView.builder(
                               itemCount: _authenticatedUser?.postedChips.length,
                               itemBuilder: (context, index) {
-                                List userChipIds =
-                                    _authenticatedUser?.postedChips ?? [];
-                                List<ChipModel> chips = snapshot.data!;
-                                List<ChipModel> userChips = chips
-                                    .where((chip) =>
-                                        userChipIds.contains(chip.chipId))
-                                    .toList();
-                                var chipObject = userChips[index];
+                                var chipObject = snapshot.data![index];
 
                                 return Padding(
                                   padding: EdgeInsets.only(bottom: 10.8.h),
