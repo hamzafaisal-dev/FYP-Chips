@@ -24,4 +24,20 @@ class FormValidators {
 
     return null;
   }
+
+  static String? confirmPasswordValidator(String? value, String? password) {
+    if (value == null || value != password) {
+      return 'Passwords do not match';
+    }
+
+    return null;
+  }
+
+  static String? otpValidator(String? value) {
+    if (value == null || value.length < 6) {
+      return 'Enter a valid OTP';
+    }
+
+    return null;
+  }
 }

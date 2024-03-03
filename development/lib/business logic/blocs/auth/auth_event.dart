@@ -1,26 +1,26 @@
-part of 'auth_bloc.dart';
+// part of 'auth_bloc.dart';
 
-abstract class AuthEvent extends Equatable {}
+// abstract class AuthEvent extends Equatable {}
 
-class AuthStateChangedEvent extends AuthEvent {
-  final UserModel? user;
+// class AuthStateChangedEvent extends AuthEvent {
+//   final UserModel? user;
 
-  AuthStateChangedEvent(this.user);
+//   AuthStateChangedEvent(this.user);
 
-  @override
-  List<Object?> get props => [user];
-}
+//   @override
+//   List<Object?> get props => [user];
+// }
 
-class AuthStateUpdatedEvent extends AuthEvent {
-  final UserModel? user;
+// class AuthStateUpdatedEvent extends AuthEvent {
+//   final UserModel? user;
 
-  AuthStateUpdatedEvent(this.user);
+//   AuthStateUpdatedEvent(this.user);
 
-  @override
-  List<Object?> get props => [user];
-}
+//   @override
+//   List<Object?> get props => [user];
+// }
 
-class SignOutRequestedEvent extends AuthEvent {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
+// class SignOutRequestedEvent extends AuthEvent {
+//   @override
+//   List<Object?> get props => throw UnimplementedError();
+// }

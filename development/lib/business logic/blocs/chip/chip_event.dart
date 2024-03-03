@@ -24,32 +24,32 @@ class FetchChipsStream extends ChipEvent {
 class UploadChipEvent extends ChipEvent {
   final String jobTitle;
   final String companyName;
-  final String description;
-  final String jobMode;
+  final String applicationLink;
+  final String? description;
+  final String? jobMode;
   final File? chipFile;
   final List<String> locations;
-  final String jobType;
-  final int experienceRequired;
+  final String? jobType;
+  final int? experienceRequired;
   final DateTime deadline;
   final List<dynamic> skills;
-  final double salary;
+  final double? salary;
   final UserModel updatedUser;
-  final String uploaderAvatar;
 
   const UploadChipEvent({
     required this.jobTitle,
     required this.companyName,
-    required this.description,
-    required this.jobMode,
+    required this.applicationLink,
+    this.description,
+    this.jobMode,
     this.chipFile,
     required this.locations,
-    required this.jobType,
-    required this.experienceRequired,
+    this.jobType,
+    this.experienceRequired,
     required this.deadline,
     required this.skills,
-    required this.salary,
+    this.salary,
     required this.updatedUser,
-    required this.uploaderAvatar,
   });
 
   @override

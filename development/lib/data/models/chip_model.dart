@@ -1,14 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 
 class ChipModel {
   const ChipModel({
     required this.chipId,
     required this.jobTitle,
     required this.companyName,
-    required this.description,
+    required this.applicationLink,
+    this.description,
     this.jobMode,
     this.locations,
     this.jobType,
@@ -30,7 +28,8 @@ class ChipModel {
   final String chipId;
   final String jobTitle;
   final String companyName;
-  final String description;
+  final String applicationLink; // this can be a url, a phone number or an email
+  final String? description;
   final String? jobMode;
   final List<String>? locations;
   final String? jobType;
@@ -54,6 +53,7 @@ class ChipModel {
     String? chipId,
     String? jobTitle,
     String? companyName,
+    String? applicationLink,
     String? description,
     String? jobMode,
     List<String>? locations,
@@ -76,6 +76,7 @@ class ChipModel {
       chipId: chipId ?? this.chipId,
       jobTitle: jobTitle ?? this.jobTitle,
       companyName: companyName ?? this.companyName,
+      applicationLink: applicationLink ?? this.applicationLink,
       description: description ?? this.description,
       jobMode: jobMode ?? this.jobMode,
       locations: locations ?? this.locations,
@@ -101,6 +102,7 @@ class ChipModel {
       'chipId': chipId,
       'jobTitle': jobTitle,
       'companyName': companyName,
+      'applicationLink': applicationLink,
       'description': description,
       'jobMode': jobMode,
       'locations': locations,
@@ -126,6 +128,7 @@ class ChipModel {
       chipId: map['chipId'] as String,
       jobTitle: map['jobTitle'] as String,
       companyName: map['companyName'] as String,
+      applicationLink: map['applicationLink'] as String,
       description: map['description'] as String,
       jobMode: map['jobMode'] as String,
       locations: List<String>.from(map['locations']),
@@ -155,6 +158,6 @@ class ChipModel {
 
   @override
   String toString() {
-    return 'ChipModel(chipId: $chipId, jobTitle: $jobTitle, companyName: $companyName, description: $description, jobMode: $jobMode, locations: $locations, jobType: $jobType, experienceRequired: $experienceRequired, deadline: $deadline, skills: $skills, imageUrl: $imageUrl, salary: $salary, postedBy: $postedBy, reportCount: $reportCount, isFlagged: $isFlagged, isExpired: $isExpired, createdAt: $createdAt, updatedAt: $updatedAt, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ChipModel(chipId: $chipId, jobTitle: $jobTitle, companyName: $companyName, applicationLink: $applicationLink, description: $description, jobMode: $jobMode, locations: $locations, jobType: $jobType, experienceRequired: $experienceRequired, deadline: $deadline, skills: $skills, imageUrl: $imageUrl, salary: $salary, postedBy: $postedBy, reportCount: $reportCount, isFlagged: $isFlagged, isExpired: $isExpired, createdAt: $createdAt, updatedAt: $updatedAt, isActive: $isActive, isDeleted: $isDeleted)';
   }
 }

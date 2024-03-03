@@ -6,7 +6,8 @@ class UserModel {
     required this.userId,
     required this.role,
     required this.email,
-    required this.userName,
+    required this.username,
+    required this.name,
     required this.postedChips,
     required this.appliedChips,
     required this.favoritedChips,
@@ -23,7 +24,8 @@ class UserModel {
   final String userId;
   final String role;
   final String email;
-  final String userName;
+  final String username;
+  final String name;
 
   final List<String> postedChips;
   final List<String> appliedChips;
@@ -45,6 +47,7 @@ class UserModel {
     String? role,
     String? email,
     String? userName,
+    String? name,
     List<String>? postedChips,
     List<String>? appliedChips,
     List<String>? favoritedChips,
@@ -61,7 +64,8 @@ class UserModel {
       userId: userId ?? this.userId,
       role: role ?? this.role,
       email: email ?? this.email,
-      userName: userName ?? this.userName,
+      username: userName ?? this.username,
+      name: name ?? this.name,
       postedChips: postedChips ?? this.postedChips,
       appliedChips: appliedChips ?? this.appliedChips,
       favoritedChips: favoritedChips ?? this.favoritedChips,
@@ -81,7 +85,8 @@ class UserModel {
       'userId': userId,
       'role': role,
       'email': email,
-      'userName': userName,
+      'userName': username,
+      'name': name,
       'postedChips': postedChips,
       'appliedChips': appliedChips,
       'favoritedChips': favoritedChips,
@@ -101,7 +106,8 @@ class UserModel {
       userId: map['userId'] as String,
       role: map['role'] as String,
       email: map['email'] as String,
-      userName: map['userName'] as String,
+      username: map['userName'] as String,
+      name: map['name'] as String,
       postedChips: List.from(map['postedChips']),
       appliedChips: List.from(map['appliedChips']),
       favoritedChips: List.from(map['favoritedChips']),
@@ -125,6 +131,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, role: $role, email: $email, userName: $userName, postedChips: $postedChips, appliedChips: $appliedChips, favoritedChips: $favoritedChips, binnedChips: $binnedChips, preferences: $preferences, reportCount: $reportCount, isBanned: $isBanned, createdAt: $createdAt, updatedAt: $updatedAt, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'UserModel(userId: $userId, role: $role, email: $email, userName: $username, name: $name, postedChips: $postedChips, appliedChips: $appliedChips, favoritedChips: $favoritedChips, binnedChips: $binnedChips, preferences: $preferences, reportCount: $reportCount, isBanned: $isBanned, createdAt: $createdAt, updatedAt: $updatedAt, isActive: $isActive, isDeleted: $isDeleted)';
   }
 }

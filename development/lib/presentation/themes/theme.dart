@@ -44,6 +44,13 @@ class CustomAppTheme {
     filledButtonTheme: CustomFilledButtonTheme.lightFilledButtonTheme,
 
     dividerTheme: CustomDividerTheme.lightDividerTheme,
+
+    dialogTheme: const DialogTheme(
+      shadowColor: Color(0XFFFFF3E9),
+      backgroundColor: Colors.white,
+    ),
+
+    dialogBackgroundColor: Colors.white,
   );
 
   // to be implemented

@@ -1,21 +1,20 @@
 import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
-import 'package:development/constants/asset_paths.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   bool _isPasswordVisible = false;
 
   final _emailController = TextEditingController();
@@ -24,16 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
 
   void _handleLogin() {
-    // handle login code
-    print(_emailController.text);
-    print(_passwordController.text);
+    // // handle login code
+    // print(_emailController.text);
+    // print(_passwordController.text);
 
-    BlocProvider.of<SignInBloc>(context).add(
-      SignInSubmittedEvent(
-        _emailController.text,
-        _passwordController.text,
-      ),
-    );
+    // BlocProvider.of<SignInBloc>(context).add(
+    //   SignInSubmittedEvent(
+    //     _emailController.text,
+    //     _passwordController.text,
+    //   ),
+    // );
   }
 
   @override
@@ -114,33 +113,31 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 21.h),
 
               //login button
-              BlocConsumer<SignInBloc, SignInState>(
+              BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   print(state);
-                  if (state is SignInLoadingState) {
+                  if (state is AuthLoading) {
                     print('sign in loading');
-                  } else if (state is SignInValidState) {
-                    // print(state.authenticatedUser);
+                  } else if (state is AuthSuccess) {
+                    print(state.user);
 
                     NavigationService.routeToReplacementNamed('/layout');
                   }
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is SignInLoadingState)
+                    onPressed: (state is AuthLoading)
                         ? null
                         : () {
                             if (_loginFormKey.currentState!.validate()) {
                               _handleLogin();
                             }
                           },
-                    child: (state is SignInLoadingState)
+                    child: (state is AuthLoading)
                         ? SizedBox(
                             width: 23.4.w,
                             height: 23.4.h,
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
+                            child: const CircularProgressIndicator(),
                           )
                         : const Text('Login'),
                   );

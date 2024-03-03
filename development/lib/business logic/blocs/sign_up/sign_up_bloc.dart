@@ -30,7 +30,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       emit(SignUpLoadingState());
 
       UserModel newUser =
-          await authRepository.handleSignUp(name, email, password);
+          await authRepository.emailPasswordSignUp(name, email, password);
 
       emit(SignUpValidState(newUser));
     } on FirebaseAuthException catch (error) {

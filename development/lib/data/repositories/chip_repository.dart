@@ -1,40 +1,43 @@
 import 'dart:io';
-
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/networks/chip_network.dart';
 
 class ChipRepository {
-  final ChipsFirestoreClient chipsFirestoreClient;
+  final ChipNetwork chipsNetwork;
 
-  ChipRepository({required this.chipsFirestoreClient});
+  ChipRepository({required this.chipsNetwork});
 
+  // get list of all chips
   Future<List<ChipModel>> getAllChips() async {
-    return await chipsFirestoreClient.getAllChips();
+    return await chipsNetwork.getAllChips();
   }
 
+  // get stream of all chips
   Stream<List<ChipModel>> getAllChipsStream() {
-    return chipsFirestoreClient.getAllChipsStream();
+    return chipsNetwork.getAllChipsStream();
   }
 
-  Future<UserModel> uploadChip({
+  // post chip
+  Future<UserModel> postChip({
     required String jobTitle,
     required String companyName,
-    required String description,
-    required String jobMode,
+    required String applicationLink,
+    String? description,
+    String? jobMode,
     File? chipFile,
-    required List<String> locations,
-    required String jobType,
-    required int experienceRequired,
+    List<String>? locations,
+    String? jobType,
+    int? experienceRequired,
     required DateTime deadline,
     required List<dynamic> skills,
-    required double salary,
+    required double? salary,
     required UserModel updatedUser,
-    required String uploaderAvatar,
   }) {
-    return chipsFirestoreClient.uploadChip(
+    return chipsNetwork.postChip(
       jobTitle,
       companyName,
+      applicationLink,
       description,
       jobMode,
       chipFile ?? File(''),
@@ -45,15 +48,15 @@ class ChipRepository {
       skills,
       salary,
       updatedUser,
-      uploaderAvatar,
     );
   }
 
+  // delete chip
   Future<UserModel> deleteChip({
     required String chipId,
     required UserModel updatedUser,
   }) {
-    return chipsFirestoreClient.deleteChip(
+    return chipsNetwork.deleteChip(
       chipId,
       updatedUser,
     );

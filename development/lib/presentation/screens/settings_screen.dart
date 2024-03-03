@@ -20,12 +20,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void initState() {
-    AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+    // AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
 
-    if (authBloc.state is AuthStateAuthenticated) {
-      _authenticatedUser =
-          (authBloc.state as AuthStateAuthenticated).authenticatedUser;
-    }
+    // if (authBloc.state is AuthStateAuthenticated) {
+    //   _authenticatedUser =
+    //       (authBloc.state as AuthStateAuthenticated).authenticatedUser;
+    // }
 
     super.initState();
   }

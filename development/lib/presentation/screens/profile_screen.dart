@@ -36,11 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           buttonOneText: 'Cancel',
           buttonTwoText: 'Log Out',
           buttonOneOnPressed: () => Navigator.pop(context),
-          buttonTwoOnPressed: () {
-            BlocProvider.of<AuthBloc>(context).add(
-              SignOutRequestedEvent(),
-            );
-          },
+          buttonTwoOnPressed: () {},
         );
       },
     );
@@ -52,11 +48,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     // final chipBloc = BlocProvider.of<ChipBloc>(context);
 
-    final authBloc = BlocProvider.of<AuthBloc>(context);
-    if (authBloc.state is AuthStateAuthenticated) {
-      _authenticatedUser =
-          (authBloc.state as AuthStateAuthenticated).authenticatedUser;
-    }
+    // final authBloc = BlocProvider.of<AuthBloc>(context);
+    // if (authBloc.state is AuthStateAuthenticated) {
+    //   _authenticatedUser =
+    //       (authBloc.state as AuthStateAuthenticated).authenticatedUser;
+    // }
   }
 
   @override
@@ -83,206 +79,197 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthStateUnauthenticated) {
-              NavigationService.routeToReplacementNamed('/login');
-            }
-          },
-          child: Column(
-            children: [
-              //
-              Padding(
-                padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
-                child: Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 12.h,
-                        ),
-                        child: Row(
-                          children: [
-                            //
-                            CircleAvatar(radius: 30.r),
-
-                            //
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // name
-                                  Text(
-                                    _authenticatedUser?.userName ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-
-                                  // email
-                                  Text(
-                                    _authenticatedUser?.email ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondaryContainer
-                                              .withOpacity(0.5),
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+        child: Column(
+          children: [
+            //
+            Padding(
+              padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
+              child: Container(
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
                       ),
-
-                      //
-                      Divider(
-                        thickness: 1,
-                        height: 0.h,
-                      ),
-
-                      //
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      child: Row(
                         children: [
                           //
-                          UserStatSection(
-                            statisticName: 'Posted Chips',
-                            statisticValue:
-                                _authenticatedUser?.postedChips.length ?? 0,
-                          ),
+                          CircleAvatar(radius: 30.r),
 
-                          // divider
-                          SizedBox(
-                            height: 70.73.h,
-                            child: VerticalDivider(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
-                              thickness: 1,
-                              width: 0,
+                          //
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // name
+                                Text(
+                                  _authenticatedUser?.username ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+
+                                // email
+                                Text(
+                                  _authenticatedUser?.email ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondaryContainer
+                                            .withOpacity(0.5),
+                                      ),
+                                ),
+                              ],
                             ),
-                          ),
-
-                          UserStatSection(
-                            statisticName: 'Saved Chips',
-                            statisticValue:
-                                _authenticatedUser?.favoritedChips.length ?? 0,
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+
+                    //
+                    Divider(
+                      thickness: 1,
+                      height: 0.h,
+                    ),
+
+                    //
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //
+                        UserStatSection(
+                          statisticName: 'Posted Chips',
+                          statisticValue:
+                              _authenticatedUser?.postedChips.length ?? 0,
+                        ),
+
+                        // divider
+                        SizedBox(
+                          height: 70.73.h,
+                          child: VerticalDivider(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            thickness: 1,
+                            width: 0,
+                          ),
+                        ),
+
+                        UserStatSection(
+                          statisticName: 'Saved Chips',
+                          statisticValue:
+                              _authenticatedUser?.favoritedChips.length ?? 0,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+            ),
 
-              // sign out
-              // Padding(
-              //   padding: EdgeInsets.only(bottom: 10.h),
-              //   child: SettingsActionTile(
-              //     title: 'Sign Out',
-              //     leadingIcon: SvgPicture.asset(
-              //       // this icon will change later on
-              //       AssetPaths.notificationBellIconPath,
-              //       width: 18.w,
-              //       height: 18.h,
-              //     ),
-              //     trailingIcon: Icons.arrow_forward_ios_rounded,
-              //     onTap: _logOut,
-              //   ),
-              // ),
+            // sign out
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 10.h),
+            //   child: SettingsActionTile(
+            //     title: 'Sign Out',
+            //     leadingIcon: SvgPicture.asset(
+            //       // this icon will change later on
+            //       AssetPaths.notificationBellIconPath,
+            //       width: 18.w,
+            //       height: 18.h,
+            //     ),
+            //     trailingIcon: Icons.arrow_forward_ios_rounded,
+            //     onTap: _logOut,
+            //   ),
+            // ),
 
-              // your chips
-              Padding(
-                padding: EdgeInsets.only(bottom: 6.h),
-                child: Text(
-                  'Your Chips',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+            // your chips
+            Padding(
+              padding: EdgeInsets.only(bottom: 6.h),
+              child: Text(
+                'Your Chips',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
+            ),
 
-              // user's chips
-              BlocBuilder<ChipBloc, ChipState>(
-                builder: (context, state) {
-                  if (state is ChipsStreamLoaded) {
-                    return StreamBuilder(
-                      stream: state.chips,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Expanded(
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
+            // user's chips
+            // BlocBuilder<ChipBloc, ChipState>(
+            //   builder: (context, state) {
+            //     if (state is ChipsStreamLoaded) {
+            //       return StreamBuilder(
+            //         stream: state.chips,
+            //         builder: (context, snapshot) {
+            //           if (snapshot.connectionState == ConnectionState.waiting) {
+            //             return const Expanded(
+            //               child: Center(
+            //                 child: CircularProgressIndicator(),
+            //               ),
+            //             );
+            //           }
 
-                        if (snapshot.hasError) {
-                          return const Expanded(
-                            child: Center(
-                              child: Text('An error occurred...'),
-                            ),
-                          );
-                        }
+            //           if (snapshot.hasError) {
+            //             return const Expanded(
+            //               child: Center(
+            //                 child: Text('An error occurred...'),
+            //               ),
+            //             );
+            //           }
 
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.isEmpty) {
-                            return const Expanded(
-                              child: Center(
-                                child: Text('No chips found...'),
-                              ),
-                            );
-                          }
+            //           if (snapshot.hasData) {
+            //             if (snapshot.data!.isEmpty) {
+            //               return const Expanded(
+            //                 child: Center(
+            //                   child: Text('No chips found...'),
+            //                 ),
+            //               );
+            //             }
 
-                          return Expanded(
-                            child: ListView.builder(
-                              itemCount: _authenticatedUser?.postedChips.length,
-                              itemBuilder: (context, index) {
-                                List userChipIds =
-                                    _authenticatedUser?.postedChips ?? [];
-                                List<ChipModel> chips = snapshot.data!;
-                                List<ChipModel> userChips = chips
-                                    .where((chip) =>
-                                        userChipIds.contains(chip.chipId))
-                                    .toList();
-                                var chipObject = userChips[index];
+            //             return Expanded(
+            //               child: ListView.builder(
+            //                 itemCount: _authenticatedUser?.postedChips.length,
+            //                 itemBuilder: (context, index) {
+            //                   List userChipIds =
+            //                       _authenticatedUser?.postedChips ?? [];
+            //                   List<ChipModel> chips = snapshot.data!;
+            //                   List<ChipModel> userChips = chips
+            //                       .where((chip) =>
+            //                           userChipIds.contains(chip.chipId))
+            //                       .toList();
+            //                   var chipObject = userChips[index];
 
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 10.8.h),
-                                  child: ChipTile(
-                                    chipData: chipObject,
-                                    onTap: () => NavigationService.routeToNamed(
-                                      '/view-chip',
-                                      arguments: {"chipData": chipObject},
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }
+            //                   return Padding(
+            //                     padding: EdgeInsets.only(bottom: 10.8.h),
+            //                     child: ChipTile(
+            //                       chipData: chipObject,
+            //                       onTap: () => NavigationService.routeToNamed(
+            //                         '/view-chip',
+            //                         arguments: {"chipData": chipObject},
+            //                       ),
+            //                     ),
+            //                   );
+            //                 },
+            //               ),
+            //             );
+            //           }
 
-                        return const SizedBox.shrink();
-                      },
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ],
-          ),
+            //           return const SizedBox.shrink();
+            //         },
+            //       );
+            //     }
+            //     return const SizedBox.shrink();
+            //   },
+            // ),
+          ],
         ),
       ),
     );

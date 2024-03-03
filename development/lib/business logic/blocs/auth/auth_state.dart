@@ -1,21 +1,21 @@
-part of 'auth_bloc.dart';
+// part of 'auth_bloc.dart';
 
-abstract class AuthState {}
+// abstract class AuthState {}
 
-final class AuthStatusUnknown extends AuthState {}
+// final class AuthStatusUnknown extends AuthState {}
 
-final class AuthStateAuthenticated extends AuthState {
-  final UserModel authenticatedUser;
+// final class AuthStateAuthenticated extends AuthState {
+//   final UserModel authenticatedUser;
 
-  AuthStateAuthenticated(this.authenticatedUser);
-}
+//   AuthStateAuthenticated(this.authenticatedUser);
+// }
 
-final class AuthStateUnauthenticated extends AuthState {}
+// final class AuthStateUnauthenticated extends AuthState {}
 
-final class AuthError extends AuthState {
-  final String? errorMessage;
+// final class AuthError extends AuthState {
+//   final String? errorMessage;
 
-  AuthError(this.errorMessage);
-}
+//   AuthError(this.errorMessage);
+// }
 
-final class SigningOutState extends AuthState {}
+// final class SigningOutState extends AuthState {}

@@ -98,7 +98,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                     .copyWith(fontSize: 22),
               ),
 
-              Text(_chipData.description),
+              Text(_chipData.description ?? 'No description available'),
 
               const SizedBox(height: 14),
 

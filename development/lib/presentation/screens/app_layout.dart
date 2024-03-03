@@ -27,14 +27,7 @@ class _AppLayoutState extends State<AppLayout> {
       Widget widget = const ErrorScreen();
       switch (index) {
         case 0:
-          widget = BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthStateUnauthenticated) {
-                NavigationService.routeToReplacementNamed('/login');
-              }
-            },
-            child: const HomeScreen(),
-          );
+          widget = const HomeScreen();
           break;
         case 1:
           widget = const SettingsScreen();

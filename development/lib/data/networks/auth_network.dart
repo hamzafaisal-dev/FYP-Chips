@@ -1,14 +1,15 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
-class UserFirebaseClient {
-  final FirebaseAuth firebaseAuth;
-  final FirebaseFirestore firestore;
+class AuthNetwork {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String _baseUrl = 'ayekaunic.pythonanywhere.com';
 
-  UserFirebaseClient({required this.firebaseAuth, required this.firestore});
-
-  Stream<User?> get userAuthChangeStream => firebaseAuth.userChanges();
+  Stream<User?> get userAuthChangeStream => _firebaseAuth.userChanges();
 
   // get current user
   Future<UserModel?> getCurrentUser(User? currentUser) async {
@@ -17,7 +18,7 @@ class UserFirebaseClient {
     if (currentUserId == null) return null;
 
     DocumentSnapshot querySnapshot =
-        await firestore.collection('users').doc(currentUserId).get();
+        await _firestore.collection('users').doc(currentUserId).get();
 
     Map<String, dynamic> userMap = querySnapshot.data() as Map<String, dynamic>;
 
@@ -26,19 +27,16 @@ class UserFirebaseClient {
     return user;
   }
 
-  // email and pass login
-  Future<UserModel> handleLogin(String email, String password) async {
-    // print('email is $email');
-    // print('pass is $password');
-
+  // email password sign in
+  Future<UserModel> emailPasswordSignIn(String email, String password) async {
     try {
       UserCredential userCredential =
-          await firebaseAuth.signInWithEmailAndPassword(
+          await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      DocumentSnapshot userSnapshot = await firestore
+      DocumentSnapshot userSnapshot = await _firestore
           .collection('users')
           .doc(userCredential.user!.uid)
           .get();
@@ -54,11 +52,83 @@ class UserFirebaseClient {
     }
   }
 
-  // email and pass sign up
-  Future<UserModel> handleSignUp(
+  // send otp email
+  Future<Map<String, dynamic>> sendOtpEmail(
+      String email, String name, String password) async {
+    final url = Uri.https(_baseUrl, '/sendOtpEmail');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({'email': email});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return {
+          'success': true,
+          'message': responseData['message'].toString(),
+          'otp': responseData['otp'].toString(),
+          'name': name,
+          'password': password,
+          'receiver': responseData['receiver'].toString(),
+          'status': responseData['status'].toString(),
+        };
+      } else {
+        return {
+          'success': false,
+          'message': 'Failed to send OTP email',
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Error: $e',
+      };
+    }
+  }
+
+  // verify otp
+  bool verifyOtp(String userInput, String otp) {
+    return userInput == otp;
+  }
+
+  // send onboarding email
+  Future<Map<String, dynamic>> sendOnboardingEmail(
+      String email, String name) async {
+    final url = Uri.https(_baseUrl, '/sendWelcomeEmail');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({'email': email, 'name': name});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return {
+          'success': true,
+          'message': responseData['message'],
+          'receiver': responseData['receiver'],
+          'status': responseData['status'],
+        };
+      } else {
+        return {
+          'success': false,
+          'message': 'Failed to send onboarding email',
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Error: $e',
+      };
+    }
+  }
+
+  // email password sign up
+  Future<UserModel> emailPasswordSignUp(
       String name, String email, String password) async {
     final newUserCredentials =
-        await firebaseAuth.createUserWithEmailAndPassword(
+        await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -69,7 +139,8 @@ class UserFirebaseClient {
       userId: userId,
       role: 'user',
       email: email,
-      userName: name,
+      username: email.split('@')[0],
+      name: name,
       postedChips: [],
       appliedChips: [],
       favoritedChips: [],
@@ -93,6 +164,26 @@ class UserFirebaseClient {
 
   // sign out
   Future<void> signOut() async {
-    await firebaseAuth.signOut();
+    await _firebaseAuth.signOut();
+  }
+
+  // reset password
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  // update user
+  Future<void> updateUser(UserModel user) async {
+    await _firestore.collection('users').doc(user.userId).update(user.toMap());
+  }
+
+  // delete user
+  Future<void> deleteUser(UserModel user) async {
+    await _firestore.collection('users').doc(user.userId).delete();
+  }
+
+  // change password
+  Future<void> changePassword(String newPassword) async {
+    await _firebaseAuth.currentUser!.updatePassword(newPassword);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
@@ -16,28 +16,21 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _signUpFormKey = GlobalKey<FormState>();
-
-  void _handleSignUp() {
-    BlocProvider.of<SignUpBloc>(context).add(
-      SignUpSubmittedEvent(
-        _nameController.text,
-        _emailController.text,
-        _passwordController.text,
-      ),
-    );
-  }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -131,42 +124,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
 
+              SizedBox(height: 8.h),
+
+              // confirm password form field
+              TextFormField(
+                obscureText: !_isConfirmPasswordVisible,
+                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                  'Confirm Password',
+                  const Icon(Icons.lock_outline),
+                  IconButton(
+                    onPressed: () {
+                      setState(() => _isConfirmPasswordVisible =
+                          !_isConfirmPasswordVisible);
+                    },
+                    icon: _isConfirmPasswordVisible
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
+                  ),
+                  context,
+                  null,
+                ),
+                validator: (value) => FormValidators.confirmPasswordValidator(
+                  value,
+                  _passwordController.text,
+                ),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+                controller: _confirmPasswordController,
+              ),
+
               SizedBox(height: 28.h),
 
               //sign up button
-              BlocConsumer<SignUpBloc, SignUpState>(
+              BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  if (state is SignUpLoadingState) {
+                  if (state is AuthLoading) {
                     print('sign up loading');
-                  } else if (state is SignUpValidState) {
-                    print(state.newUser);
-
-                    NavigationService.routeToReplacementNamed('/layout');
+                  } else if (state is AuthSuccess) {
+                    print(state.user);
+                  }
+                  if (state is AuthOtpEmailSent) {
+                    print("otp sent to: ${state.email}");
+                    print("otp: ${state.otp}");
+                    print("name: ${state.name}");
+                    print("password: ${state.password}");
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return OtpSentDialog(email: state.email);
+                      },
+                    );
                   }
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is SignUpLoadingState)
+                    onPressed: (state is AuthLoading)
                         ? null
                         : () {
                             if (_signUpFormKey.currentState!.validate()) {
-                              _handleSignUp();
+                              context.read<AuthCubit>().sendOtpEmail(
+                                  _emailController.text,
+                                  _nameController.text,
+                                  _passwordController.text);
                             }
                           },
-                    child: (state is SignUpLoadingState)
+                    child: (state is AuthLoading)
                         ? SizedBox(
                             height: 23.4.h,
                             width: 23.4.w,
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
+                            child: const CircularProgressIndicator(),
                           )
                         : const Text('Create Account'),
                   );
                 },
               ),
 
-              SizedBox(height: 144.h),
+              SizedBox(height: 108.h),
 
               // Already have an account?
               Row(
@@ -193,6 +228,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class OtpSentDialog extends StatelessWidget {
+  const OtpSentDialog({
+    super.key,
+    required this.email,
+  });
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        'OTP Sent',
+        style: Theme.of(context).textTheme.headlineMedium,
+      ),
+      content: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'An OTP has been sent to:\n\n',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            TextSpan(
+              text: email,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            TextSpan(
+              text:
+                  '\n\nPlease proceed to verify your email and complete your sign up.\n\n',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            TextSpan(
+              text:
+                  'Note: Please check your email inbox, including your spam/junk folder, for the OTP. If you cannot find the email, please ensure you entered the correct email address and try again.',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.63),
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ],
+        ),
+      ),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            "Cancel",
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            NavigationService.routeToReplacementNamed(
+              '/otp',
+            );
+          },
+          child: Text(
+            'Proceed',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -3,28 +3,47 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:development/data/networks/auth_network.dart';
 
 class AuthRepository {
-  UserFirebaseClient userFirebaseClient;
-
-  AuthRepository({required this.userFirebaseClient});
+  final AuthNetwork _authNetwork = AuthNetwork();
 
   Stream<User?> userStateChangeStream() {
-    return userFirebaseClient.userAuthChangeStream;
+    return _authNetwork.userAuthChangeStream;
   }
 
+  // get current user
   Future<UserModel?> getCurrentUser(User? user) {
-    return userFirebaseClient.getCurrentUser(user);
+    return _authNetwork.getCurrentUser(user);
   }
 
-  Future<UserModel> handleLogin(String email, String password) async {
-    return await userFirebaseClient.handleLogin(email, password);
+  // email password login
+  Future<UserModel> emailPasswordSignIn(String email, String password) async {
+    return await _authNetwork.emailPasswordSignIn(email, password);
   }
 
-  Future<UserModel> handleSignUp(
+  // send otp email
+  Future<Map<String, dynamic>> sendOtpEmail(
+      String email, String name, String password) async {
+    return await _authNetwork.sendOtpEmail(email, name, password);
+  }
+
+  // verify otp
+  bool verifyOtp(String userInput, String otp) {
+    return _authNetwork.verifyOtp(userInput, otp);
+  }
+
+  // send onboarding email
+  Future<Map<String, dynamic>> sendOnboardingEmail(
+      String email, String name) async {
+    return await _authNetwork.sendOnboardingEmail(email, name);
+  }
+
+  // email password sign up
+  Future<UserModel> emailPasswordSignUp(
       String name, String email, String password) async {
-    return await userFirebaseClient.handleSignUp(name, email, password);
+    return await _authNetwork.emailPasswordSignUp(name, email, password);
   }
 
+  // sign out
   void signOut() async {
-    await userFirebaseClient.signOut();
+    await _authNetwork.signOut();
   }
 }

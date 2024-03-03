@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
@@ -7,32 +6,34 @@ import 'package:development/utils/helper_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 
-class ChipsFirestoreClient {
+class ChipNetwork {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
   final FirebaseStorage firebaseStorage;
 
-  ChipsFirestoreClient({
+  ChipNetwork({
     required this.firestore,
     required this.firebaseAuth,
     required this.firebaseStorage,
   });
 
+  // get all chips list
   Future<List<ChipModel>> getAllChips() async {
-    // fetches all documents in the resources collection
-    final chips =
-        await firestore.collection('chips').orderBy('createdAt').get();
+    final chips = await firestore
+        .collection('chips')
+        .orderBy('createdAt', descending: true)
+        .get();
 
-    // resources.docs returns a list of QueryDocumentSnapshot
-    // maps over the list, converts each document into a Resource, returns list of Resources
-    List<ChipModel> allFetchedResources = chips.docs.map((docSnapshot) {
+    List<ChipModel> allFetchedChips = chips.docs.map((docSnapshot) {
       return ChipModel.fromMap(docSnapshot.data());
     }).toList();
 
-    return allFetchedResources;
+    return allFetchedChips;
   }
 
+  // get all chips stream
   Stream<List<ChipModel>> getAllChipsStream() {
     return firestore
         .collection('chips')
@@ -47,8 +48,9 @@ class ChipsFirestoreClient {
         );
   }
 
-  // returns the download URL of given file
-  Future<String> uploadToFirebaseStorage(
+  // upload file to firebase storage
+  // returns the download url of given file
+  Future<String> uploadFileToFirebaseStorage(
     File file,
     String userId,
   ) async {
@@ -63,7 +65,6 @@ class ChipsFirestoreClient {
         .child(userId)
         .child('$fileName-$currentTimeStamp');
 
-    // will set metadata with the original file name
     final metadata = SettableMetadata(
       customMetadata: {'originalName': fileName},
       contentType: Helpers.getMimeType(file),
@@ -79,38 +80,40 @@ class ChipsFirestoreClient {
     return fileUrl;
   }
 
-  Future<UserModel> uploadChip(
+  // post chip
+  Future<UserModel> postChip(
     String jobTitle,
-    String companyName,
-    String description,
-    String jobMode,
-    File chipFile,
-    List<String> locations,
-    String jobType,
-    int experienceRequired,
+    String employer,
+    String applicationLink,
+    String? description,
+    String? jobMode,
+    File? chipFile,
+    List<String>? locations,
+    String? jobType,
+    int? experienceRequired,
     DateTime deadline,
     List<dynamic> skills,
-    double salary,
+    double? salary,
     UserModel updatedUser,
-    String uploaderAvatar,
   ) async {
-    String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String username = updatedUser.username;
+    String chipId = const Uuid().v4();
 
-    String username = updatedUser.userName;
-    // String username = updatedUser.email.split('@')[0];
+    print('chipFile: $chipFile');
 
-    print('siu1 $chipFile');
+    String chipFileUrl = "";
+    if (chipFile != null) {
+      chipFileUrl =
+          await uploadFileToFirebaseStorage(chipFile, updatedUser.userId);
+    }
 
-    String chipFileUrl =
-        await uploadToFirebaseStorage(chipFile, updatedUser.userId);
-
-    print('siu2');
-    print('url is $chipFileUrl');
+    print('chipFileURL: $chipFileUrl');
 
     ChipModel newChip = ChipModel(
-      chipId: '$jobTitle-$timeStamp',
+      chipId: chipId,
       jobTitle: jobTitle,
-      companyName: companyName,
+      companyName: employer,
+      applicationLink: applicationLink,
       description: description,
       jobMode: jobMode,
       imageUrl: chipFileUrl,
@@ -129,10 +132,7 @@ class ChipsFirestoreClient {
       isDeleted: false,
     );
 
-    await firestore
-        .collection('chips')
-        .doc('$jobTitle-$timeStamp')
-        .set(newChip.toMap());
+    await firestore.collection('chips').doc(chipId).set(newChip.toMap());
 
     List<String> userPostedChips = updatedUser.postedChips;
 
@@ -142,7 +142,7 @@ class ChipsFirestoreClient {
       postedChips: userPostedChips,
     );
 
-    // set the updated user in db
+    // set the updated user in firestore
     await firestore
         .collection('users')
         .doc(updatedUser.userId)
@@ -151,6 +151,7 @@ class ChipsFirestoreClient {
     return updatedUser;
   }
 
+  // delete chip
   Future<UserModel> deleteChip(String chipId, UserModel user) async {
     DocumentSnapshot userSnapshot =
         await firestore.collection('users').doc(user.userId).get();
@@ -161,10 +162,8 @@ class ChipsFirestoreClient {
 
     List<String> postedChips = updatedUser.postedChips;
 
-    if (postedChips.any((postedResource) => postedResource == chipId)) {
+    if (postedChips.any((postedChip) => postedChip == chipId)) {
       postedChips.remove(chipId);
-
-      // postedChips.removeWhere((postedResource) => postedResource == chipId);
 
       updatedUser = updatedUser.copyWith(postedChips: postedChips);
 

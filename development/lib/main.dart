@@ -1,30 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
-import 'package:development/business%20logic/blocs/sign_up/sign_up_bloc.dart';
-import 'package:development/data/networks/auth_network.dart';
-import 'package:development/data/networks/chip_network.dart';
-import 'package:development/data/repositories/auth_repository.dart';
-import 'package:development/data/repositories/chip_repository.dart';
-import 'package:development/firebase_options.dart';
-import 'package:development/presentation/screens/login_screen.dart';
-import 'package:development/route_generator.dart';
-import 'package:development/services/navigation_service.dart';
-import 'package:development/presentation/themes/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/firebase_options.dart';
+import 'package:development/presentation/screens/sign_in_screen.dart';
+import 'package:development/presentation/themes/theme.dart';
+import 'package:development/route_generator.dart';
+import 'package:development/services/navigation_service.dart';
 
 void main() async {
-  // transparent status bar
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
 
@@ -32,52 +25,20 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  final AuthRepository authRepository = AuthRepository(
-    userFirebaseClient: UserFirebaseClient(
-      firebaseAuth: FirebaseAuth.instance,
-      firestore: FirebaseFirestore.instance,
-    ),
-  );
-
-  final ChipRepository chipRepository = ChipRepository(
-    chipsFirestoreClient: ChipsFirestoreClient(
-      firestore: FirebaseFirestore.instance,
-      firebaseAuth: FirebaseAuth.instance,
-      firebaseStorage: FirebaseStorage.instance,
-    ),
-  );
-
-  runApp(MyApp(authRepository: authRepository, chipRepository: chipRepository));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
-    required this.authRepository,
-    required this.chipRepository,
   });
-
-  final AuthRepository authRepository;
-  final ChipRepository chipRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(authRepository: authRepository),
-        ),
-        BlocProvider(
-          create: (context) => SignUpBloc(authRepository: authRepository),
-        ),
-        BlocProvider(
-          create: (context) => SignInBloc(authRepository: authRepository),
-        ),
-        BlocProvider(
-          create: (context) => ChipBloc(
-            chipRepository: chipRepository,
-            authBloc: BlocProvider.of<AuthBloc>(context),
-          ),
+          create: (context) => AuthCubit(),
         ),
       ],
       child: ScreenUtilInit(
@@ -88,9 +49,10 @@ class MyApp extends StatelessWidget {
           title: 'Chips',
           debugShowCheckedModeBanner: false,
           theme: CustomAppTheme.lightTheme,
+          themeMode: ThemeMode.system,
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
-          home: const LoginScreen(),
+          home: const SignInScreen(),
         ),
       ),
     );

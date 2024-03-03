@@ -26,7 +26,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     try {
       // get user credential from login operation
       UserModel authenticatedUser =
-          await authRepository.handleLogin(email, password);
+          await authRepository.emailPasswordSignIn(email, password);
 
       //  emit valid login state
       emit(SignInValidState(authenticatedUser));

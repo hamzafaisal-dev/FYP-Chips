@@ -119,7 +119,8 @@ class _ChipTileState extends State<ChipTile> {
               // job description
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: Text(widget.chipData.description),
+                child: Text(
+                    widget.chipData.description ?? 'No description available'),
               ),
 
               Divider(
