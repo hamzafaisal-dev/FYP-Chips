@@ -234,6 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //               );
             //             }
 
+<<<<<<< HEAD
             //             return Expanded(
             //               child: ListView.builder(
             //                 itemCount: _authenticatedUser?.postedChips.length,
@@ -246,6 +247,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //                           userChipIds.contains(chip.chipId))
             //                       .toList();
             //                   var chipObject = userChips[index];
+=======
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: _authenticatedUser?.postedChips.length,
+                              itemBuilder: (context, index) {
+                                var chipObject = snapshot.data![index];
+>>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
             //                   return Padding(
             //                     padding: EdgeInsets.only(bottom: 10.8.h),
