@@ -10,22 +10,20 @@ class AuthNetwork {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<User?> get userAuthChangeStream => _firebaseAuth.userChanges();
+  // Stream<User?> get userAuthChangeStream => _firebaseAuth.userChanges();
 
   // get current user
-  Future<UserModel?> getCurrentUser(User? currentUser) async {
-    String? currentUserId = currentUser?.uid;
-
-    if (currentUserId == null) return null;
-
-    DocumentSnapshot querySnapshot =
-        await _firestore.collection('users').doc(currentUserId).get();
-
-    Map<String, dynamic> userMap = querySnapshot.data() as Map<String, dynamic>;
-
-    UserModel user = UserModel.fromMap(userMap);
-
-    return user;
+  Future<UserModel> getCurrentUser(User currentUser) async {
+    try {
+      DocumentSnapshot querySnapshot =
+          await _firestore.collection('users').doc(currentUser.uid).get();
+      Map<String, dynamic> userMap =
+          querySnapshot.data() as Map<String, dynamic>;
+      UserModel user = UserModel.fromMap(userMap);
+      return user;
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
   // email password sign in
@@ -129,63 +127,118 @@ class AuthNetwork {
   // email password sign up
   Future<UserModel> emailPasswordSignUp(
       String name, String email, String password) async {
-    final newUserCredentials =
-        await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      final newUserCredentials =
+          await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    String userId = newUserCredentials.user!.uid;
+      String userId = newUserCredentials.user!.uid;
 
-    UserModel newUser = UserModel(
-      userId: userId,
-      role: 'user',
-      email: email,
-      username: email.split('@')[0],
-      name: name,
-      postedChips: [],
-      appliedChips: [],
-      favoritedChips: [],
-      binnedChips: [],
-      preferences: {},
-      reportCount: 0,
-      isBanned: false,
-      createdAt: DateTime.now(),
-      updatedAt: null,
-      isActive: true,
-      isDeleted: false,
-    );
+      UserModel newUser = UserModel(
+        userId: userId,
+        role: 'user',
+        email: email,
+        username: email.split('@')[0],
+        name: name,
+        postedChips: [],
+        appliedChips: [],
+        favoritedChips: [],
+        binnedChips: [],
+        preferences: {},
+        reportCount: 0,
+        isBanned: false,
+        createdAt: DateTime.now(),
+        updatedAt: null,
+        isActive: true,
+        isDeleted: false,
+      );
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(newUserCredentials.user!.uid)
-        .set(newUser.toMap());
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(newUserCredentials.user!.uid)
+          .set(newUser.toMap());
 
-    return newUser;
+      return newUser;
+    } catch (error) {
+      throw Exception(error.toString());
+    }
+  }
+
+  // check if user exists
+  Future<bool> checkIfUserExists(String email) async {
+    // WHY THE FUCK DID THIS NOT WORK
+    // try {
+    //   List<String> signInMethods =
+    //       await _firebaseAuth.fetchSignInMethodsForEmail(email);
+    //   print(signInMethods);
+    //   print(email);
+    //   return signInMethods.isNotEmpty;
+    // } catch (error) {
+    //   throw Exception(error.toString());
+    // }
+
+    // GOING WITH THIS INSTEAD BUT WHAT THE FUCK
+    try {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      print(querySnapshot);
+      return querySnapshot.docs.isNotEmpty;
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
   // sign out
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
   // reset password
   Future<void> resetPassword(String email) async {
-    await _firebaseAuth.sendPasswordResetEmail(email: email);
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
   // update user
   Future<void> updateUser(UserModel user) async {
-    await _firestore.collection('users').doc(user.userId).update(user.toMap());
+    try {
+      await _firestore
+          .collection('users')
+          .doc(user.userId)
+          .update(user.toMap());
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
-  // delete user
-  Future<void> deleteUser(UserModel user) async {
-    await _firestore.collection('users').doc(user.userId).delete();
+  // delete account
+  Future<void> deleteAccount(UserModel user) async {
+    try {
+      await _firestore.collection('users').doc(user.userId).delete();
+      await _firebaseAuth.currentUser!.delete();
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 
   // change password
   Future<void> changePassword(String newPassword) async {
-    await _firebaseAuth.currentUser!.updatePassword(newPassword);
+    try {
+      await _firebaseAuth.currentUser!.updatePassword(newPassword);
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 }

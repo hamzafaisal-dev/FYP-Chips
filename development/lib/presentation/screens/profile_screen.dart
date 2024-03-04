@@ -1,4 +1,3 @@
-import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
@@ -194,11 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttonTwoText: 'Log Out',
                             buttonOneOnPressed: () => Navigator.pop(context),
                             buttonTwoOnPressed: () {
-                              HelperWidgets.showSnackbar(
-                                context,
-                                "Signing you out...",
-                                "info",
-                              );
                               context.read<AuthCubit>().signOut();
                             },
                           );

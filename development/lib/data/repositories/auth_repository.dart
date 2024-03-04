@@ -5,12 +5,12 @@ import 'package:development/data/networks/auth_network.dart';
 class AuthRepository {
   final AuthNetwork _authNetwork = AuthNetwork();
 
-  Stream<User?> userStateChangeStream() {
-    return _authNetwork.userAuthChangeStream;
-  }
+  // Stream<User?> userStateChangeStream() {
+  //   return _authNetwork.userAuthChangeStream;
+  // }
 
   // get current user
-  Future<UserModel?> getCurrentUser(User? user) {
+  Future<UserModel> getCurrentUser(User user) {
     return _authNetwork.getCurrentUser(user);
   }
 
@@ -34,6 +34,11 @@ class AuthRepository {
   Future<Map<String, dynamic>> sendOnboardingEmail(
       String email, String name) async {
     return await _authNetwork.sendOnboardingEmail(email, name);
+  }
+
+  // check if user exists
+  Future<bool> checkIfUserExists(String email) async {
+    return await _authNetwork.checkIfUserExists(email);
   }
 
   // email password sign up

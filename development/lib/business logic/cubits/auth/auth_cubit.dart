@@ -45,6 +45,23 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // check if user exists
+  Future<void> checkIfUserExists(String email) async {
+    emit(AuthCheckingIfUserExists());
+    try {
+      bool exists = await _authRepository.checkIfUserExists(email);
+      if (exists) {
+        emit(AuthUserExists());
+        await Future.delayed(const Duration(microseconds: 9));
+        emit(AuthInitial());
+      } else {
+        emit(AuthUserDoesNotExist());
+      }
+    } catch (error) {
+      emit(AuthFailureCheckingUserExistance(message: error.toString()));
+    }
+  }
+
   // verify otp
   Future<void> verifyOtp(String userInput, String otp, String email,
       String name, String password) async {

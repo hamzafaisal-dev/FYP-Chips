@@ -31,6 +31,21 @@ final class AuthSignInFailure extends AuthState {
 }
 
 // email password sign up
+final class AuthCheckingIfUserExists extends AuthState {}
+
+final class AuthFailureCheckingUserExistance extends AuthState {
+  final String message;
+
+  const AuthFailureCheckingUserExistance({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class AuthUserExists extends AuthState {}
+
+final class AuthUserDoesNotExist extends AuthState {}
+
 final class AuthSignUpLoading extends AuthState {}
 
 final class AuthSignUpSuccess extends AuthState {

@@ -42,9 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Form(
           key: _signUpFormKey,
           child: ListView(
-            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             children: [
-              SizedBox(height: 24.h),
+              SizedBox(height: 36.h),
 
               // Image
               Image.asset(
@@ -160,6 +160,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //sign up button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
+                  if (state is AuthUserExists) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "An account with this email already exists. Please sign in instead.",
+                      'error',
+                    );
+                  }
+                  if (state is AuthUserDoesNotExist) {
+                    context.read<AuthCubit>().sendOtpEmail(
+                          _emailController.text,
+                          _nameController.text,
+                          _passwordController.text,
+                        );
+                  }
+                  if (state is AuthFailureCheckingUserExistance) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Failed to check if user exists: ${state.message} Please try again.",
+                      'error',
+                    );
+                  }
                   if (state is AuthOtpEmailSending) {
                     HelperWidgets.showSnackbar(
                       context,
@@ -190,18 +211,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is AuthOtpEmailSending)
+                    onPressed: (state is AuthOtpEmailSending ||
+                            state is AuthCheckingIfUserExists ||
+                            state is AuthUserDoesNotExist)
                         ? null
                         : () {
                             if (_signUpFormKey.currentState!.validate()) {
-                              context.read<AuthCubit>().sendOtpEmail(
-                                    _emailController.text,
-                                    _nameController.text,
-                                    _passwordController.text,
-                                  );
+                              context
+                                  .read<AuthCubit>()
+                                  .checkIfUserExists(_emailController.text);
                             }
                           },
-                    child: (state is AuthOtpEmailSending)
+                    child: (state is AuthOtpEmailSending ||
+                            state is AuthCheckingIfUserExists ||
+                            state is AuthUserDoesNotExist)
                         ? SizedBox(
                             height: 23.4.h,
                             width: 23.4.w,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
