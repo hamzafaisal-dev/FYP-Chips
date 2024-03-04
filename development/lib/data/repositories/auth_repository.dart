@@ -22,7 +22,7 @@ class AuthRepository {
   // send otp email
   Future<Map<String, dynamic>> sendOtpEmail(
       String email, String name, String password) async {
-    return await _authNetwork.sendOtpEmail(email, name, password);
+    return await _authNetwork.sendOtpEmail(email, name);
   }
 
   // verify otp

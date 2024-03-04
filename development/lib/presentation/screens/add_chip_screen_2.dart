@@ -1,16 +1,7 @@
 import 'dart:io';
 
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
-import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/presentation/widgets/custom_icon_button.dart';
-import 'package:development/presentation/widgets/custom_textformfield.dart';
-import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddChipScreen2 extends StatefulWidget {
   const AddChipScreen2({super.key, this.arguments});

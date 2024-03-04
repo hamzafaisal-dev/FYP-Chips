@@ -93,9 +93,6 @@ class _OtpScreenState extends State<OtpScreen> {
                 'success',
               );
               context.read<AuthCubit>().sendOnboardingEmail(state.user);
-              context
-                  .read<AuthCubit>()
-                  .emailPasswordSignIn(state.user.email, state.password);
             }
             if (state is AuthSignUpFailure) {
               HelperWidgets.showSnackbar(
@@ -103,6 +100,14 @@ class _OtpScreenState extends State<OtpScreen> {
                 'Failed to create account: ${state.message}',
                 'error',
               );
+            }
+            if (state is AuthSignInSuccess) {
+              HelperWidgets.showSnackbar(
+                context,
+                'Signed in Successfully!',
+                'success',
+              );
+              NavigationService.routeToReplacementNamed('/layout');
             }
             if (state is AuthSignInLoading) {
               HelperWidgets.showSnackbar(
@@ -170,9 +175,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ? state.email
                                 : state is AuthOtpNotVerified
                                     ? state.email
-                                    : state is AuthSignUpSuccess
+                                    : state is AuthSignInSuccess
                                         ? state.user.email
-                                        : state is AuthSignInSuccess
+                                        : state is AuthSignUpSuccess
                                             ? state.user.email
                                             : _email,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(

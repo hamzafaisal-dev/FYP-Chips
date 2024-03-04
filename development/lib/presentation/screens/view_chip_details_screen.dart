@@ -24,8 +24,6 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     if (widget.arguments != null) {
       _chipData = widget.arguments!["chipData"];
     }
-
-    print(_chipData.createdAt.toString());
   }
 
   @override

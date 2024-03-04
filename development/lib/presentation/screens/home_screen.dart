@@ -27,12 +27,19 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
-          return Container(
-            width: double.maxFinite,
-            height: double.maxFinite,
-            child: Text(state.props.toString()),
-            // child: Text("welcome, ${(state as AuthSignInSuccess).user.name}"),
-          );
+          if (state is AuthSignInSuccess) {
+            return Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: Text(state.user.toString()),
+            );
+          } else {
+            return Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: Text(state.toString()),
+            );
+          }
         },
       ),
       // child: BlocBuilder<ChipBloc, ChipState>(

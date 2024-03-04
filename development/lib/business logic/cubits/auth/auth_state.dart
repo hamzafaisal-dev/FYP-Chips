@@ -50,12 +50,11 @@ final class AuthSignUpLoading extends AuthState {}
 
 final class AuthSignUpSuccess extends AuthState {
   final UserModel user;
-  final String password;
 
-  const AuthSignUpSuccess({required this.user, required this.password});
+  const AuthSignUpSuccess({required this.user});
 
   @override
-  List<Object> get props => [user, password];
+  List<Object> get props => [user];
 }
 
 final class AuthSignUpFailure extends AuthState {

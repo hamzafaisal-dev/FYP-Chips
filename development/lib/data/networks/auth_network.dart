@@ -52,8 +52,7 @@ class AuthNetwork {
   }
 
   // send otp email
-  Future<Map<String, dynamic>> sendOtpEmail(
-      String email, String name, String password) async {
+  Future<Map<String, dynamic>> sendOtpEmail(String email, String name) async {
     final url = Uri.https(NetworkURLS.baseUrl1, '/sendOtpEmail');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
@@ -70,7 +69,6 @@ class AuthNetwork {
           'success': true,
           'otp': responseData['otp'].toString(),
           'name': name,
-          'password': password,
           'receiver': responseData['receiver'].toString(),
         };
       } else {

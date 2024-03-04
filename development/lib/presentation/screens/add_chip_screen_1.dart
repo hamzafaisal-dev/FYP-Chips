@@ -1,13 +1,10 @@
 import 'dart:io';
-
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
-import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toastification/toastification.dart';
 
 class AddChipScreen1 extends StatefulWidget {
   const AddChipScreen1({super.key});

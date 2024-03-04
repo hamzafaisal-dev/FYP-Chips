@@ -77,7 +77,9 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _authRepository.sendOnboardingEmail(
           userModel.email, userModel.name);
-    } catch (error) {}
+    } catch (error) {
+      emit(AuthOtpEmailFailedToSend(message: error.toString()));
+    }
   }
 
   // email password sign up
@@ -87,7 +89,8 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       UserModel user =
           await _authRepository.emailPasswordSignUp(name, email, password);
-      emit(AuthSignUpSuccess(user: user, password: password));
+      emit(AuthSignUpSuccess(user: user));
+      emit(AuthSignInSuccess(user: user));
     } catch (error) {
       emit(AuthSignUpFailure(message: error.toString()));
       emit(AuthInitial());
