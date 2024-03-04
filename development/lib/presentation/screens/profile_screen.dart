@@ -1,6 +1,7 @@
 import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 // import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/chip_model.dart';
@@ -11,6 +12,7 @@ import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,24 +26,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late UserModel? _authenticatedUser;
-
-  void _logOut() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CustomDialog(
-          dialogTitle: 'Are you sure?',
-          dialogContent: 'Do you want to log out?',
-          buttonOneText: 'Cancel',
-          buttonTwoText: 'Log Out',
-          buttonOneOnPressed: () => Navigator.pop(context),
-          buttonTwoOnPressed: () {},
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -110,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 // name
                                 Text(
-                                  _authenticatedUser?.username ?? '',
+                                  'm.aun.23084',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
@@ -119,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                 // email
                                 Text(
-                                  _authenticatedUser?.email ?? '',
+                                  'm.aun.23084@khi.iba.edu.pk',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -148,10 +132,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         //
-                        UserStatSection(
+                        const UserStatSection(
                           statisticName: 'Posted Chips',
-                          statisticValue:
-                              _authenticatedUser?.postedChips.length ?? 0,
+                          statisticValue: 18,
                         ),
 
                         // divider
@@ -165,10 +148,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
 
-                        UserStatSection(
+                        const UserStatSection(
                           statisticName: 'Saved Chips',
-                          statisticValue:
-                              _authenticatedUser?.favoritedChips.length ?? 0,
+                          statisticValue: 36,
                         ),
                       ],
                     ),
@@ -178,29 +160,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             // sign out
-            // Padding(
-            //   padding: EdgeInsets.only(bottom: 10.h),
-            //   child: SettingsActionTile(
-            //     title: 'Sign Out',
-            //     leadingIcon: SvgPicture.asset(
-            //       // this icon will change later on
-            //       AssetPaths.notificationBellIconPath,
-            //       width: 18.w,
-            //       height: 18.h,
-            //     ),
-            //     trailingIcon: Icons.arrow_forward_ios_rounded,
-            //     onTap: _logOut,
-            //   ),
-            // ),
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthInitial) {
+                  NavigationService.routeToReplacementNamed('/login');
+                  HelperWidgets.showSnackbar(
+                    context,
+                    "You have been signed out successfully!",
+                    "success",
+                  );
+                }
+              },
+              builder: (context, state) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 10.h),
+                  child: SettingsActionTile(
+                    title: 'Sign Out',
+                    leadingIcon: SvgPicture.asset(
+                      // this icon will change later on
+                      AssetPaths.notificationBellIconPath,
+                      width: 18.w,
+                      height: 18.h,
+                    ),
+                    trailingIcon: Icons.arrow_forward_ios_rounded,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustomDialog(
+                            dialogTitle: 'Are you sure?',
+                            dialogContent: 'Do you want to log out?',
+                            buttonOneText: 'Cancel',
+                            buttonTwoText: 'Log Out',
+                            buttonOneOnPressed: () => Navigator.pop(context),
+                            buttonTwoOnPressed: () {
+                              HelperWidgets.showSnackbar(
+                                context,
+                                "Signing you out...",
+                                "info",
+                              );
+                              context.read<AuthCubit>().signOut();
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
 
             // your chips
-            Padding(
-              padding: EdgeInsets.only(bottom: 6.h),
-              child: Text(
-                'Your Chips',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 6.h),
+            //   child: Text(
+            //     'Your Chips',
+            //     style: Theme.of(context).textTheme.headlineSmall,
+            //   ),
+            // ),
 
             // user's chips
             // BlocBuilder<ChipBloc, ChipState>(
@@ -234,7 +251,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //               );
             //             }
 
-<<<<<<< HEAD
             //             return Expanded(
             //               child: ListView.builder(
             //                 itemCount: _authenticatedUser?.postedChips.length,
@@ -247,13 +263,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //                           userChipIds.contains(chip.chipId))
             //                       .toList();
             //                   var chipObject = userChips[index];
-=======
-                          return Expanded(
-                            child: ListView.builder(
-                              itemCount: _authenticatedUser?.postedChips.length,
-                              itemBuilder: (context, index) {
-                                var chipObject = snapshot.data![index];
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
             //                   return Padding(
             //                     padding: EdgeInsets.only(bottom: 10.8.h),

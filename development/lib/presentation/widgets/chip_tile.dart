@@ -35,7 +35,6 @@ class _ChipTileState extends State<ChipTile> {
         ),
         child: InkWell(
           onTap: widget.onTap,
-          splashColor: Colors.transparent,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

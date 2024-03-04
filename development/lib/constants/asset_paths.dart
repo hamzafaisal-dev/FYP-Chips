@@ -12,10 +12,12 @@ class AssetPaths {
       'assets/images/banners/home_screen_banner.png';
   static const String resetPasswordScreenBannerPath =
       'assets/images/banners/reset_password_screen_banner.png';
-  static const String signupScreenBannerPath =
+  static const String signUpScreenBannerPath =
       'assets/images/banners/signup_screen_banner.png';
-  static const String loginScreenBannerPath =
+  static const String signInScreenBannerPath =
       'assets/images/banners/login_screen_banner.svg';
+  static const String otpScreenBannerPath =
+      'assets/images/banners/otp_screen_banner.svg';
 
   // images: icons
   static const String aboutIconPath = 'assets/images/icons/about_icon.svg';

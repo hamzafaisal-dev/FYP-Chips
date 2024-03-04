@@ -1,3 +1,4 @@
+import 'package:development/presentation/screens/otp_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
           home: const SignInScreen(),
+          // home: const OtpScreen(),
         ),
       ),
     );

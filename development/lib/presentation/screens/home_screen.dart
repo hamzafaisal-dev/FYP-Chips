@@ -1,5 +1,7 @@
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,32 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late UserModel _user;
+  // late UserModel _user;
 
-  final _searchController = TextEditingController();
+  // final _searchController = TextEditingController();
 
   @override
   void initState() {
-    // final chipBloc = BlocProvider.of<ChipBloc>(context);
-
-    // final authBlocBloc = BlocProvider.of<AuthBloc>(context);
-    // final signUpBloc = BlocProvider.of<SignUpBloc>(context);
-    // final signInBloc = BlocProvider.of<SignInBloc>(context);
-
-    // if (authBlocBloc.state is AuthStateAuthenticated) {
-    //   _authenticedUser =
-    //       (authBlocBloc.state as AuthStateAuthenticated).authenticatedUser;
-    // } else if (signUpBloc.state is SignUpValidState) {
-    //   _authenticedUser = (signUpBloc.state as SignUpValidState).newUser;
-    // } else if (signInBloc.state is SignInValidState) {
-    //   _authenticedUser =
-    //       (signInBloc.state as SignInValidState).authenticatedUser;
-    // }
-
-    // if (chipBloc.state is! ChipsStreamLoaded) {
-    //   chipBloc.add(const FetchChipsStream());
-    // }
-
     super.initState();
   }
 
@@ -43,10 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Container(
-        height: 20,
-        width: 20,
-        color: Colors.amber,
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          return Container(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            child: Text(state.props.toString()),
+            // child: Text("welcome, ${(state as AuthSignInSuccess).user.name}"),
+          );
+        },
       ),
       // child: BlocBuilder<ChipBloc, ChipState>(
       //   builder: (context, state) {

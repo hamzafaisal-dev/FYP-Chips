@@ -9,27 +9,51 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-final class AuthLoading extends AuthState {}
+// email password sign in
+final class AuthSignInLoading extends AuthState {}
 
-final class AuthSuccess extends AuthState {
+final class AuthSignInSuccess extends AuthState {
   final UserModel user;
 
-  const AuthSuccess({required this.user});
+  const AuthSignInSuccess({required this.user});
 
   @override
   List<Object> get props => [user];
 }
 
-final class AuthFailure extends AuthState {
+final class AuthSignInFailure extends AuthState {
   final String message;
 
-  const AuthFailure({required this.message});
+  const AuthSignInFailure({required this.message});
 
   @override
   List<Object> get props => [message];
 }
 
-final class AuthSignedOut extends AuthState {}
+// email password sign up
+final class AuthSignUpLoading extends AuthState {}
+
+final class AuthSignUpSuccess extends AuthState {
+  final UserModel user;
+  final String password;
+
+  const AuthSignUpSuccess({required this.user, required this.password});
+
+  @override
+  List<Object> get props => [user, password];
+}
+
+final class AuthSignUpFailure extends AuthState {
+  final String message;
+
+  const AuthSignUpFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// email otp verification
+final class AuthOtpEmailSending extends AuthState {}
 
 final class AuthOtpEmailSent extends AuthState {
   final String email;
@@ -46,6 +70,15 @@ final class AuthOtpEmailSent extends AuthState {
 
   @override
   List<Object> get props => [email, otp];
+}
+
+final class AuthOtpEmailFailedToSend extends AuthState {
+  final String message;
+
+  const AuthOtpEmailFailedToSend({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 
 final class AuthOtpVerified extends AuthState {
@@ -78,6 +111,20 @@ final class AuthOtpNotVerified extends AuthState {
   List<Object> get props => [email, name, password];
 }
 
+// onboarding email
+final class AuthSendingOnboardingEmail extends AuthState {}
+
+final class AuthOnboardingEmailSent extends AuthState {}
+
+final class AuthOnboardingEmailFailedToSend extends AuthState {
+  final String message;
+
+  const AuthOnboardingEmailFailedToSend({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
 // other
 final class AuthPasswordResetEmailSent extends AuthState {}
 
@@ -90,7 +137,9 @@ final class AuthPasswordResetEmailFailed extends AuthState {
   List<Object> get props => [message];
 }
 
-final class AuthPasswordReset extends AuthState {}
+final class AuthPasswordResetLoading extends AuthState {}
+
+final class AuthPasswordResetSuccessful extends AuthState {}
 
 final class AuthPasswordResetFailed extends AuthState {
   final String message;

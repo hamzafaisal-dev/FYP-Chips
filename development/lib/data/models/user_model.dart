@@ -64,7 +64,7 @@ class UserModel {
       userId: userId ?? this.userId,
       role: role ?? this.role,
       email: email ?? this.email,
-      username: userName ?? this.username,
+      username: userName ?? username,
       name: name ?? this.name,
       postedChips: postedChips ?? this.postedChips,
       appliedChips: appliedChips ?? this.appliedChips,

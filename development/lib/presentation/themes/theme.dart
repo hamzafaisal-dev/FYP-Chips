@@ -35,6 +35,7 @@ class CustomAppTheme {
       onBackground: Colors.grey, // to be decided
     ),
 
+    // scaffoldBackgroundColor: CustomColors.lightPurple,
     scaffoldBackgroundColor: const Color(0XFFFFF3E9),
 
     appBarTheme: CustomAppbarTheme.lightAppbarTheme,

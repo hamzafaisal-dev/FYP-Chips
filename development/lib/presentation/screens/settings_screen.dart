@@ -81,7 +81,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                         // email
                         Text(
-                          _authenticatedUser?.email ?? '',
+                          // _authenticatedUser?.email ?? '',
+                          "m.aun.23084@khi.iba.edu.pk",
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Theme.of(context)

@@ -12,27 +12,25 @@ class AuthCubit extends Cubit<AuthState> {
 
   // email password sign in
   Future<void> emailPasswordSignIn(String email, String password) async {
-    emit(AuthLoading());
+    emit(AuthSignInLoading());
     try {
       UserModel user =
           await _authRepository.emailPasswordSignIn(email, password);
-      emit(AuthSuccess(user: user));
+      emit(AuthSignInSuccess(user: user));
     } catch (error) {
-      emit(AuthFailure(message: error.toString()));
-      emit(AuthInitial());
+      emit(AuthSignInFailure(message: error.toString()));
     }
   }
 
   // sign out
   Future<void> signOut() async {
     _authRepository.signOut();
-    emit(AuthSignedOut());
     emit(AuthInitial());
   }
 
   // send otp email
   Future<void> sendOtpEmail(String email, String name, String password) async {
-    emit(AuthLoading());
+    emit(AuthOtpEmailSending());
     try {
       Map<String, dynamic> response =
           await _authRepository.sendOtpEmail(email, name, password);
@@ -43,8 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
         password: response['password'],
       ));
     } catch (error) {
-      emit(AuthFailure(message: error.toString()));
-      emit(AuthInitial());
+      emit(AuthOtpEmailFailedToSend(message: error.toString()));
     }
   }
 
@@ -58,16 +55,24 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // send onboarding email
+  Future<void> sendOnboardingEmail(UserModel userModel) async {
+    try {
+      await _authRepository.sendOnboardingEmail(
+          userModel.email, userModel.name);
+    } catch (error) {}
+  }
+
   // email password sign up
   Future<void> emailPasswordSignUp(
       String name, String email, String password) async {
-    emit(AuthLoading());
+    emit(AuthSignUpLoading());
     try {
       UserModel user =
           await _authRepository.emailPasswordSignUp(name, email, password);
-      emit(AuthSuccess(user: user));
+      emit(AuthSignUpSuccess(user: user, password: password));
     } catch (error) {
-      emit(AuthFailure(message: error.toString()));
+      emit(AuthSignUpFailure(message: error.toString()));
       emit(AuthInitial());
     }
   }

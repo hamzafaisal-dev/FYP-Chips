@@ -9,11 +9,9 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
-import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 class AddChipScreen2 extends StatefulWidget {
   const AddChipScreen2({super.key, this.arguments});
@@ -34,23 +32,16 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
   late String _chipTitle;
   late String _companyTitle;
-<<<<<<< HEAD
   late String _applicationLink;
   late DateTime? _chipDeadline;
-=======
-  DateTime? _chipDeadline = null;
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
   void _createChip() {
-    if (_chipDeadline == null) {
-      HelperWidgets.showSnackbar(
-        context,
-        'Please select a valid deadline',
-        'error',
-      );
-    }
+    if (_addChipFormKey.currentState!.validate()) {
+      print(_chipTitle);
+      print(_companyTitle);
 
-<<<<<<< HEAD
+      print(_chipDeadline);
+
       // BlocProvider.of<ChipBloc>(context).add(
       //   UploadChipEvent(
       //     jobTitle: _chipTitle,
@@ -68,26 +59,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       //     updatedUser: _authenticatedUser,
       //   ),
       // );
-=======
-    if (_addChipFormKey.currentState!.validate() && _chipDeadline != null) {
-      BlocProvider.of<ChipBloc>(context).add(
-        UploadChipEvent(
-          jobTitle: _chipTitle,
-          companyName: _companyTitle,
-          description: widget.arguments!["chipDetails"],
-          jobMode: 'on-site',
-          chipFile: widget.arguments!["chipImage"],
-          locations: const [],
-          jobType: 'full-time',
-          experienceRequired: 20,
-          deadline: _chipDeadline!,
-          skills: const [],
-          salary: 0,
-          updatedUser: _authenticatedUser,
-          uploaderAvatar: _authenticatedUser.userName,
-        ),
-      );
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
     }
   }
 
@@ -100,12 +71,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       _selectedImage = widget.arguments!["chipImage"];
     }
 
-<<<<<<< HEAD
     // access the auth blok using the context
     // final authBloc = BlocProvider.of<AuthBloc>(context);
-=======
-    final authBloc = BlocProvider.of<AuthBloc>(context);
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
     // if (authBloc.state is AuthStateAuthenticated) {
     //   _authenticatedUser =
@@ -122,7 +89,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
             horizontal: 12,
             vertical: 14,
           ),
-<<<<<<< HEAD
           // child: BlocConsumer<ChipBloc, ChipState>(
           //   listener: (context, state) {
           //     if (state is ChipSuccess) {
@@ -148,45 +114,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           //                     iconHeight: 16.h,
           //                     onTap: () => Navigator.of(context).pop(),
           //                   ),
-=======
-          child: BlocConsumer<ChipBloc, ChipState>(
-            listener: (context, state) {
-              if (state is ChipSuccess) {
-                HelperWidgets.showSnackbar(
-                  context,
-                  'Chip created successfully!',
-                  'success',
-                );
-
-                NavigationService.routeToReplacementNamed('/layout');
-              } else if (state is ChipError) {
-                HelperWidgets.showSnackbar(
-                  context,
-                  state.errorMsg,
-                  'error',
-                );
-              }
-            },
-            builder: (context, state) {
-              return Form(
-                key: _addChipFormKey,
-                child: ListView(
-                  children: [
-                    //
-                    Column(
-                      children: [
-                        // back icon + select image btn + post btn
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //
-                            CustomIconButton(
-                              iconSvgPath: AssetPaths.leftArrowIconPath,
-                              iconWidth: 16.w,
-                              iconHeight: 16.h,
-                              onTap: () => Navigator.of(context).pop(),
-                            ),
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
           //                   // post btn
           //                   OutlinedButton(
@@ -221,7 +148,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
           //           const SizedBox(height: 20),
 
-<<<<<<< HEAD
           //           Row(
           //             children: [
           //               //
@@ -255,53 +181,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           //               const Spacer(),
           //             ],
           //           ),
-=======
-                    CustomTextFormField(
-                      label: ' Company Title ',
-                      validatorFunction: (value) {
-                        _companyTitle = value;
-
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Row(
-                      children: [
-                        //
-                        IconButton(
-                          onPressed: () async {
-                            final selectedDate = await showDatePicker(
-                              helpText: 'Select Chip Deadline',
-                              context: context,
-                              firstDate: DateTime(2023),
-                              lastDate: DateTime(2025),
-                            );
-
-                            if (selectedDate != null &&
-                                selectedDate != _chipDeadline) {
-                              print(_chipDeadline);
-                              setState(() {
-                                _chipDeadline = selectedDate;
-                              });
-                            }
-                          },
-                          icon: const Icon(Icons.calendar_month),
-                          iconSize: 26,
-                        ),
-
-                        // const SizedBox(width: 8),
-
-                        Text(
-                          _chipDeadline == null
-                              ? 'Select Chip Deadline'
-                              : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
           //           const SizedBox(height: 20),
 
@@ -313,7 +192,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           //                 .copyWith(fontSize: 22),
           //           ),
 
-<<<<<<< HEAD
           //           TextField(
           //             readOnly: true,
           //             controller: _chipDetailsController,
@@ -334,28 +212,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           //             keyboardType: TextInputType.multiline,
           //             textInputAction: TextInputAction.done,
           //           ),
-=======
-                    TextField(
-                      readOnly: true,
-                      controller: _chipDetailsController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: "Chip sauce here",
-                        hintStyle:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .color!
-                                      .withOpacity(0.5),
-                                ),
-                      ),
-                      scrollPadding: const EdgeInsets.all(20.0),
-                      autofocus: true,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
-                    ),
->>>>>>> 07c33ee496175183658a10bf071f0442e74b13f5
 
           //           // const SizedBox(height: 10),
 

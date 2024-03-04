@@ -3,6 +3,7 @@ import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               // Image
               Image.asset(
-                AssetPaths.signupScreenBannerPath,
+                AssetPaths.signUpScreenBannerPath,
                 height: 200.h,
                 width: 187.76.w,
               ),
@@ -159,10 +160,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //sign up button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  if (state is AuthLoading) {
-                    print('sign up loading');
-                  } else if (state is AuthSuccess) {
-                    print(state.user);
+                  if (state is AuthOtpEmailSending) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Sending OTP to your email...",
+                      'info',
+                    );
+                  }
+                  if (state is AuthOtpEmailFailedToSend) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Failed to send OTP to your email: ${state.message} Please try again.",
+                      'error',
+                    );
                   }
                   if (state is AuthOtpEmailSent) {
                     print("otp sent to: ${state.email}");
@@ -180,17 +190,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is AuthLoading)
+                    onPressed: (state is AuthOtpEmailSending)
                         ? null
                         : () {
                             if (_signUpFormKey.currentState!.validate()) {
                               context.read<AuthCubit>().sendOtpEmail(
-                                  _emailController.text,
-                                  _nameController.text,
-                                  _passwordController.text);
+                                    _emailController.text,
+                                    _nameController.text,
+                                    _passwordController.text,
+                                  );
                             }
                           },
-                    child: (state is AuthLoading)
+                    child: (state is AuthOtpEmailSending)
                         ? SizedBox(
                             height: 23.4.h,
                             width: 23.4.w,
@@ -214,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                   ),
                   InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/login'),
+                    onTap: () => NavigationService.goBack(),
                     child: Text(
                       "Sign In",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(

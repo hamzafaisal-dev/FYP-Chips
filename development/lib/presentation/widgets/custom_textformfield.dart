@@ -46,8 +46,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         if (value == null || value == '') {
           return 'Enter a valid value';
         }
-
         widget.validatorFunction(value);
+
+        _textFormFieldController.clear();
 
         return null;
       },

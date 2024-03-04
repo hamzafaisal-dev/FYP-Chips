@@ -1,11 +1,14 @@
 import 'package:development/business%20logic/blocs/sign_in/sign_in_bloc.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -16,24 +19,10 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   bool _isPasswordVisible = false;
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _loginFormKey = GlobalKey<FormState>();
-
-  void _handleLogin() {
-    // // handle login code
-    // print(_emailController.text);
-    // print(_passwordController.text);
-
-    // BlocProvider.of<SignInBloc>(context).add(
-    //   SignInSubmittedEvent(
-    //     _emailController.text,
-    //     _passwordController.text,
-    //   ),
-    // );
-  }
 
   @override
   void dispose() {
@@ -45,27 +34,35 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Form(
           key: _loginFormKey,
           child: ListView(
-            padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 24.h),
             children: [
-              SizedBox(height: 302.h),
+              SizedBox(height: 81.h),
+
+              // banner
+              SvgPicture.asset(
+                AssetPaths.signInScreenBannerPath,
+                width: 374.w,
+              ),
 
               // welcome
               Text(
-                'Welcome To Chips',
+                'Welcome to Chips!🍟',
                 style: Theme.of(context).textTheme.headlineLarge,
+                textAlign: TextAlign.center,
               ),
 
               // quote
               Text(
-                'A one stop shop for internChips and job sauce',
+                "IBA's one stop shop for internChips and job sauce.",
                 style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: 25.h),
+              SizedBox(height: 23.4.h),
 
               // email form field
               TextFormField(
@@ -115,25 +112,41 @@ class _SignInScreenState extends State<SignInScreen> {
               //login button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  print(state);
-                  if (state is AuthLoading) {
-                    print('sign in loading');
-                  } else if (state is AuthSuccess) {
-                    print(state.user);
-
-                    NavigationService.routeToReplacementNamed('/layout');
+                  if (state is AuthSignInSuccess) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Signed in successfully!",
+                      "success",
+                    );
+                    NavigationService.routeToNamed("/layout");
+                  }
+                  if (state is AuthSignInFailure) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Failed to sign in: ${state.message}",
+                      "error",
+                    );
+                  }
+                  if (state is AuthSignInLoading) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "Signing you in...",
+                      "info",
+                    );
                   }
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is AuthLoading)
+                    onPressed: (state is AuthSignInLoading)
                         ? null
                         : () {
                             if (_loginFormKey.currentState!.validate()) {
-                              _handleLogin();
+                              context.read<AuthCubit>().emailPasswordSignIn(
+                                  _emailController.text,
+                                  _passwordController.text);
                             }
                           },
-                    child: (state is AuthLoading)
+                    child: (state is AuthSignInLoading)
                         ? SizedBox(
                             width: 23.4.w,
                             height: 23.4.h,
@@ -144,15 +157,14 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
               ),
 
-              SizedBox(height: 13.h),
+              SizedBox(height: 18.h),
 
               // forgot password
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () =>
-                        NavigationService.routeToNamed("/reset-password"),
+                    onTap: () {},
                     child: Text(
                       'Forgot Password?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(

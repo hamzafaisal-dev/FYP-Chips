@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:development/constants/network_urls.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class AuthNetwork {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _baseUrl = 'ayekaunic.pythonanywhere.com';
 
   Stream<User?> get userAuthChangeStream => _firebaseAuth.userChanges();
 
@@ -55,9 +56,12 @@ class AuthNetwork {
   // send otp email
   Future<Map<String, dynamic>> sendOtpEmail(
       String email, String name, String password) async {
-    final url = Uri.https(_baseUrl, '/sendOtpEmail');
+    final url = Uri.https(NetworkURLS.baseUrl1, '/sendOtpEmail');
     final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({'email': email});
+    final body = jsonEncode({
+      'email': email,
+      'name': name,
+    });
 
     try {
       final response = await http.post(url, headers: headers, body: body);
@@ -66,12 +70,10 @@ class AuthNetwork {
         final responseData = jsonDecode(response.body);
         return {
           'success': true,
-          'message': responseData['message'].toString(),
           'otp': responseData['otp'].toString(),
           'name': name,
           'password': password,
           'receiver': responseData['receiver'].toString(),
-          'status': responseData['status'].toString(),
         };
       } else {
         return {
@@ -95,7 +97,7 @@ class AuthNetwork {
   // send onboarding email
   Future<Map<String, dynamic>> sendOnboardingEmail(
       String email, String name) async {
-    final url = Uri.https(_baseUrl, '/sendWelcomeEmail');
+    final url = Uri.https(NetworkURLS.baseUrl1, '/sendWelcomeEmail');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({'email': email, 'name': name});
 

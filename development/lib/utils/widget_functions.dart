@@ -10,7 +10,7 @@ class HelperWidgets {
 
     if (toastType.toLowerCase() == 'success') {
       type = ToastificationType.success;
-      primaryColor = Colors.greenAccent;
+      primaryColor = Colors.green;
       iconData = Icons.check;
     } else if (toastType.toLowerCase() == 'error') {
       type = ToastificationType.error;
@@ -18,8 +18,7 @@ class HelperWidgets {
       iconData = Icons.error;
     } else if (toastType.toLowerCase() == 'info') {
       type = ToastificationType.info;
-      primaryColor =
-          Colors.blueAccent; // You can customize the color for info type
+      primaryColor = Colors.blueAccent;
       iconData = Icons.info;
     } else {
       // Default to error type if the provided toast type is not recognized
@@ -32,10 +31,10 @@ class HelperWidgets {
       context: context,
       type: type,
       style: ToastificationStyle.fillColored,
-      autoCloseDuration: const Duration(seconds: 5),
+      autoCloseDuration: const Duration(seconds: 3, milliseconds: 699),
       title: Text(toastContent),
       alignment: Alignment.bottomCenter,
-      animationDuration: const Duration(milliseconds: 200),
+      animationDuration: const Duration(milliseconds: 180),
       icon: Icon(
         iconData,
         color: Colors.white,
