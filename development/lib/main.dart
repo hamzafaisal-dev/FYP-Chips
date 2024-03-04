@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
           home: const SignInScreen(),
-          // home: const OtpScreen(),
         ),
       ),
     );
