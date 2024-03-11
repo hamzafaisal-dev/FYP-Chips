@@ -68,7 +68,6 @@ class AuthNetwork {
         return {
           'success': true,
           'otp': responseData['otp'].toString(),
-          'name': name,
           'receiver': responseData['receiver'].toString(),
         };
       } else {

@@ -11,7 +11,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  const OtpScreen({
+    super.key,
+    required this.email,
+    required this.name,
+    required this.password,
+    required this.otp,
+  });
+
+  final String email;
+  final String name;
+  final String password;
+  final String otp;
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -20,11 +31,6 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _set = false;
-  late String _otp;
-  late String _email;
-  late String _name;
-  late String _password;
 
   @override
   void dispose() {
@@ -39,37 +45,12 @@ class _OtpScreenState extends State<OtpScreen> {
       body: SafeArea(
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is AuthOtpEmailSending) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Sending OTP, please hold on...',
-                'info',
-              );
-            }
-            if (state is AuthOtpEmailSent) {
-              HelperWidgets.showSnackbar(
-                context,
-                'OTP sent to ${state.email}',
-                'info',
-              );
-            }
-            if (state is AuthOtpEmailFailedToSend) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Failed to send OTP: ${state.message}',
-                'error',
-              );
-            }
             if (state is AuthOtpVerified) {
-              HelperWidgets.showSnackbar(
-                context,
-                'OTP Verified Successfully!',
-                'success',
-              );
+              print("state: $state");
               context.read<AuthCubit>().emailPasswordSignUp(
-                    state.name.toString(),
-                    state.email.toString(),
-                    state.password.toString(),
+                    widget.name,
+                    widget.email,
+                    widget.password,
                   );
             }
             if (state is AuthOtpNotVerified) {
@@ -82,7 +63,7 @@ class _OtpScreenState extends State<OtpScreen> {
             if (state is AuthSignUpLoading) {
               HelperWidgets.showSnackbar(
                 context,
-                'Creating your account, please hold on...',
+                'OTP Verified Successfully! Creating your account...',
                 'info',
               );
             }
@@ -102,28 +83,9 @@ class _OtpScreenState extends State<OtpScreen> {
               );
             }
             if (state is AuthSignInSuccess) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Signed in Successfully!',
-                'success',
-              );
               NavigationService.routeToReplacementNamed('/layout');
             }
-            if (state is AuthSignInLoading) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Signing you in, please hold on...',
-                'info',
-              );
-            }
-            if (state is AuthSignInSuccess) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Signed in Successfully!',
-                'success',
-              );
-              NavigationService.routeToReplacementNamed('/layout');
-            }
+            if (state is AuthSignInLoading) {}
             if (state is AuthSignInFailure) {
               HelperWidgets.showSnackbar(
                 context,
@@ -169,17 +131,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       // email
                       Text(
-                        state is AuthOtpEmailSent
-                            ? state.email
-                            : state is AuthOtpVerified
-                                ? state.email
-                                : state is AuthOtpNotVerified
-                                    ? state.email
-                                    : state is AuthSignInSuccess
-                                        ? state.user.email
-                                        : state is AuthSignUpSuccess
-                                            ? state.user.email
-                                            : _email,
+                        widget.email.toLowerCase(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -206,21 +158,9 @@ class _OtpScreenState extends State<OtpScreen> {
                             'Verifying OTP, please hold on...',
                             'info',
                           );
-                          if (!_set) {
-                            setState(() {
-                              _otp = (state as AuthOtpEmailSent).otp;
-                              _email = (state).email;
-                              _name = (state).name;
-                              _password = (state).password;
-                              _set = true;
-                            });
-                          }
                           context.read<AuthCubit>().verifyOtp(
                                 _otpController.text,
-                                _otp,
-                                _email,
-                                _name,
-                                _password,
+                                widget.otp,
                               );
                         },
                       ),
@@ -244,11 +184,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        _set = false;
-                                      });
                                       context.read<AuthCubit>().sendOtpEmail(
-                                          _email, _name, _password);
+                                            widget.email,
+                                            widget.name,
+                                          );
                                     },
                                     child: Text(
                                       'Resend Code',
@@ -265,11 +204,10 @@ class _OtpScreenState extends State<OtpScreen> {
                             : state is AuthOtpNotVerified
                                 ? InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        _set = false;
-                                      });
                                       context.read<AuthCubit>().sendOtpEmail(
-                                          _email, _name, _password);
+                                            widget.email,
+                                            widget.name,
+                                          );
                                     },
                                     child: Text(
                                       'Resend Code',

@@ -31,7 +31,7 @@ final class AuthSignInFailure extends AuthState {
 }
 
 // email password sign up
-final class AuthCheckingIfUserExists extends AuthState {}
+final class AuthCheckingIfUserAlreadyExists extends AuthState {}
 
 final class AuthFailureCheckingUserExistance extends AuthState {
   final String message;
@@ -42,7 +42,7 @@ final class AuthFailureCheckingUserExistance extends AuthState {
   List<Object> get props => [message];
 }
 
-final class AuthUserExists extends AuthState {}
+final class AuthUserAlreadyExists extends AuthState {}
 
 final class AuthUserDoesNotExist extends AuthState {}
 
@@ -72,14 +72,10 @@ final class AuthOtpEmailSending extends AuthState {}
 final class AuthOtpEmailSent extends AuthState {
   final String email;
   final String otp;
-  final String name;
-  final String password;
 
   const AuthOtpEmailSent({
     required this.email,
     required this.otp,
-    required this.name,
-    required this.password,
   });
 
   @override
@@ -95,35 +91,9 @@ final class AuthOtpEmailFailedToSend extends AuthState {
   List<Object> get props => [message];
 }
 
-final class AuthOtpVerified extends AuthState {
-  final String email;
-  final String name;
-  final String password;
+final class AuthOtpVerified extends AuthState {}
 
-  const AuthOtpVerified({
-    required this.email,
-    required this.name,
-    required this.password,
-  });
-
-  @override
-  List<Object> get props => [email, name, password];
-}
-
-final class AuthOtpNotVerified extends AuthState {
-  final String email;
-  final String name;
-  final String password;
-
-  const AuthOtpNotVerified({
-    required this.email,
-    required this.name,
-    required this.password,
-  });
-
-  @override
-  List<Object> get props => [email, name, password];
-}
+final class AuthOtpNotVerified extends AuthState {}
 
 // onboarding email
 final class AuthSendingOnboardingEmail extends AuthState {}

@@ -29,16 +29,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // send otp email
-  Future<void> sendOtpEmail(String email, String name, String password) async {
+  Future<void> sendOtpEmail(String email, String name) async {
     emit(AuthOtpEmailSending());
     try {
       Map<String, dynamic> response =
-          await _authRepository.sendOtpEmail(email, name, password);
+          await _authRepository.sendOtpEmail(email, name);
       emit(AuthOtpEmailSent(
         email: email,
         otp: response['otp'],
-        name: response['name'],
-        password: response['password'],
       ));
     } catch (error) {
       emit(AuthOtpEmailFailedToSend(message: error.toString()));
@@ -46,13 +44,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // check if user exists
-  Future<void> checkIfUserExists(String email) async {
-    emit(AuthCheckingIfUserExists());
+  Future<void> checkIfUserAlreadyExists(String email) async {
+    emit(AuthCheckingIfUserAlreadyExists());
     try {
       bool exists = await _authRepository.checkIfUserExists(email);
       if (exists) {
-        emit(AuthUserExists());
-        await Future.delayed(const Duration(microseconds: 9));
+        emit(AuthUserAlreadyExists());
         emit(AuthInitial());
       } else {
         emit(AuthUserDoesNotExist());
@@ -63,12 +60,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // verify otp
-  Future<void> verifyOtp(String userInput, String otp, String email,
-      String name, String password) async {
+  Future<void> verifyOtp(String userInput, String otp) async {
     if (_authRepository.verifyOtp(userInput, otp)) {
-      emit(AuthOtpVerified(email: email, name: name, password: password));
+      emit(AuthOtpVerified());
     } else {
-      emit(AuthOtpNotVerified(email: email, name: name, password: password));
+      emit(AuthOtpNotVerified());
     }
   }
 
