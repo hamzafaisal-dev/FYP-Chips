@@ -1,3 +1,4 @@
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
@@ -15,18 +16,23 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late UserModel? _authenticatedUser;
+  late final UserModel? _authenticatedUser;
 
   @override
   void initState() {
-    // AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
 
+    AuthState authState = context.read<AuthCubit>().state;
+
+    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
+
+    // final chipBloc = BlocProvider.of<ChipBloc>(context);
+
+    // final authBloc = BlocProvider.of<AuthBloc>(context);
     // if (authBloc.state is AuthStateAuthenticated) {
     //   _authenticatedUser =
     //       (authBloc.state as AuthStateAuthenticated).authenticatedUser;
     // }
-
-    super.initState();
   }
 
   @override
@@ -80,8 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                         // email
                         Text(
-                          // _authenticatedUser?.email ?? '',
-                          "m.aun.23084@khi.iba.edu.pk",
+                          _authenticatedUser?.email ?? 'No email found',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: Theme.of(context)

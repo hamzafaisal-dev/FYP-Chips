@@ -330,6 +330,10 @@ class OtpSentDialog extends StatelessWidget {
             Navigator.pop(context);
             NavigationService.routeToReplacementNamed(
               '/otp',
+              arguments: {
+                "email": email,
+                // add more args here. eg: "password": password
+              },
             );
           },
           child: Text(

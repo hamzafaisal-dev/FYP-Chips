@@ -71,9 +71,14 @@ class RouteGenerator {
         );
 
       case '/otp':
-        return MaterialPageRoute(
-          builder: (context) => const OtpScreen(),
-        );
+        {
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) => OtpScreen(arguments: receivedArguments),
+          );
+        }
 
       case '/profile':
         return MaterialPageRoute(

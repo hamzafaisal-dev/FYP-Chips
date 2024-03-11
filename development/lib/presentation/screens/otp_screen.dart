@@ -13,16 +13,10 @@ import 'package:pinput/pinput.dart';
 class OtpScreen extends StatefulWidget {
   const OtpScreen({
     super.key,
-    required this.email,
-    required this.name,
-    required this.password,
-    required this.otp,
+    this.arguments,
   });
 
-  final String email;
-  final String name;
-  final String password;
-  final String otp;
+  final Map<String, dynamic>? arguments;
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -31,6 +25,18 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  late String _userEmail;
+
+  @override
+  void initState() {
+    if (widget.arguments != null) {
+      _userEmail = widget.arguments!["email"];
+      // put rest of the arguments here. eg: _password = widget.arguments!["password"];
+    }
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -47,11 +53,11 @@ class _OtpScreenState extends State<OtpScreen> {
           listener: (context, state) {
             if (state is AuthOtpVerified) {
               print("state: $state");
-              context.read<AuthCubit>().emailPasswordSignUp(
-                    widget.name,
-                    widget.email,
-                    widget.password,
-                  );
+              // context.read<AuthCubit>().emailPasswordSignUp(
+              //       widget.name,
+              //       widget.email,
+              //       widget.password,
+              //     );
             }
             if (state is AuthOtpNotVerified) {
               HelperWidgets.showSnackbar(
@@ -131,7 +137,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       // email
                       Text(
-                        widget.email.toLowerCase(),
+                        _userEmail.toLowerCase(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -158,10 +164,10 @@ class _OtpScreenState extends State<OtpScreen> {
                             'Verifying OTP, please hold on...',
                             'info',
                           );
-                          context.read<AuthCubit>().verifyOtp(
-                                _otpController.text,
-                                widget.otp,
-                              );
+                          // context.read<AuthCubit>().verifyOtp(
+                          //       _otpController.text,
+                          //       widget.otp,
+                          //     );
                         },
                       ),
 
@@ -184,10 +190,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      context.read<AuthCubit>().sendOtpEmail(
-                                            widget.email,
-                                            widget.name,
-                                          );
+                                      // context.read<AuthCubit>().sendOtpEmail(
+                                      //       widget.email,
+                                      //       widget.name,
+                                      //     );
                                     },
                                     child: Text(
                                       'Resend Code',
@@ -204,10 +210,10 @@ class _OtpScreenState extends State<OtpScreen> {
                             : state is AuthOtpNotVerified
                                 ? InkWell(
                                     onTap: () {
-                                      context.read<AuthCubit>().sendOtpEmail(
-                                            widget.email,
-                                            widget.name,
-                                          );
+                                      // context.read<AuthCubit>().sendOtpEmail(
+                                      //       widget.email,
+                                      //       widget.name,
+                                      //     );
                                     },
                                     child: Text(
                                       'Resend Code',

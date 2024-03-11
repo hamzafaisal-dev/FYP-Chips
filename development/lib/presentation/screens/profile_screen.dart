@@ -1,12 +1,8 @@
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 // import 'package:development/constants/custom_colors.dart';
-import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
-import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
@@ -25,9 +21,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late final UserModel? _authenticatedUser;
+
   @override
   void initState() {
     super.initState();
+
+    AuthState authState = context.read<AuthCubit>().state;
+
+    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 
     // final chipBloc = BlocProvider.of<ChipBloc>(context);
 
@@ -93,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 // name
                                 Text(
-                                  'm.aun.23084',
+                                  _authenticatedUser?.username ?? 'User',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
@@ -102,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                 // email
                                 Text(
-                                  'm.aun.23084@khi.iba.edu.pk',
+                                  _authenticatedUser?.email ?? 'No email found',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -131,9 +133,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         //
-                        const UserStatSection(
+                        UserStatSection(
                           statisticName: 'Posted Chips',
-                          statisticValue: 18,
+                          statisticValue:
+                              _authenticatedUser?.postedChips.length ?? 0,
                         ),
 
                         // divider
@@ -147,9 +150,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
 
-                        const UserStatSection(
+                        UserStatSection(
                           statisticName: 'Saved Chips',
-                          statisticValue: 36,
+                          statisticValue:
+                              _authenticatedUser?.favoritedChips.length ?? 0,
                         ),
                       ],
                     ),
@@ -162,6 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is AuthInitial) {
+                  Navigator.pop(context);
                   NavigationService.routeToReplacementNamed('/login');
                   HelperWidgets.showSnackbar(
                     context,
