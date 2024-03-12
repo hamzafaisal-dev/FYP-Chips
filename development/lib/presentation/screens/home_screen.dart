@@ -5,6 +5,7 @@ import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
+import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Expanded(
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: CustomCircularProgressIndicator(),
                         ),
                       );
                     }

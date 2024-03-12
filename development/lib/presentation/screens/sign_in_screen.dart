@@ -9,6 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../widgets/auth_screens_bottom_row.dart';
+import '../widgets/custom_circular_progress_indicator.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -164,11 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: (state is AuthSignInLoading ||
                             state is AuthCheckingIfUserAlreadyExists ||
                             state is AuthUserAlreadyExists)
-                        ? SizedBox(
-                            width: 23.4.w,
-                            height: 23.4.h,
-                            child: const CircularProgressIndicator(),
-                          )
+                        ? const CustomCircularProgressIndicator()
                         : const Text('Login'),
                   );
                 },
@@ -195,26 +194,11 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 6.h),
 
               // don't have an account? sign up
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Don\'t have an account? ',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  ),
-                  InkWell(
-                    onTap: () =>
-                        NavigationService.routeToReplacementNamed("/signup"),
-                    child: Text(
-                      'Sign Up',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                ],
+              AuthScreensBottomRow(
+                label1: "Don't have an account? ",
+                label2: "Sign Up",
+                onTap: () =>
+                    NavigationService.routeToReplacementNamed("/signup"),
               ),
             ],
           ),

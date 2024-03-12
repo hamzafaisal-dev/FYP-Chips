@@ -1,6 +1,8 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
+import 'package:development/presentation/widgets/auth_screens_bottom_row.dart';
+import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/widget_functions.dart';
@@ -239,11 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: (state is AuthOtpEmailSending ||
                             state is AuthCheckingIfUserAlreadyExists ||
                             state is AuthUserDoesNotExist)
-                        ? SizedBox(
-                            height: 23.4.h,
-                            width: 23.4.w,
-                            child: const CircularProgressIndicator(),
-                          )
+                        ? const CustomCircularProgressIndicator()
                         : const Text('Create Account'),
                   );
                 },
@@ -252,26 +250,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 108.h),
 
               // Already have an account?
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account? ",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  ),
-                  InkWell(
-                    onTap: () =>
-                        NavigationService.routeToReplacementNamed('/login'),
-                    child: Text(
-                      "Sign In",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                ],
+              AuthScreensBottomRow(
+                label1: "Already have an account? ",
+                label2: "Sign In",
+                onTap: () =>
+                    NavigationService.routeToReplacementNamed("/login"),
               ),
             ],
           ),

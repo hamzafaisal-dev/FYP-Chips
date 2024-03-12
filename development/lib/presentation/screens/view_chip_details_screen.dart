@@ -1,5 +1,6 @@
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
+import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +122,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                         return child; // If the image is fully loaded, return the original child.
                       } else {
                         return const Center(
-                          child: CircularProgressIndicator(color: Colors.white),
+                          child: CustomCircularProgressIndicator(),
                         );
                       }
                     },

@@ -1,6 +1,8 @@
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
+import 'package:development/presentation/widgets/auth_screens_bottom_row.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,25 +102,10 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 100.h),
 
             // Remember password?
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Remember password? ',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w400,
-                      ),
-                ),
-                InkWell(
-                  onTap: () => Navigator.pushNamed(context, '/login'),
-                  child: Text(
-                    'Login',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ),
-              ],
+            AuthScreensBottomRow(
+              label1: "Remember password? ",
+              label2: "Login",
+              onTap: () => NavigationService.routeToReplacementNamed('/login'),
             ),
           ],
         ),

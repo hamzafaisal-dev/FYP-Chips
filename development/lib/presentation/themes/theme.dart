@@ -21,22 +21,21 @@ class CustomAppTheme {
 
       primary: CustomColors.lightOrange,
       onPrimary: CustomColors.darkPurple,
-      primaryContainer: Color(0XFFFFF3E9), //0XFFFDA758
+      primaryContainer: CustomColors.weirdWhite, //0XFFFDA758
       onPrimaryContainer: CustomColors.lightOrange,
 
       secondary: Color(0XFFEFE0DA),
       onSecondary: CustomColors.darkPurple,
       secondaryContainer: Color(0XFFAA98A8),
 
-      error: Color(0XFFF65B4E),
-      onError: Color(0XFFFEEFEE),
+      error: CustomColors.errorRed,
+      onError: CustomColors.onErrorRed,
 
       background: Colors.grey, // to be decided
       onBackground: Colors.grey, // to be decided
     ),
 
-    // scaffoldBackgroundColor: CustomColors.lightPurple,
-    scaffoldBackgroundColor: const Color(0XFFFFF3E9),
+    scaffoldBackgroundColor: CustomColors.weirdWhite,
 
     appBarTheme: CustomAppbarTheme.lightAppbarTheme,
 
@@ -47,7 +46,7 @@ class CustomAppTheme {
     dividerTheme: CustomDividerTheme.lightDividerTheme,
 
     dialogTheme: const DialogTheme(
-      shadowColor: Color(0XFFFFF3E9),
+      shadowColor: CustomColors.weirdWhite,
       backgroundColor: Colors.white,
     ),
 
