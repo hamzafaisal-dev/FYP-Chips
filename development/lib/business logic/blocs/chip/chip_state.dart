@@ -21,15 +21,6 @@ class ChipsLoading extends ChipState {
   List<Object?> get props => [];
 }
 
-class ChipsLoaded extends ChipState {
-  final List<ChipModel> chips;
-
-  ChipsLoaded({required this.chips}) : super([chips]);
-
-  @override
-  List<Object?> get props => [chips];
-}
-
 class ChipsStreamLoaded extends ChipState {
   final Stream<List<ChipModel>> chips;
 

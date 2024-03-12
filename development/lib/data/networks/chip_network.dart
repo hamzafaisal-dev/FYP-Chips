@@ -40,22 +40,18 @@ class ChipNetwork {
         );
   }
 
-  // upload file to firebase storage
   // returns the download url of given file
   Future<String> uploadFileToFirebaseStorage(
     File file,
     String userId,
   ) async {
-    String currentTimeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-    String fileName = basename(file.path);
-
     if (file.path == '') return '';
 
-    final storageRef = _firebaseStorage
-        .ref()
-        .child('documents')
-        .child(userId)
-        .child('$fileName-$currentTimeStamp');
+    String fileName = basename(file.path);
+    String fileId = const Uuid().v4();
+
+    final storageRef =
+        _firebaseStorage.ref().child('documents').child(userId).child(fileId);
 
     final metadata = SettableMetadata(
       customMetadata: {'originalName': fileName},

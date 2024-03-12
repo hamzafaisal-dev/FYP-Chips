@@ -38,6 +38,13 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
   }
 
   @override
+  void dispose() {
+    _chipDetailsController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

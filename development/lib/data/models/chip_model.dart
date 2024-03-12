@@ -64,7 +64,7 @@ class ChipModel {
       locations: List<String>.from(map['locations']),
       jobType: map['jobType'],
       experienceRequired: map['experienceRequired'],
-      deadline: (map['deadline'] as Timestamp).toDate(),
+      deadline: DateTime.fromMillisecondsSinceEpoch(map['deadline']),
       skills: List<dynamic>.from(map['skills']),
       imageUrl: map['imageUrl'],
       salary: map['salary'],
@@ -72,7 +72,7 @@ class ChipModel {
       reportCount: map['reportCount'] as int,
       isFlagged: map['isFlagged'] as bool,
       isExpired: map['isExpired'] as bool,
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
       updatedAt: map['updatedAt'] != null
           ? (map['updatedAt'] as Timestamp).toDate()
           : null,

@@ -31,8 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     ChipBloc chipBloc = context.read<ChipBloc>();
 
-    // if chips not already fetched, fetch em (no auto-refresh)
-    if (chipBloc.state is! ChipsLoaded) chipBloc.add(const FetchChipsStream());
+    chipBloc.add(const FetchChipsStream());
   }
 
   @override
