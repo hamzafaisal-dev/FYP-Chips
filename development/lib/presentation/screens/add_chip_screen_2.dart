@@ -6,6 +6,7 @@ import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
@@ -13,7 +14,6 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/intl.dart';
 
 class AddChipScreen2 extends StatefulWidget {
@@ -36,7 +36,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   String _applicationLink = '';
   late String _chipTitle;
   late String _companyTitle;
-  DateTime? _chipDeadline = null;
+  DateTime? _chipDeadline;
 
   void _createChip() {
     if (_chipDeadline == null) {
@@ -129,32 +129,35 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                 child: ListView(
                   children: [
                     //
-                    Column(
-                      children: [
-                        // back icon + select image btn + post btn
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //
-                            CustomIconButton(
-                              iconSvgPath: AssetPaths.leftArrowIconPath,
-                              iconWidth: 16.w,
-                              iconHeight: 16.h,
-                              onTap: () => Navigator.of(context).pop(),
-                            ),
 
-                            // post btn
-                            OutlinedButton(
-                              onPressed: () => _createChip(),
-                              child: const Text('POST'),
-                            ),
-                          ],
+                    // back icon + select image btn + post btn
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //
+                        CustomIconButton(
+                          iconSvgPath: AssetPaths.leftArrowIconPath,
+                          iconWidth: 16.w,
+                          iconHeight: 16.h,
+                          onTap: () => Navigator.of(context).pop(),
                         ),
 
-                        const SizedBox(height: 20),
+                        // post btn
+                        OutlinedButton(
+                          onPressed: () => _createChip(),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            backgroundColor: Colors.white,
+                          ),
+                          child: const Text('POST'),
+                        ),
                       ],
                     ),
 
+                    const SizedBox(height: 20),
+
+                    // 'We just need a few more details!'
                     Text(
                       'We just need a few more details!',
                       style: Theme.of(context)
@@ -165,6 +168,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                     const SizedBox(height: 12),
 
+                    // chip title textfield
                     CustomTextFormField(
                       label: ' Chip Title ',
                       validatorFunction: (value) {
@@ -176,26 +180,26 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                     const SizedBox(height: 20),
 
-                    SizedBox(
-                      width: 320,
-                      child: CustomTextFormField(
-                        label: ' Company Title ',
-                        validatorFunction: (value) {
-                          _companyTitle = value;
+                    // company title textfield
+                    CustomTextFormField(
+                      label: ' Company Title ',
+                      validatorFunction: (value) {
+                        _companyTitle = value;
 
-                          return null;
-                        },
-                      ),
+                        return null;
+                      },
                     ),
 
                     const SizedBox(height: 20),
 
+                    // select chip deadline
                     Row(
                       children: [
                         //
                         IconButton(
                           padding: EdgeInsets.zero,
                           alignment: Alignment.centerLeft,
+                          visualDensity: VisualDensity.compact,
                           onPressed: () async {
                             final selectedDate = await showDatePicker(
                               helpText: 'Select Chip Deadline',
@@ -206,9 +210,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                             if (selectedDate != null &&
                                 selectedDate != _chipDeadline) {
-                              setState(() {
-                                _chipDeadline = selectedDate;
-                              });
+                              setState(() => _chipDeadline = selectedDate);
                             }
                           },
                           icon: const Icon(Icons.calendar_month),
@@ -226,6 +228,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                     const SizedBox(height: 20),
 
+                    // 'CHIP DETAILS'
                     Text(
                       'CHIP DETAILS',
                       style: Theme.of(context)
@@ -234,6 +237,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                           .copyWith(fontSize: 22),
                     ),
 
+                    // chip description
                     TextField(
                       readOnly: true,
                       controller: _chipDetailsController,
@@ -255,25 +259,11 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       textInputAction: TextInputAction.done,
                     ),
 
-                    // const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
+                    // chip image container
                     if (_selectedImage != null)
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        height: MediaQuery.of(context).size.width,
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.file(
-                          _selectedImage!,
-                          fit: BoxFit.contain,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width,
-                        ),
-                      ),
+                      ChipImageContainer(selectedImage: _selectedImage!),
                   ],
                 ),
               );

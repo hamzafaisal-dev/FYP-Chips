@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,21 +28,34 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
 
     if (pickedImage == null) return;
 
-    setState(() {
-      _selectedImage = File(pickedImage.path);
-    });
+    setState(() => _selectedImage = File(pickedImage.path));
   }
 
   void _removeImage() {
-    setState(() {
-      _selectedImage = null;
-    });
+    setState(() => _selectedImage = null);
+  }
+
+  void _handleNextScreenClick() {
+    if (_chipDetailsController.text != '') {
+      NavigationService.routeToNamed(
+        '/add-chip2',
+        arguments: {
+          "chipImage": _selectedImage,
+          "chipDetails": _chipDetailsController.text,
+        },
+      );
+    } else {
+      HelperWidgets.showSnackbar(
+        context,
+        'Please enter a job description',
+        'error',
+      );
+    }
   }
 
   @override
   void dispose() {
     _chipDetailsController.dispose();
-
     super.dispose();
   }
 
@@ -88,17 +103,12 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                           const SizedBox(width: 5),
 
                           OutlinedButton(
-                            onPressed: () {
-                              if (_chipDetailsController.text != '') {
-                                NavigationService.routeToNamed(
-                                  '/add-chip2',
-                                  arguments: {
-                                    "chipImage": _selectedImage,
-                                    "chipDetails": _chipDetailsController.text,
-                                  },
-                                );
-                              }
-                            },
+                            onPressed: () => _handleNextScreenClick(),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onSecondary,
+                              backgroundColor: Colors.white,
+                            ),
                             child: const Text('NEXT'),
                           ),
                         ],
@@ -108,6 +118,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
 
                   const SizedBox(height: 20),
 
+                  // chip description textfield
                   SizedBox(
                     height: _selectedImage == null
                         ? MediaQuery.of(context).size.height
@@ -141,22 +152,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                 Stack(
                   children: [
                     //
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      height: MediaQuery.of(context).size.width,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width,
-                      ),
-                    ),
+                    ChipImageContainer(selectedImage: _selectedImage!),
 
                     Positioned(
                       top: 15,

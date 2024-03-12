@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthExceptionErrors {
-  static String getFirebaseError(FirebaseAuthException error) {
+  static String getFirebaseError(FirebaseException error) {
     String errorStatement;
 
     switch (error.code) {
