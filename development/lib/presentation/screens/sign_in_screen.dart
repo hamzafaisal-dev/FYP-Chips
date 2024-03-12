@@ -111,13 +111,26 @@ class _SignInScreenState extends State<SignInScreen> {
               //login button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
+                  if (state is AuthUserAlreadyExists) {
+                    context.read<AuthCubit>().emailPasswordSignIn(
+                          _emailController.text,
+                          _passwordController.text,
+                        );
+                  }
+                  if (state is AuthUserDoesNotExist) {
+                    HelperWidgets.showSnackbar(
+                      context,
+                      "User does not exist. Please sign up first.",
+                      "error",
+                    );
+                  }
                   if (state is AuthSignInSuccess) {
                     HelperWidgets.showSnackbar(
                       context,
-                      "Signed in successfully!",
+                      "Signed in successfully! Welcome back ${state.user.name}!",
                       "success",
                     );
-                    NavigationService.routeToNamed("/layout");
+                    NavigationService.routeToReplacementNamed("/layout");
                   }
                   if (state is AuthSignInFailure) {
                     HelperWidgets.showSnackbar(
@@ -136,16 +149,21 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is AuthSignInLoading)
+                    onPressed: (state is AuthSignInLoading ||
+                            state is AuthCheckingIfUserAlreadyExists ||
+                            state is AuthUserAlreadyExists)
                         ? null
                         : () {
                             if (_loginFormKey.currentState!.validate()) {
-                              context.read<AuthCubit>().emailPasswordSignIn(
-                                  _emailController.text,
-                                  _passwordController.text);
+                              context
+                                  .read<AuthCubit>()
+                                  .checkIfUserAlreadyExists(
+                                      _emailController.text);
                             }
                           },
-                    child: (state is AuthSignInLoading)
+                    child: (state is AuthSignInLoading ||
+                            state is AuthCheckingIfUserAlreadyExists ||
+                            state is AuthUserAlreadyExists)
                         ? SizedBox(
                             width: 23.4.w,
                             height: 23.4.h,
@@ -187,7 +205,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                   ),
                   InkWell(
-                    onTap: () => NavigationService.routeToNamed("/signup"),
+                    onTap: () =>
+                        NavigationService.routeToReplacementNamed("/signup"),
                     child: Text(
                       'Sign Up',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(

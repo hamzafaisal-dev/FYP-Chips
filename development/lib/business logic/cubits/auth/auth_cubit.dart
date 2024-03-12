@@ -53,6 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthInitial());
       } else {
         emit(AuthUserDoesNotExist());
+        emit(AuthInitial());
       }
     } catch (error) {
       emit(AuthFailureCheckingUserExistance(message: error.toString()));

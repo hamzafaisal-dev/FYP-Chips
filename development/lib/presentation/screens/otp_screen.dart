@@ -27,12 +27,17 @@ class _OtpScreenState extends State<OtpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   late String _userEmail;
+  late String _userPassword;
+  late String _userName;
+  late String _otp;
 
   @override
   void initState() {
     if (widget.arguments != null) {
-      _userEmail = widget.arguments!["email"];
-      // put rest of the arguments here. eg: _password = widget.arguments!["password"];
+      _userEmail = widget.arguments!["email"].toString().toLowerCase();
+      _userPassword = widget.arguments!["password"];
+      _userName = widget.arguments!["name"];
+      _otp = widget.arguments!["otp"];
     }
 
     super.initState();
@@ -51,13 +56,34 @@ class _OtpScreenState extends State<OtpScreen> {
       body: SafeArea(
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
+            // if (state is AuthOtpEmailSending) {
+            //   HelperWidgets.showSnackbar(
+            //     context,
+            //     "Sending OTP to your email...",
+            //     'info',
+            //   );
+            // }
+            // if (state is AuthOtpEmailSent) {
+            //   HelperWidgets.showSnackbar(
+            //     context,
+            //     "OTP sent to your email successfully! Please check your email.",
+            //     'success',
+            //   );
+            //   _otp = state.otp;
+            // }
+            // if (state is AuthOtpEmailFailedToSend) {
+            //   HelperWidgets.showSnackbar(
+            //     context,
+            //     "Failed to send OTP to your email: ${state.message} Please try again.",
+            //     'error',
+            //   );
+            // }
             if (state is AuthOtpVerified) {
-              print("state: $state");
-              // context.read<AuthCubit>().emailPasswordSignUp(
-              //       widget.name,
-              //       widget.email,
-              //       widget.password,
-              //     );
+              context.read<AuthCubit>().emailPasswordSignUp(
+                    _userName,
+                    _userEmail,
+                    _userPassword,
+                  );
             }
             if (state is AuthOtpNotVerified) {
               HelperWidgets.showSnackbar(
@@ -100,6 +126,9 @@ class _OtpScreenState extends State<OtpScreen> {
               );
             }
           },
+          buildWhen: (previous, current) {
+            return previous != current;
+          },
           builder: (context, state) {
             return Center(
               child: Padding(
@@ -137,7 +166,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       // email
                       Text(
-                        _userEmail.toLowerCase(),
+                        _userEmail,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -159,74 +188,52 @@ class _OtpScreenState extends State<OtpScreen> {
                           FocusScope.of(context).unfocus();
                         },
                         onCompleted: (value) {
-                          HelperWidgets.showSnackbar(
-                            context,
-                            'Verifying OTP, please hold on...',
-                            'info',
-                          );
-                          // context.read<AuthCubit>().verifyOtp(
-                          //       _otpController.text,
-                          //       widget.otp,
-                          //     );
+                          context.read<AuthCubit>().verifyOtp(
+                                _otpController.text,
+                                _otp,
+                              );
                         },
                       ),
 
                       SizedBox(height: 81.h),
 
                       // resend code
-                      SizedBox.shrink(
-                        child: state is AuthOtpEmailFailedToSend
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Didn\'t receive OTP? ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      // context.read<AuthCubit>().sendOtpEmail(
-                                      //       widget.email,
-                                      //       widget.name,
-                                      //     );
-                                    },
-                                    child: Text(
-                                      'Resend Code',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : state is AuthOtpNotVerified
-                                ? InkWell(
-                                    onTap: () {
-                                      // context.read<AuthCubit>().sendOtpEmail(
-                                      //       widget.email,
-                                      //       widget.name,
-                                      //     );
-                                    },
-                                    child: Text(
-                                      'Resend Code',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                    ),
-                                  )
-                                : null,
-                      ),
+                      // state is AuthOtpEmailFailedToSend ||
+                      //         state is AuthOtpNotVerified
+                      //     ? Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             state is AuthOtpEmailFailedToSend
+                      //                 ? 'Didn\'t receive OTP? '
+                      //                 : 'Invalid OTP! ',
+                      //             style: Theme.of(context)
+                      //                 .textTheme
+                      //                 .bodyMedium
+                      //                 ?.copyWith(
+                      //                   fontWeight: FontWeight.w400,
+                      //                 ),
+                      //           ),
+                      //           InkWell(
+                      //             onTap: () {
+                      //               context.read<AuthCubit>().sendOtpEmail(
+                      //                     _userEmail,
+                      //                     _userName,
+                      //                   );
+                      //             },
+                      //             child: Text(
+                      //               'Resend Code',
+                      //               style: Theme.of(context)
+                      //                   .textTheme
+                      //                   .bodyMedium
+                      //                   ?.copyWith(
+                      //                     fontWeight: FontWeight.w700,
+                      //                   ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       )
+                      //     : const SizedBox.shrink(),
                     ],
                   ),
                 ),

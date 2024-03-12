@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../widgets/otp_sent_dialog.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -32,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _signUpFormKey.currentState?.dispose();
     super.dispose();
   }
 
@@ -195,13 +198,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   }
                   if (state is AuthOtpEmailSent) {
-                    print("otp sent to: ${state.email}");
-                    print("otp: ${state.otp}");
                     showDialog(
                       barrierDismissible: false,
                       context: context,
                       builder: (context) {
-                        return OtpSentDialog(email: state.email);
+                        return OtpSentDialog(
+                          email: state.email,
+                          onProceed: () {
+                            Navigator.pop(context);
+                            NavigationService.routeToNamed(
+                              '/otp',
+                              arguments: {
+                                "email": state.email,
+                                "otp": state.otp,
+                                "name": _nameController.text,
+                                "password": _passwordController.text,
+                              },
+                            );
+                          },
+                        );
                       },
                     );
                   }
@@ -217,7 +232,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               context
                                   .read<AuthCubit>()
                                   .checkIfUserAlreadyExists(
-                                      _emailController.text);
+                                    _emailController.text,
+                                  );
                             }
                           },
                     child: (state is AuthOtpEmailSending ||
@@ -246,7 +262,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                   ),
                   InkWell(
-                    onTap: () => NavigationService.goBack(),
+                    onTap: () =>
+                        NavigationService.routeToReplacementNamed('/login'),
+                    // onTap: () => NavigationService.goBack(),
                     child: Text(
                       "Sign In",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -260,91 +278,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class OtpSentDialog extends StatelessWidget {
-  const OtpSentDialog({
-    super.key,
-    required this.email,
-  });
-
-  final String email;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        'OTP Sent',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-      content: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'An OTP has been sent to:\n\n',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            TextSpan(
-              text: email,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            TextSpan(
-              text:
-                  '\n\nPlease proceed to verify your email and complete your sign up.\n\n',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            TextSpan(
-              text:
-                  'Note: Please check your email inbox, including your spam/junk folder, for the OTP. If you cannot find the email, please ensure you entered the correct email address and try again.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.63),
-                    fontStyle: FontStyle.italic,
-                  ),
-            ),
-          ],
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.spaceBetween,
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            "Cancel",
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            NavigationService.routeToReplacementNamed(
-              '/otp',
-              arguments: {
-                "email": email,
-                // add more args here. eg: "password": password
-              },
-            );
-          },
-          child: Text(
-            'Proceed',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toastification/toastification.dart';
 
 class HelperWidgets {
@@ -31,7 +32,7 @@ class HelperWidgets {
       context: context,
       type: type,
       style: ToastificationStyle.fillColored,
-      autoCloseDuration: const Duration(seconds: 3, milliseconds: 699),
+      autoCloseDuration: const Duration(seconds: 4, milliseconds: 320),
       title: Text(toastContent),
       alignment: Alignment.bottomCenter,
       animationDuration: const Duration(milliseconds: 180),
@@ -46,6 +47,7 @@ class HelperWidgets {
         vertical: 16,
       ),
       showProgressBar: false,
+      borderRadius: BorderRadius.all(Radius.circular(12.r)),
     );
   }
 }
