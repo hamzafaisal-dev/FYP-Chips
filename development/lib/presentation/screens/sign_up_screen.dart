@@ -264,7 +264,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   InkWell(
                     onTap: () =>
                         NavigationService.routeToReplacementNamed('/login'),
-                    // onTap: () => NavigationService.goBack(),
                     child: Text(
                       "Sign In",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(

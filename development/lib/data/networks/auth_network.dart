@@ -84,6 +84,31 @@ class AuthNetwork {
     }
   }
 
+  // add user email to google sheet
+  Future<Map<String, dynamic>> addUserEmailToGoogleSheet(String email) async {
+    final url = Uri.https(NetworkURLS.baseUrl1, '/addUser');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({'email': email});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        return {'success': true};
+      } else {
+        return {
+          'success': false,
+          'message': 'Failed to add user email to google sheet',
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Error: $e',
+      };
+    }
+  }
+
   // verify otp
   bool verifyOtp(String userInput, String otp) {
     return userInput == otp;
@@ -156,6 +181,8 @@ class AuthNetwork {
           .collection('users')
           .doc(newUserCredentials.user!.uid)
           .set(newUser.toMap());
+
+      await addUserEmailToGoogleSheet(email);
 
       return newUser;
     } catch (error) {
