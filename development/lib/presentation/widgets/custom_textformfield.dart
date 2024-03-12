@@ -42,6 +42,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         context,
         widget.hintText,
       ),
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       validator: (value) {
         if (value == null || value == '') {
           return 'Enter a valid value';
