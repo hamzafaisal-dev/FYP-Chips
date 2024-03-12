@@ -4,18 +4,16 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/data/networks/chip_network.dart';
 
 class ChipRepository {
-  final ChipNetwork chipsNetwork;
-
-  ChipRepository({required this.chipsNetwork});
+  final ChipNetwork _chipsNetwork = ChipNetwork();
 
   // get list of all chips
   Future<List<ChipModel>> getAllChips() async {
-    return await chipsNetwork.getAllChips();
+    return await _chipsNetwork.getAllChips();
   }
 
   // get stream of all chips
   Stream<List<ChipModel>> getAllChipsStream() {
-    return chipsNetwork.getAllChipsStream();
+    return _chipsNetwork.getAllChipsStream();
   }
 
   // post chip
@@ -32,9 +30,9 @@ class ChipRepository {
     required DateTime deadline,
     required List<dynamic> skills,
     required double? salary,
-    required UserModel updatedUser,
+    required UserModel currentUser,
   }) {
-    return chipsNetwork.postChip(
+    return _chipsNetwork.postChip(
       jobTitle,
       companyName,
       applicationLink,
@@ -47,18 +45,18 @@ class ChipRepository {
       deadline,
       skills,
       salary,
-      updatedUser,
+      currentUser,
     );
   }
 
   // delete chip
   Future<UserModel> deleteChip({
     required String chipId,
-    required UserModel updatedUser,
+    required UserModel user,
   }) {
-    return chipsNetwork.deleteChip(
+    return _chipsNetwork.deleteChip(
       chipId,
-      updatedUser,
+      user,
     );
   }
 }

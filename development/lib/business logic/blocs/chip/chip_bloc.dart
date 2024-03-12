@@ -9,119 +9,57 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/chip_repository.dart';
 
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
-  final ChipRepository chipRepository;
-  // final AuthBloc authBloc;
+  final ChipRepository _chipRepository = ChipRepository();
 
-  ChipBloc({
-    required this.chipRepository,
-    // required this.authBloc,
-  }) : super(ChipEmpty()) {
-    on<FetchChips>((event, emit) async {
-      await _getAllChips(emit);
-    });
+  ChipBloc() : super(ChipEmpty()) {
+    //
 
-    on<FetchChipsStream>((event, emit) async {
+    // fetch all chips from dataabase
+    on<FetchChipsStream>((event, emit) {
       emit(ChipsLoading());
-      Stream<List<ChipModel>> chipsStream = chipRepository.getAllChipsStream();
+
+      Stream<List<ChipModel>> chipsStream = _chipRepository.getAllChipsStream();
+
       emit(ChipsStreamLoaded(chips: chipsStream));
     });
 
     on<UploadChipEvent>((event, emit) async {
-      await _uploadChip(
-        event.jobTitle,
-        event.companyName,
-        event.applicationLink,
-        event.description,
-        event.jobMode,
-        event.locations,
-        event.jobType,
-        event.experienceRequired,
-        event.deadline,
-        event.chipFile,
-        event.skills,
-        event.salary,
-        event.updatedUser,
-        emit,
-      );
+      try {
+        emit(ChipsLoading());
+
+        UserModel updatedUser = await _chipRepository.postChip(
+          jobTitle: event.jobTitle,
+          companyName: event.companyName,
+          applicationLink: event.applicationLink,
+          description: event.description,
+          jobMode: event.jobMode,
+          chipFile: event.chipFile,
+          locations: event.locations,
+          jobType: event.jobType,
+          experienceRequired: event.experienceRequired,
+          deadline: event.deadline,
+          skills: event.skills,
+          salary: event.salary,
+          currentUser: event.currentUser,
+        );
+
+        emit(ChipSuccess());
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+      }
     });
 
     on<DeleteChipEvent>((event, emit) async {
-      await _deleteChip(event.chipId, event.user, emit);
-    });
-  }
+      emit(ChipsLoading());
 
-  Future<void> _getAllChips(Emitter<ChipState> emit) async {
-    emit(ChipsLoading());
-    try {
-      final List<ChipModel> chips = await chipRepository.getAllChips();
+      try {
+        UserModel updatedUser = await _chipRepository.deleteChip(
+            chipId: event.chipId, user: event.currentUser);
 
-      if (chips.isEmpty) {
-        return emit(ChipEmpty());
+        emit(ChipSuccess());
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
       }
-
-      emit(ChipsLoaded(chips: chips));
-    } catch (e) {
-      emit(ChipError(errorMsg: e.toString()));
-    }
-  }
-
-  Future<void> _uploadChip(
-    String jobTitle,
-    String companyName,
-    String applicationLink,
-    String? description,
-    String? jobMode,
-    List<String> locations,
-    String? jobType,
-    int? experienceRequired,
-    DateTime deadline,
-    File? chipFile,
-    List<dynamic> skills,
-    double? salary,
-    UserModel updatedUser,
-    Emitter<ChipState> emit,
-  ) async {
-    try {
-      emit(ChipsLoading());
-
-      UserModel newUpdatedUser = await chipRepository.postChip(
-        jobTitle: jobTitle,
-        companyName: companyName,
-        applicationLink: applicationLink,
-        description: description,
-        jobMode: jobMode,
-        chipFile: chipFile,
-        locations: locations,
-        jobType: jobType,
-        experienceRequired: experienceRequired,
-        deadline: deadline,
-        skills: skills,
-        salary: salary,
-        updatedUser: updatedUser,
-      );
-
-      emit(ChipSuccess());
-      print('updated user after chip upload');
-      print(updatedUser);
-      // authBloc.add(AuthStateUpdatedEvent(newUpdatedUser));
-    } catch (error) {
-      print(error.toString());
-      emit(ChipError(errorMsg: error.toString()));
-    }
-  }
-
-  Future<void> _deleteChip(
-      String chipId, UserModel user, Emitter<ChipState> emit) async {
-    try {
-      emit(ChipsLoading());
-
-      UserModel updatedUser =
-          await chipRepository.deleteChip(chipId: chipId, updatedUser: user);
-      print('goo');
-      emit(ChipSuccess());
-      // authBloc.add(AuthStateUpdatedEvent(updatedUser));
-    } catch (error) {
-      emit(ChipError(errorMsg: error.toString()));
-    }
+    });
   }
 }

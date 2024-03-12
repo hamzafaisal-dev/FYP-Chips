@@ -34,7 +34,7 @@ class UploadChipEvent extends ChipEvent {
   final DateTime deadline;
   final List<dynamic> skills;
   final double? salary;
-  final UserModel updatedUser;
+  final UserModel currentUser;
 
   const UploadChipEvent({
     required this.jobTitle,
@@ -49,7 +49,7 @@ class UploadChipEvent extends ChipEvent {
     required this.deadline,
     required this.skills,
     this.salary,
-    required this.updatedUser,
+    required this.currentUser,
   });
 
   @override
@@ -58,9 +58,9 @@ class UploadChipEvent extends ChipEvent {
 
 class DeleteChipEvent extends ChipEvent {
   final String chipId;
-  final UserModel user;
+  final UserModel currentUser;
 
-  const DeleteChipEvent({required this.chipId, required this.user});
+  const DeleteChipEvent({required this.chipId, required this.currentUser});
 
   @override
   List<Object?> get props => throw UnimplementedError();

@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class ChipModel {
   const ChipModel({
@@ -48,6 +52,34 @@ class ChipModel {
   final DateTime? updatedAt;
   final bool isActive;
   final bool isDeleted;
+
+  factory ChipModel.fromMap(Map<String, dynamic> map) {
+    return ChipModel(
+      chipId: map['chipId'] as String,
+      jobTitle: map['jobTitle'] as String,
+      companyName: map['companyName'] as String,
+      applicationLink: map['applicationLink'] as String,
+      description: map['description'] as String,
+      jobMode: map['jobMode'],
+      locations: List<String>.from(map['locations']),
+      jobType: map['jobType'],
+      experienceRequired: map['experienceRequired'],
+      deadline: (map['deadline'] as Timestamp).toDate(),
+      skills: List<dynamic>.from(map['skills']),
+      imageUrl: map['imageUrl'],
+      salary: map['salary'],
+      postedBy: map['postedBy'] as String,
+      reportCount: map['reportCount'] as int,
+      isFlagged: map['isFlagged'] as bool,
+      isExpired: map['isExpired'] as bool,
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      updatedAt: map['updatedAt'] != null
+          ? (map['updatedAt'] as Timestamp).toDate()
+          : null,
+      isActive: map['isActive'] as bool,
+      isDeleted: map['isDeleted'] as bool,
+    );
+  }
 
   ChipModel copyWith({
     String? chipId,
@@ -121,34 +153,6 @@ class ChipModel {
       'isActive': isActive,
       'isDeleted': isDeleted,
     };
-  }
-
-  factory ChipModel.fromMap(Map<String, dynamic> map) {
-    return ChipModel(
-      chipId: map['chipId'] as String,
-      jobTitle: map['jobTitle'] as String,
-      companyName: map['companyName'] as String,
-      applicationLink: map['applicationLink'] as String,
-      description: map['description'] as String,
-      jobMode: map['jobMode'] as String,
-      locations: List<String>.from(map['locations']),
-      jobType: map['jobType'] as String,
-      experienceRequired: map['experienceRequired'] as int,
-      deadline: DateTime.fromMillisecondsSinceEpoch(map['deadline']),
-      skills: List<dynamic>.from((map['skills'])),
-      imageUrl: map['imageUrl'],
-      salary: map['salary'] as double,
-      postedBy: map['postedBy'] as String,
-      reportCount: map['reportCount'] as int,
-      isFlagged: map['isFlagged'] as bool,
-      isExpired: map['isExpired'] as bool,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: map['updatedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
-          : null,
-      isActive: map['isActive'] as bool,
-      isDeleted: map['isDeleted'] as bool,
-    );
   }
 
   String toJson() => json.encode(toMap());

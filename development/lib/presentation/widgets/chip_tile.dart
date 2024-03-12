@@ -34,6 +34,7 @@ class _ChipTileState extends State<ChipTile> {
           vertical: 12.h,
         ),
         child: InkWell(
+          splashColor: Colors.transparent,
           onTap: widget.onTap,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +121,10 @@ class _ChipTileState extends State<ChipTile> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                    widget.chipData.description ?? 'No description available'),
+                  widget.chipData.description ?? 'No description available',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
 
               Divider(

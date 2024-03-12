@@ -3,25 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/utils/helper_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 class ChipNetwork {
-  final FirebaseFirestore firestore;
-  final FirebaseAuth firebaseAuth;
-  final FirebaseStorage firebaseStorage;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  ChipNetwork({
-    required this.firestore,
-    required this.firebaseAuth,
-    required this.firebaseStorage,
-  });
-
-  // get all chips list
+  // get list of all chips (not used anywhere but don't remove)
   Future<List<ChipModel>> getAllChips() async {
-    final chips = await firestore
+    final chips = await _firestore
         .collection('chips')
         .orderBy('createdAt', descending: true)
         .get();
@@ -35,7 +27,7 @@ class ChipNetwork {
 
   // get all chips stream
   Stream<List<ChipModel>> getAllChipsStream() {
-    return firestore
+    return _firestore
         .collection('chips')
         .orderBy('createdAt', descending: true)
         .snapshots()
@@ -59,7 +51,7 @@ class ChipNetwork {
 
     if (file.path == '') return '';
 
-    final storageRef = firebaseStorage
+    final storageRef = _firebaseStorage
         .ref()
         .child('documents')
         .child(userId)
@@ -94,20 +86,19 @@ class ChipNetwork {
     DateTime deadline,
     List<dynamic> skills,
     double? salary,
-    UserModel updatedUser,
+    UserModel currentUser,
   ) async {
-    String username = updatedUser.username;
-    String chipId = const Uuid().v4();
+    //
+    late UserModel updatedUser;
 
-    print('chipFile: $chipFile');
+    String username = currentUser.username;
+    String chipId = const Uuid().v4();
 
     String chipFileUrl = "";
     if (chipFile != null) {
       chipFileUrl =
-          await uploadFileToFirebaseStorage(chipFile, updatedUser.userId);
+          await uploadFileToFirebaseStorage(chipFile, currentUser.userId);
     }
-
-    print('chipFileURL: $chipFileUrl');
 
     ChipModel newChip = ChipModel(
       chipId: chipId,
@@ -132,18 +123,22 @@ class ChipNetwork {
       isDeleted: false,
     );
 
-    await firestore.collection('chips').doc(chipId).set(newChip.toMap());
+    // set newly created chip in firestore
+    await _firestore.collection('chips').doc(chipId).set(newChip.toMap());
 
-    List<String> userPostedChips = updatedUser.postedChips;
+    // get user's array of posted chips
+    List<String> userPostedChips = currentUser.postedChips;
 
+    // add the id of the newly created chip to user's posted chips array
     userPostedChips.add(newChip.chipId);
 
-    updatedUser = updatedUser.copyWith(
+    // update the user's UserModel accordingly
+    updatedUser = currentUser.copyWith(
       postedChips: userPostedChips,
     );
 
-    // set the updated user in firestore
-    await firestore
+    // set the updated user in _firestore
+    await _firestore
         .collection('users')
         .doc(updatedUser.userId)
         .update(updatedUser.toMap());
@@ -152,27 +147,35 @@ class ChipNetwork {
   }
 
   // delete chip
-  Future<UserModel> deleteChip(String chipId, UserModel user) async {
-    DocumentSnapshot userSnapshot =
-        await firestore.collection('users').doc(user.userId).get();
+  Future<UserModel> deleteChip(String chipId, UserModel currentUser) async {
+    late UserModel updatedUser;
 
+    // get user data from firestore
+    DocumentSnapshot userSnapshot =
+        await _firestore.collection('users').doc(currentUser.userId).get();
+
+    // cast user's data as a Map<String, dynamic>
     Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
 
-    UserModel updatedUser = UserModel.fromMap(userData);
+    // convert user map to UserModel
+    UserModel user = UserModel.fromMap(userData);
 
-    List<String> postedChips = updatedUser.postedChips;
+    // get user's posted chips and put them in new 'postedChips' variable
+    List<String> postedChips = user.postedChips;
 
+    // if the chip to be deleted exists in user's posted chips array, it is deleted from the array
     if (postedChips.any((postedChip) => postedChip == chipId)) {
       postedChips.remove(chipId);
 
-      updatedUser = updatedUser.copyWith(postedChips: postedChips);
+      updatedUser = user.copyWith(postedChips: postedChips);
 
-      await firestore
+      await _firestore
           .collection('users')
           .doc(user.userId)
           .update(updatedUser.toMap());
 
-      await firestore.collection('chips').doc(chipId).delete();
+      // chip is also deleted from firestore
+      await _firestore.collection('chips').doc(chipId).delete();
     }
 
     return updatedUser;

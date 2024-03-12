@@ -1,3 +1,4 @@
+import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,9 +38,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AuthCubit(),
-        ),
+        BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => ChipBloc()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(414, 896),
