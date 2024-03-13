@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
 
-    AuthState authState = context.read<AuthCubit>().state;
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 

@@ -162,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               SizedBox(height: 28.h),
 
-              //sign up button
+              // create account button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthUserAlreadyExists) {
@@ -173,10 +173,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   }
                   if (state is AuthUserDoesNotExist) {
-                    context.read<AuthCubit>().sendOtpEmail(
-                          _emailController.text,
-                          _nameController.text,
-                        );
+                    BlocProvider.of<AuthCubit>(context).sendOtpEmail(
+                      _emailController.text,
+                      _nameController.text,
+                    );
                   }
                   if (state is AuthFailureCheckingUserExistance) {
                     HelperWidgets.showSnackbar(
@@ -253,8 +253,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               AuthScreensBottomRow(
                 label1: "Already have an account? ",
                 label2: "Sign In",
-                onTap: () =>
-                    NavigationService.routeToReplacementNamed("/login"),
+                onTap: () => NavigationService.goBack(),
               ),
             ],
           ),

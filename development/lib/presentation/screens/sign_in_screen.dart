@@ -30,6 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _loginFormKey.currentState?.dispose();
     super.dispose();
   }
 
@@ -138,10 +139,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         ? null
                         : () {
                             if (_loginFormKey.currentState!.validate()) {
-                              context.read<AuthCubit>().emailPasswordSignIn(
-                                    _emailController.text,
-                                    _passwordController.text,
-                                  );
+                              BlocProvider.of<AuthCubit>(context)
+                                  .emailPasswordSignIn(
+                                _emailController.text,
+                                _passwordController.text,
+                              );
                             }
                           },
                     child: (state is AuthSignInLoading)
@@ -158,7 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () =>
+                        NavigationService.routeToNamed('/reset-password'),
                     child: Text(
                       'Forgot Password?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -175,8 +178,7 @@ class _SignInScreenState extends State<SignInScreen> {
               AuthScreensBottomRow(
                 label1: "Don't have an account? ",
                 label2: "Sign Up",
-                onTap: () =>
-                    NavigationService.routeToReplacementNamed("/signup"),
+                onTap: () => NavigationService.routeToNamed("/signup"),
               ),
             ],
           ),

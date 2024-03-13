@@ -13,6 +13,12 @@ class NavigationService {
         ?.pushReplacementNamed(route, arguments: arguments);
   }
 
+  static void pushAndRemoveUntil(String newRoute, {dynamic arguments}) {
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        newRoute, (route) => false,
+        arguments: arguments);
+  }
+
   static dynamic goBack() {
     return navigatorKey.currentState?.pop();
   }

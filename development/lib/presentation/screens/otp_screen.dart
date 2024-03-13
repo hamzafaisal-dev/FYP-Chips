@@ -79,11 +79,11 @@ class _OtpScreenState extends State<OtpScreen> {
             //   );
             // }
             if (state is AuthOtpVerified) {
-              context.read<AuthCubit>().emailPasswordSignUp(
-                    _userName,
-                    _userEmail,
-                    _userPassword,
-                  );
+              BlocProvider.of<AuthCubit>(context).emailPasswordSignUp(
+                _userName,
+                _userEmail,
+                _userPassword,
+              );
             }
             if (state is AuthOtpNotVerified) {
               HelperWidgets.showSnackbar(
@@ -105,7 +105,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 'Account Created Successfully! Welcome to Chips!🍟',
                 'success',
               );
-              context.read<AuthCubit>().sendOnboardingEmail(state.user);
+              BlocProvider.of<AuthCubit>(context)
+                  .sendOnboardingEmail(state.user);
             }
             if (state is AuthSignUpFailure) {
               HelperWidgets.showSnackbar(
@@ -115,7 +116,7 @@ class _OtpScreenState extends State<OtpScreen> {
               );
             }
             if (state is AuthSignInSuccess) {
-              NavigationService.routeToReplacementNamed('/layout');
+              NavigationService.pushAndRemoveUntil('/layout');
             }
             if (state is AuthSignInLoading) {}
             if (state is AuthSignInFailure) {
@@ -188,10 +189,10 @@ class _OtpScreenState extends State<OtpScreen> {
                           FocusScope.of(context).unfocus();
                         },
                         onCompleted: (value) {
-                          context.read<AuthCubit>().verifyOtp(
-                                _otpController.text,
-                                _otp,
-                              );
+                          BlocProvider.of<AuthCubit>(context).verifyOtp(
+                            _otpController.text,
+                            _otp,
+                          );
                         },
                       ),
 
@@ -216,7 +217,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       //           ),
                       //           InkWell(
                       //             onTap: () {
-                      //               context.read<AuthCubit>().sendOtpEmail(
+                      //               BlocProvider.of<AuthCubit>(context).sendOtpEmail(
                       //                     _userEmail,
                       //                     _userName,
                       //                   );

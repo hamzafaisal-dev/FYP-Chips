@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
-    AuthState authState = context.read<AuthCubit>().state;
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
   }
@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttonTwoText: 'Log Out',
                             buttonOneOnPressed: () => Navigator.pop(context),
                             buttonTwoOnPressed: () {
-                              context.read<AuthCubit>().signOut();
+                              BlocProvider.of<AuthCubit>(context).signOut();
                             },
                           );
                         },
