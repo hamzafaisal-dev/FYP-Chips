@@ -22,38 +22,12 @@ class FetchChipsStream extends ChipEvent {
 }
 
 class UploadChipEvent extends ChipEvent {
-  final String jobTitle;
-  final String companyName;
-  final String applicationLink;
-  final String? description;
-  final String? jobMode;
-  final File? chipFile;
-  final List<String> locations;
-  final String? jobType;
-  final int? experienceRequired;
-  final DateTime deadline;
-  final List<dynamic> skills;
-  final double? salary;
-  final UserModel currentUser;
+  final Map<String, dynamic> newChip;
 
-  const UploadChipEvent({
-    required this.jobTitle,
-    required this.companyName,
-    required this.applicationLink,
-    this.description,
-    this.jobMode,
-    this.chipFile,
-    required this.locations,
-    this.jobType,
-    this.experienceRequired,
-    required this.deadline,
-    required this.skills,
-    this.salary,
-    required this.currentUser,
-  });
+  const UploadChipEvent({required this.newChip});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [newChip];
 }
 
 class DeleteChipEvent extends ChipEvent {

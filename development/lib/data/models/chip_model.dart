@@ -43,8 +43,8 @@ class ChipModel {
   final String? imageUrl;
   final double? salary;
   final String postedBy;
-  final int reportCount;
 
+  final int reportCount;
   final bool isFlagged;
   final bool isExpired;
 

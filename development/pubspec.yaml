@@ -26,11 +26,12 @@ dependencies:
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.10+1
   image_picker: ^1.0.7
-  skeletonizer: ^1.1.0
   toastification: ^1.2.1
   uuid: ^4.3.3
   pinput: ^4.0.0
   intl: ^0.19.0
+  shimmer: ^3.0.0
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:

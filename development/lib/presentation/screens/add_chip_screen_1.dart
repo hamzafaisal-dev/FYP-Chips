@@ -191,6 +191,9 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _handleNextScreenClick,
+      ),
     );
   }
 }

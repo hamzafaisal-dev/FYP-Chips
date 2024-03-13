@@ -5,6 +5,8 @@ class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
     super.key,
     required this.label,
+    required this.controller,
+    this.initialText,
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
@@ -12,6 +14,10 @@ class CustomTextFormField extends StatefulWidget {
   });
 
   final String label;
+  final TextEditingController controller;
+
+  final String? initialText;
+
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -22,19 +28,22 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  final _textFormFieldController = TextEditingController();
+  @override
+  void initState() {
+    widget.controller.text = widget.initialText ?? '';
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _textFormFieldController.dispose();
-
+    widget.controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: _textFormFieldController,
+      controller: widget.controller,
       decoration: TextFormFieldStyles.textFormFieldDecoration(
         widget.label,
         widget.prefixIcon,
@@ -49,7 +58,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         }
         widget.validatorFunction(value);
 
-        _textFormFieldController.clear();
+        widget.controller.clear();
 
         return null;
       },
