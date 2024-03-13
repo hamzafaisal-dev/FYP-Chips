@@ -210,7 +210,6 @@ class AuthNetwork {
           .where('email', isEqualTo: email)
           .get();
 
-      print(querySnapshot);
       return querySnapshot.docs.isNotEmpty;
     } catch (error) {
       throw Exception(error.toString());
