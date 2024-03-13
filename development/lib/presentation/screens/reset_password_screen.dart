@@ -10,6 +10,7 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -59,7 +60,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             SizedBox(height: 39.h),
 
             // Image
-            Image.asset(
+            SvgPicture.asset(
               AssetPaths.resetPasswordScreenBannerPath,
               width: double.maxFinite,
               height: 264.h,

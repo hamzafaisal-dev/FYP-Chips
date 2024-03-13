@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   NavigationService.routeToReplacementNamed('/login');
                   HelperWidgets.showSnackbar(
                     context,
-                    "You have been signed out successfully!",
+                    "Signed out successfully!",
                     "success",
                   );
                 }

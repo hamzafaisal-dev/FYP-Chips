@@ -8,12 +8,12 @@ class AssetPaths {
   static const String appLogoPath = 'assets/images/logo/app_logo.png';
 
   // images: banners
-  static const String homeScreenBannerPath =
-      'assets/images/banners/home_screen_banner.png';
+  static const String settingsScreenBannerPath =
+      'assets/images/banners/settings_screen_banner.svg';
   static const String resetPasswordScreenBannerPath =
-      'assets/images/banners/reset_password_screen_banner.png';
+      'assets/images/banners/reset_password_screen_banner.svg';
   static const String signUpScreenBannerPath =
-      'assets/images/banners/signup_screen_banner.png';
+      'assets/images/banners/signup_screen_banner.svg';
   static const String signInScreenBannerPath =
       'assets/images/banners/login_screen_banner.svg';
   static const String otpScreenBannerPath =

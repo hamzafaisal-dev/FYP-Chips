@@ -9,6 +9,7 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../widgets/otp_sent_dialog.dart';
 
@@ -52,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 36.h),
 
               // Image
-              Image.asset(
+              SvgPicture.asset(
                 AssetPaths.signUpScreenBannerPath,
                 height: 200.h,
                 width: 187.76.w,
