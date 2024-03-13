@@ -210,7 +210,6 @@ class AuthNetwork {
           .where('email', isEqualTo: email)
           .get();
 
-      print(querySnapshot);
       return querySnapshot.docs.isNotEmpty;
     } catch (error) {
       throw Exception(error.toString());
@@ -226,8 +225,8 @@ class AuthNetwork {
     }
   }
 
-  // reset password
-  Future<void> resetPassword(String email) async {
+  // send password reset email
+  Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (error) {

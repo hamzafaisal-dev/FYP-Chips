@@ -109,13 +109,15 @@ final class AuthOnboardingEmailFailedToSend extends AuthState {
   List<Object> get props => [message];
 }
 
-// other
+// password reset
+final class AuthSendingPasswordResetEmail extends AuthState {}
+
 final class AuthPasswordResetEmailSent extends AuthState {}
 
-final class AuthPasswordResetEmailFailed extends AuthState {
+final class AuthPasswordResetEmailFailedToSend extends AuthState {
   final String message;
 
-  const AuthPasswordResetEmailFailed({required this.message});
+  const AuthPasswordResetEmailFailedToSend({required this.message});
 
   @override
   List<Object> get props => [message];

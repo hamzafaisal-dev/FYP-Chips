@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
 
-    AuthState authState = context.read<AuthCubit>().state;
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 
@@ -48,16 +48,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // check your profile banner
             Stack(
               children: [
-                // background image
+                // background
                 Container(
                   height: 146.h,
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12.r),
-                    image: const DecorationImage(
-                      image: AssetImage(AssetPaths.homeScreenBannerPath),
-                      fit: BoxFit.cover,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: SvgPicture.asset(
+                        AssetPaths.settingsScreenBannerPath,
+                        width: 133.w,
+                        height: 129.69.h,
+                      ),
                     ),
                   ),
                 ),

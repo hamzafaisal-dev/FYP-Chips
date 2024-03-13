@@ -50,4 +50,9 @@ class AuthRepository {
   void signOut() async {
     await _authNetwork.signOut();
   }
+
+  // send password reset email
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _authNetwork.sendPasswordResetEmail(email);
+  }
 }

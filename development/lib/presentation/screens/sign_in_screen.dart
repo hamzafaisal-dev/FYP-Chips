@@ -30,6 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _loginFormKey.currentState?.dispose();
     super.dispose();
   }
 
@@ -97,7 +98,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   const Icon(Icons.lock_outline),
                   IconButton(
                     onPressed: () {
-                      setState(() => _isPasswordVisible = !_isPasswordVisible);
+                      setState(
+                        () => _isPasswordVisible = !_isPasswordVisible,
+                      );
                     },
                     icon: _isPasswordVisible
                         ? const Icon(Icons.visibility)
@@ -114,23 +117,10 @@ class _SignInScreenState extends State<SignInScreen> {
               //login button
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  if (state is AuthUserAlreadyExists) {
-                    context.read<AuthCubit>().emailPasswordSignIn(
-                          _emailController.text,
-                          _passwordController.text,
-                        );
-                  }
-                  if (state is AuthUserDoesNotExist) {
-                    HelperWidgets.showSnackbar(
-                      context,
-                      "User does not exist. Please sign up first.",
-                      "error",
-                    );
-                  }
                   if (state is AuthSignInSuccess) {
                     HelperWidgets.showSnackbar(
                       context,
-                      "Signed in successfully! Welcome back ${state.user.name}!",
+                      "Signed in successfully! Welcome back!🎉",
                       "success",
                     );
                     NavigationService.routeToReplacementNamed("/layout");
@@ -142,31 +132,21 @@ class _SignInScreenState extends State<SignInScreen> {
                       "error",
                     );
                   }
-                  if (state is AuthSignInLoading) {
-                    HelperWidgets.showSnackbar(
-                      context,
-                      "Signing you in...",
-                      "info",
-                    );
-                  }
                 },
                 builder: (context, state) {
                   return FilledButton(
-                    onPressed: (state is AuthSignInLoading ||
-                            state is AuthCheckingIfUserAlreadyExists ||
-                            state is AuthUserAlreadyExists)
+                    onPressed: (state is AuthSignInLoading)
                         ? null
                         : () {
                             if (_loginFormKey.currentState!.validate()) {
-                              context
-                                  .read<AuthCubit>()
-                                  .checkIfUserAlreadyExists(
-                                      _emailController.text);
+                              BlocProvider.of<AuthCubit>(context)
+                                  .emailPasswordSignIn(
+                                _emailController.text,
+                                _passwordController.text,
+                              );
                             }
                           },
-                    child: (state is AuthSignInLoading ||
-                            state is AuthCheckingIfUserAlreadyExists ||
-                            state is AuthUserAlreadyExists)
+                    child: (state is AuthSignInLoading)
                         ? const CustomCircularProgressIndicator()
                         : const Text('Login'),
                   );
@@ -180,7 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () =>
+                        NavigationService.routeToNamed('/reset-password'),
                     child: Text(
                       'Forgot Password?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -197,8 +178,7 @@ class _SignInScreenState extends State<SignInScreen> {
               AuthScreensBottomRow(
                 label1: "Don't have an account? ",
                 label2: "Sign Up",
-                onTap: () =>
-                    NavigationService.routeToReplacementNamed("/signup"),
+                onTap: () => NavigationService.routeToNamed("/signup"),
               ),
             ],
           ),

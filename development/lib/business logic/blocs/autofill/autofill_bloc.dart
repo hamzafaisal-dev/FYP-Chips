@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:development/data/repositories/autofill_repository.dart';
 import 'package:equatable/equatable.dart';
-
 part 'autofill_event.dart';
 part 'autofill_state.dart';
 

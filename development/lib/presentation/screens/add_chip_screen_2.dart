@@ -89,7 +89,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   void initState() {
     super.initState();
 
-    AuthState authState = context.read<AuthCubit>().state;
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 

@@ -1,9 +1,5 @@
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
-// import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
@@ -30,17 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
-    AuthState authState = context.read<AuthCubit>().state;
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
-
-    // final chipBloc = BlocProvider.of<ChipBloc>(context);
-
-    // final authBloc = BlocProvider.of<AuthBloc>(context);
-    // if (authBloc.state is AuthStateAuthenticated) {
-    //   _authenticatedUser =
-    //       (authBloc.state as AuthStateAuthenticated).authenticatedUser;
-    // }
   }
 
   @override
@@ -173,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   NavigationService.routeToReplacementNamed('/login');
                   HelperWidgets.showSnackbar(
                     context,
-                    "You have been signed out successfully!",
+                    "Signed out successfully!",
                     "success",
                   );
                 }
@@ -201,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             buttonTwoText: 'Log Out',
                             buttonOneOnPressed: () => Navigator.pop(context),
                             buttonTwoOnPressed: () {
-                              context.read<AuthCubit>().signOut();
+                              BlocProvider.of<AuthCubit>(context).signOut();
                             },
                           );
                         },

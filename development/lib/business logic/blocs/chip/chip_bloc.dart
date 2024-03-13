@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:development/business%20logic/blocs/auth/auth_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/data/models/chip_model.dart';
@@ -14,8 +11,6 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
 
   ChipBloc() : super(ChipEmpty()) {
-    //
-
     // fetch all chips from dataabase
     on<FetchChipsStream>((event, emit) {
       emit(ChipsLoading());
