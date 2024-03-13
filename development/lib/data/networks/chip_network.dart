@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
@@ -6,6 +7,7 @@ import 'package:development/utils/helper_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class ChipNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -69,27 +71,30 @@ class ChipNetwork {
   }
 
   // post chip
-  Future<UserModel> postChip(
-    String jobTitle,
-    String employer,
-    String applicationLink,
-    String? description,
-    String? jobMode,
-    File? chipFile,
-    List<String>? locations,
-    String? jobType,
-    int? experienceRequired,
-    DateTime deadline,
-    List<dynamic> skills,
-    double? salary,
-    UserModel currentUser,
-  ) async {
+  Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
     //
+
     late UserModel updatedUser;
+
+    // get all chip properties from map
+    String jobTitle = chipMap['jobTitle'];
+    String companyName = chipMap['companyName'];
+    String applicationLink = chipMap['applicationLink'];
+    String? description = chipMap['description'];
+    String? jobMode = chipMap['jobMode'];
+    File? chipFile = chipMap['chipFile'];
+    List<String> locations = List<String>.from(chipMap['locations'] ?? []);
+    String? jobType = chipMap['jobType'];
+    int? experienceRequired = chipMap['experienceRequired'];
+    DateTime deadline = chipMap['deadline'];
+    List<dynamic> skills = List<dynamic>.from(chipMap['skills'] ?? []);
+    double? salary = chipMap['salary'];
+    UserModel currentUser = chipMap['currentUser'];
 
     String username = currentUser.username;
     String chipId = const Uuid().v4();
 
+    // upload file to fb storage and get download URL
     String chipFileUrl = "";
     if (chipFile != null) {
       chipFileUrl =
@@ -99,7 +104,7 @@ class ChipNetwork {
     ChipModel newChip = ChipModel(
       chipId: chipId,
       jobTitle: jobTitle,
-      companyName: employer,
+      companyName: companyName,
       applicationLink: applicationLink,
       description: description,
       jobMode: jobMode,

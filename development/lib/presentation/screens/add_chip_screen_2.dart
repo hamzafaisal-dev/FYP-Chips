@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:development/business%20logic/blocs/autofill/autofill_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
@@ -30,12 +31,16 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
   final _addChipFormKey = GlobalKey<FormState>();
 
+  final _chipTitleController = TextEditingController();
+  final _companyTitleController = TextEditingController();
   final _chipDetailsController = TextEditingController();
+
   File? _selectedImage;
 
-  String _applicationLink = '';
-  late String _chipTitle;
-  late String _companyTitle;
+  String _chipTitle = '';
+  String _companyTitle = '';
+  final String _applicationLink = '';
+
   DateTime? _chipDeadline;
 
   void _createChip() {
@@ -50,29 +55,34 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     }
 
     if (_addChipFormKey.currentState!.validate() && _chipDeadline != null) {
-      print(_chipTitle);
-      print(_companyTitle);
+      Map<String, dynamic> newChip = {
+        'jobTitle': _chipTitle,
+        'companyName': _companyTitle,
+        'applicationLink': _applicationLink,
+        'description': widget.arguments!["chipDetails"],
+        'jobMode': '',
+        'chipFile': widget.arguments!["chipImage"],
+        'locations': const [],
+        'jobType': '',
+        'experienceRequired': 0,
+        'deadline': _chipDeadline!,
+        'skills': const [],
+        'salary': 0.0,
+        'currentUser': _authenticatedUser,
+      };
 
-      print(_chipDeadline);
-
-      BlocProvider.of<ChipBloc>(context).add(
-        UploadChipEvent(
-          jobTitle: _chipTitle,
-          companyName: _companyTitle,
-          applicationLink: _applicationLink,
-          description: widget.arguments!["chipDetails"],
-          jobMode: '',
-          chipFile: widget.arguments!["chipImage"],
-          locations: const [],
-          jobType: '',
-          experienceRequired: 0,
-          deadline: _chipDeadline!,
-          skills: const [],
-          salary: 0,
-          currentUser: _authenticatedUser,
-        ),
-      );
+      BlocProvider.of<ChipBloc>(context).add(UploadChipEvent(newChip: newChip));
     }
+  }
+
+  void _handleAutofillBtnClick() {
+    Map<String, dynamic> chipDetails = {
+      'chipDescription': widget.arguments!["chipDetails"],
+      'chipFile': widget.arguments!["chipImage"],
+    };
+
+    BlocProvider.of<AutofillBloc>(context)
+        .add(AutofillChipDetailsEvent(chipDetails: chipDetails));
   }
 
   @override
@@ -92,6 +102,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   @override
   void dispose() {
     _chipDetailsController.dispose();
+    _chipTitleController.dispose();
+    _companyTitleController.dispose();
+
     super.dispose();
   }
 
@@ -104,46 +117,58 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
             horizontal: 12,
             vertical: 14,
           ),
-          child: BlocConsumer<ChipBloc, ChipState>(
-            listener: (context, state) {
-              if (state is ChipSuccess) {
-                HelperWidgets.showSnackbar(
-                  context,
-                  'Chip created successfully!',
-                  'success',
-                );
+          child: Form(
+            key: _addChipFormKey,
+            child: ListView(
+              children: [
+                //
 
-                Navigator.pop(context);
-                NavigationService.routeToReplacementNamed('/layout');
-              } else if (state is ChipError) {
-                HelperWidgets.showSnackbar(
-                  context,
-                  state.errorMsg,
-                  'error',
-                );
-              }
-            },
-            builder: (context, state) {
-              return Form(
-                key: _addChipFormKey,
-                child: ListView(
+                // back icon + select image btn + post btn
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //
+                    CustomIconButton(
+                      iconSvgPath: AssetPaths.leftArrowIconPath,
+                      iconWidth: 16.w,
+                      iconHeight: 16.h,
+                      onTap: () => NavigationService.goBack(),
+                    ),
 
-                    // back icon + select image btn + post btn
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //
-                        CustomIconButton(
-                          iconSvgPath: AssetPaths.leftArrowIconPath,
-                          iconWidth: 16.w,
-                          iconHeight: 16.h,
-                          onTap: () => Navigator.of(context).pop(),
-                        ),
+                    // post btn
+                    BlocConsumer<ChipBloc, ChipState>(
+                      listener: (context, state) {
+                        print('current state is $state');
 
-                        // post btn
-                        OutlinedButton(
+                        if (state is ChipSuccess) {
+                          HelperWidgets.showSnackbar(
+                            context,
+                            'Chip created successfully!',
+                            'success',
+                          );
+
+                          Navigator.pop(context);
+                          NavigationService.routeToReplacementNamed('/layout');
+                        }
+
+                        if (state is ChipsLoading) {
+                          HelperWidgets.showSnackbar(
+                            context,
+                            'creating chip...',
+                            'info',
+                          );
+                        }
+
+                        if (state is ChipError) {
+                          HelperWidgets.showSnackbar(
+                            context,
+                            state.errorMsg,
+                            'error',
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return OutlinedButton(
                           onPressed: () => _createChip(),
                           style: OutlinedButton.styleFrom(
                             foregroundColor:
@@ -151,125 +176,171 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             backgroundColor: Colors.white,
                           ),
                           child: const Text('POST'),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // 'We just need a few more details!'
-                    Text(
-                      'We just need a few more details!',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 22),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // chip title textfield
-                    CustomTextFormField(
-                      label: ' Chip Title ',
-                      validatorFunction: (value) {
-                        _chipTitle = value;
-
-                        return null;
+                        );
                       },
                     ),
-
-                    const SizedBox(height: 20),
-
-                    // company title textfield
-                    CustomTextFormField(
-                      label: ' Company Title ',
-                      validatorFunction: (value) {
-                        _companyTitle = value;
-
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // select chip deadline
-                    Row(
-                      children: [
-                        //
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          alignment: Alignment.centerLeft,
-                          visualDensity: VisualDensity.compact,
-                          onPressed: () async {
-                            final selectedDate = await showDatePicker(
-                              helpText: 'Select Chip Deadline',
-                              context: context,
-                              firstDate: DateTime(2023),
-                              lastDate: DateTime(2025),
-                            );
-
-                            if (selectedDate != null &&
-                                selectedDate != _chipDeadline) {
-                              setState(() => _chipDeadline = selectedDate);
-                            }
-                          },
-                          icon: const Icon(Icons.calendar_month),
-                          iconSize: 26,
-                        ),
-
-                        Text(
-                          _chipDeadline == null
-                              ? 'Select Chip Deadline'
-                              : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // 'CHIP DETAILS'
-                    Text(
-                      'CHIP DETAILS',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 22),
-                    ),
-
-                    // chip description
-                    TextField(
-                      readOnly: true,
-                      controller: _chipDetailsController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: "Paste chip sauce here",
-                        hintStyle:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .color!
-                                      .withOpacity(0.5),
-                                ),
-                      ),
-                      scrollPadding: const EdgeInsets.all(20.0),
-                      autofocus: true,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    // chip image container
-                    if (_selectedImage != null)
-                      ChipImageContainer(selectedImage: _selectedImage!),
                   ],
                 ),
-              );
-            },
+
+                const SizedBox(height: 20),
+
+                // 'We just need a few more details!'
+                Text(
+                  'We just need a few more details!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 22),
+                ),
+
+                const SizedBox(height: 12),
+
+                // chip title textfield
+                CustomTextFormField(
+                  controller: _chipTitleController,
+                  label: ' Chip Title ',
+                  validatorFunction: (value) {
+                    _chipTitle = value;
+
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
+                // company title textfield
+                CustomTextFormField(
+                  controller: _companyTitleController,
+                  label: ' Company Title ',
+                  validatorFunction: (value) {
+                    _companyTitle = value;
+
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
+                // select chip deadline
+                Row(
+                  children: [
+                    //
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.centerLeft,
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () async {
+                        final selectedDate = await showDatePicker(
+                          helpText: 'Select Chip Deadline',
+                          context: context,
+                          firstDate: DateTime(2023),
+                          lastDate: DateTime(2025),
+                        );
+
+                        if (selectedDate != null &&
+                            selectedDate != _chipDeadline) {
+                          setState(() => _chipDeadline = selectedDate);
+                        }
+                      },
+                      icon: const Icon(Icons.calendar_month),
+                      iconSize: 26,
+                    ),
+
+                    Text(
+                      _chipDeadline == null
+                          ? 'Select Chip Deadline'
+                          : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // 'CHIP DETAILS'
+                Text(
+                  'CHIP DETAILS',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 22),
+                ),
+
+                // chip description
+                TextField(
+                  readOnly: true,
+                  controller: _chipDetailsController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: "Paste chip sauce here",
+                    hintStyle:
+                        Theme.of(context).textTheme.headlineSmall!.copyWith(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .color!
+                                  .withOpacity(0.5),
+                            ),
+                  ),
+                  scrollPadding: const EdgeInsets.all(20.0),
+                  autofocus: true,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.done,
+                ),
+
+                const SizedBox(height: 10),
+
+                // chip image container
+                if (_selectedImage != null)
+                  ChipImageContainer(selectedImage: _selectedImage!),
+              ],
+            ),
           ),
         ),
+      ),
+      floatingActionButton: BlocConsumer<AutofillBloc, AutofillState>(
+        listener: (context, state) {
+          if (state is AutofillSuccess) {
+            setState(() {
+              _chipTitleController.text = state.autoFillResponse["job_title"];
+              _companyTitleController.text =
+                  state.autoFillResponse["company_name"];
+            });
+
+            HelperWidgets.showSnackbar(
+              context,
+              'autofill success',
+              'success',
+            );
+          }
+
+          if (state is AutofillLoading) {
+            HelperWidgets.showSnackbar(
+              context,
+              'autofill horia',
+              'info',
+            );
+          }
+
+          if (state is AutofillError) {
+            HelperWidgets.showSnackbar(
+              context,
+              state.errorMsg,
+              'error',
+            );
+          }
+        },
+        builder: (context, state) {
+          return FloatingActionButton.extended(
+            backgroundColor: (state is AutofillSuccess)
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onPrimary,
+            disabledElevation: 0,
+            onPressed:
+                (state is AutofillSuccess) ? null : _handleAutofillBtnClick,
+            label: const Text('✨ Autofill with AI ✨'),
+          );
+        },
       ),
     );
   }

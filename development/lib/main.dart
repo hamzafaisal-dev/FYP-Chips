@@ -1,3 +1,4 @@
+import 'package:development/business%20logic/blocs/autofill/autofill_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => ChipBloc()),
+        BlocProvider(create: (context) => AutofillBloc()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(414, 896),

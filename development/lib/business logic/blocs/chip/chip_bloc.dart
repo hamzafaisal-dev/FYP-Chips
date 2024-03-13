@@ -21,24 +21,11 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     });
 
     on<UploadChipEvent>((event, emit) async {
-      try {
-        emit(ChipsLoading());
+      emit(ChipsLoading());
 
-        UserModel updatedUser = await _chipRepository.postChip(
-          jobTitle: event.jobTitle,
-          companyName: event.companyName,
-          applicationLink: event.applicationLink,
-          description: event.description,
-          jobMode: event.jobMode,
-          chipFile: event.chipFile,
-          locations: event.locations,
-          jobType: event.jobType,
-          experienceRequired: event.experienceRequired,
-          deadline: event.deadline,
-          skills: event.skills,
-          salary: event.salary,
-          currentUser: event.currentUser,
-        );
+      try {
+        UserModel updatedUser =
+            await _chipRepository.postChip(chipMap: event.newChip);
 
         emit(ChipSuccess());
       } on FirebaseException catch (error) {

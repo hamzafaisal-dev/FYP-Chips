@@ -120,15 +120,26 @@ class _AppLayoutState extends State<AppLayout> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => NavigationService.routeToNamed('/add-chip1'),
-        elevation: 5,
+        elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        child: Transform.scale(
-          scale: 1.4,
-          child: const Icon(Icons.add),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                spreadRadius: 22,
+              ),
+            ],
+          ),
+          child: Transform.scale(
+            scale: 1.4,
+            child: const Icon(Icons.add),
+          ),
         ),
       ),
 

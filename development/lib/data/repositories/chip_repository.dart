@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/networks/chip_network.dart';
@@ -17,36 +16,8 @@ class ChipRepository {
   }
 
   // post chip
-  Future<UserModel> postChip({
-    required String jobTitle,
-    required String companyName,
-    required String applicationLink,
-    String? description,
-    String? jobMode,
-    File? chipFile,
-    List<String>? locations,
-    String? jobType,
-    int? experienceRequired,
-    required DateTime deadline,
-    required List<dynamic> skills,
-    required double? salary,
-    required UserModel currentUser,
-  }) {
-    return _chipsNetwork.postChip(
-      jobTitle,
-      companyName,
-      applicationLink,
-      description,
-      jobMode,
-      chipFile ?? File(''),
-      locations,
-      jobType,
-      experienceRequired,
-      deadline,
-      skills,
-      salary,
-      currentUser,
-    );
+  Future<UserModel> postChip({required Map<String, dynamic> chipMap}) {
+    return _chipsNetwork.postChip(chipMap: chipMap);
   }
 
   // delete chip
