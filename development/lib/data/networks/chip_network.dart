@@ -70,6 +70,43 @@ class ChipNetwork {
     return fileUrl;
   }
 
+  Future<Map<String, dynamic>> sendEnglishProfanityReq(String input) async {
+    final url =
+        Uri.parse('https://ayekaunic.pythonanywhere.com/profanity/english');
+
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode({
+      'input': input,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final responsedata = jsonDecode(response.body);
+        return {
+          'Profane': responsedata['Profane'].toString(),
+          'Clean': responsedata['Clean'].toString(),
+        };
+      } else {
+        return {
+          'error': 'Error: ${response.statusCode}',
+        };
+      }
+    } catch (e) {
+      return {
+        'error': 'Error: $e',
+      };
+    }
+  }
+
   // post chip
   Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
     //
@@ -93,6 +130,11 @@ class ChipNetwork {
 
     String username = currentUser.username;
     String chipId = const Uuid().v4();
+
+    Map<String, dynamic> eProfanityResponse = await sendEnglishProfanityReq(
+        '$jobTitle + $companyName + $description');
+
+    print(eProfanityResponse);
 
     // upload file to fb storage and get download URL
     String chipFileUrl = "";

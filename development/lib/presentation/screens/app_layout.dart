@@ -121,6 +121,8 @@ class _AppLayoutState extends State<AppLayout> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => NavigationService.routeToNamed('/add-chip1'),
         elevation: 0,
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(

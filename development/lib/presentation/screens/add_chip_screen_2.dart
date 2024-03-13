@@ -138,8 +138,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     // post btn
                     BlocConsumer<ChipBloc, ChipState>(
                       listener: (context, state) {
-                        print('current state is $state');
-
                         if (state is ChipSuccess) {
                           HelperWidgets.showSnackbar(
                             context,
@@ -147,7 +145,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             'success',
                           );
 
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
                           NavigationService.routeToReplacementNamed('/layout');
                         }
 
