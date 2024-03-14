@@ -58,7 +58,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         }
         widget.validatorFunction(value);
 
-        widget.controller.clear();
+        // widget.controller.clear();
 
         return null;
       },

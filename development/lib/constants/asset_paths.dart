@@ -43,4 +43,8 @@ class AssetPaths {
   // animations
   static const String splashScreenAnimationPath =
       'assets/animations/splash_screen_animation.json';
+  static const String womanSittingAnimation =
+      'assets/animations/Woman-Sitting-Animation.json';
+  static const String angryTomatoAnimation =
+      'assets/animations/Angry_Tomato_Animation.json';
 }

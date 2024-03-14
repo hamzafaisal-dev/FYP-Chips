@@ -122,7 +122,7 @@ class _ChipTileState extends State<ChipTile> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
                   widget.chipData.description ?? 'No description available',
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

@@ -119,7 +119,7 @@ class _AppLayoutState extends State<AppLayout> {
       body: getContent(currentIndex),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => NavigationService.routeToNamed('/add-chip1'),
+        onPressed: () => NavigationService.pushAndRemoveUntil('/add-chip1'),
         elevation: 0,
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,

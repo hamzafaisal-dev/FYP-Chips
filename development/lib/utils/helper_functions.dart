@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:intl/intl.dart';
+
 class Helpers {
   static String formatTimeAgo(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -16,6 +18,17 @@ class Helpers {
       return '${difference.inDays} days ago';
     } else {
       return 'on ${dateTime.day}-${dateTime.month}-${dateTime.year}';
+    }
+  }
+
+  // formats given String to yyyy-mm-dd format
+  static DateTime? formatDate(String dateString) {
+    try {
+      DateTime parsedDate = DateFormat('dd/MM/yyyy').parseStrict(dateString);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+      return DateTime.parse(formattedDate);
+    } catch (e) {
+      return null;
     }
   }
 

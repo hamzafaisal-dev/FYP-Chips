@@ -36,18 +36,18 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
   }
 
   void _handleNextScreenClick() {
-    if (_chipDetailsController.text != '') {
+    if (_chipDetailsController.text != '' || _selectedImage != null) {
       NavigationService.routeToNamed(
         '/add-chip2',
         arguments: {
           "chipImage": _selectedImage,
-          "chipDetails": _chipDetailsController.text,
+          "chipDetails": _chipDetailsController.text
         },
       );
     } else {
       HelperWidgets.showSnackbar(
         context,
-        'Please enter a job description',
+        'Please enter a job description or select an image to continue',
         'error',
       );
     }
@@ -119,29 +119,26 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                   const SizedBox(height: 20),
 
                   // chip description textfield
-                  SizedBox(
-                    height: _selectedImage == null
-                        ? MediaQuery.of(context).size.height
-                        : 200,
-                    child: TextField(
-                      controller: _chipDetailsController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: "Paste chip sauce here",
-                        hintStyle:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .color!
-                                      .withOpacity(0.5),
-                                ),
-                      ),
-                      scrollPadding: const EdgeInsets.all(20.0),
-                      autofocus: true,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
+                  TextField(
+                    controller: _chipDetailsController,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    decoration: InputDecoration.collapsed(
+                      hintText: "Paste chip sauce here",
+                      hintStyle:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .color!
+                                    .withOpacity(0.5),
+                              ),
                     ),
+                    scrollPadding: const EdgeInsets.all(20.0),
+                    autofocus: true,
+                    minLines: 1,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.done,
                   ),
                 ],
               ),

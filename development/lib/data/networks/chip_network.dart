@@ -60,17 +60,15 @@ class ChipNetwork {
       contentType: Helpers.getMimeType(file),
     );
 
-    await storageRef.putFile(
-      file,
-      metadata,
-    );
+    await storageRef.putFile(file, metadata);
 
     String fileUrl = await storageRef.getDownloadURL();
 
     return fileUrl;
   }
 
-  Future<Map<String, dynamic>> sendEnglishProfanityReq(String input) async {
+  //network method for english profanity
+  Future<Map<String, dynamic>> checkEnglishProfanity(String input) async {
     final url =
         Uri.parse('https://ayekaunic.pythonanywhere.com/profanity/english');
 
@@ -94,6 +92,41 @@ class ChipNetwork {
         return {
           'Profane': responsedata['Profane'].toString(),
           'Clean': responsedata['Clean'].toString(),
+        };
+      } else {
+        return {
+          'error': 'Error: ${response.statusCode}',
+        };
+      }
+    } catch (e) {
+      return {
+        'error': 'Error: $e',
+      };
+    }
+  }
+
+  //network method for roman urdu profanity
+  Future<Map<String, dynamic>> checkUrduProfanity(String input) async {
+    final url =
+        Uri.parse('https://ayekaunic.pythonanywhere.com/profanity/romanUrdu');
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    final body = jsonEncode({
+      'input': input,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final responsedata = jsonDecode(response.body);
+        return {
+          'Profane': responsedata['Profane'].toString(),
         };
       } else {
         return {
@@ -131,10 +164,26 @@ class ChipNetwork {
     String username = currentUser.username;
     String chipId = const Uuid().v4();
 
-    Map<String, dynamic> eProfanityResponse = await sendEnglishProfanityReq(
-        '$jobTitle + $companyName + $description');
+    // concatenate all user input to check for profanity
+    String profanityContext = '$jobTitle + $companyName + $description';
 
-    print(eProfanityResponse);
+    Map<String, dynamic> englishProfanityResponse =
+        await checkEnglishProfanity(profanityContext);
+
+    Map<String, dynamic> urduProfanityResponse =
+        await checkUrduProfanity(profanityContext);
+
+    double englishProfanityScore =
+        double.parse(englishProfanityResponse['Profane']);
+
+    double englishCleanScore = double.parse(englishProfanityResponse['Clean']);
+
+    // aqalmando ne urdu profanity ke liye sirf Profane ka true ya false return karwayawa hai
+    bool urduProfanityScore = bool.parse(urduProfanityResponse['Profane']);
+
+    if (englishProfanityScore >= 80 || urduProfanityScore) {
+      throw 'profane';
+    }
 
     // upload file to fb storage and get download URL
     String chipFileUrl = "";

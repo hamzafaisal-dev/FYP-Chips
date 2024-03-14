@@ -25,8 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
+
     ChipBloc chipBloc = context.read<ChipBloc>();
     chipBloc.add(const FetchChipsStream());
   }
