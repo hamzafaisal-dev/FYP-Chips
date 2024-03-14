@@ -39,4 +39,8 @@ class AssetPaths {
   static const String searchIconPath = 'assets/images/icons/search_icon.svg';
   static const String bookmarkIconPath =
       'assets/images/icons/bookmark_icon.svg';
+
+  // animations
+  static const String splashScreenAnimationPath =
+      'assets/animations/splash_screen_animation.json';
 }

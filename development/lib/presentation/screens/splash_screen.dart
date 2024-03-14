@@ -1,9 +1,11 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
-import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,19 +33,28 @@ class _SplashScreenState extends State<SplashScreen> {
         if (state is AuthUserAlreadySignedIn) {
           HelperWidgets.showSnackbar(
             context,
-            "Welcome back, ${state.user.name}!",
+            "Welcome back, ${state.user.name}!🎉",
             "success",
           );
-          NavigationService.routeToReplacementNamed('/layout');
+          Future.delayed(const Duration(seconds: 1, milliseconds: 836), () {
+            NavigationService.routeToReplacementNamed('/layout');
+          });
         }
         if (state is AuthUserNotAlreadySignedIn) {
-          NavigationService.routeToReplacementNamed('/login');
+          Future.delayed(const Duration(seconds: 1, milliseconds: 836), () {
+            NavigationService.routeToReplacementNamed('/login');
+          });
         }
       },
       builder: (context, state) {
-        return const Scaffold(
+        return Scaffold(
           body: Center(
-            child: CustomCircularProgressIndicator(),
+            child: Lottie.asset(
+              AssetPaths.splashScreenAnimationPath,
+              repeat: true,
+              width: 270.w,
+              frameRate: FrameRate(369),
+            ),
           ),
         );
       },

@@ -51,6 +51,7 @@ flutter:
     - assets/images/banners/
     - assets/images/icons/
     - assets/images/logo/
+    - assets/animations/
 
   fonts:
     - family: KlasikRegular
