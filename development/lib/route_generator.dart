@@ -8,16 +8,18 @@ import 'package:development/presentation/screens/profile_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/screens/sign_up_screen.dart';
+import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:development/presentation/screens/view_chip_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
-//
   static Route<dynamic> generateRoutes(RouteSettings settings) {
-    //
-
     switch (settings.name) {
-      //
+      case '/splash':
+        return MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        );
+
       case '/login':
         return MaterialPageRoute(
           builder: (context) => const SignInScreen(),

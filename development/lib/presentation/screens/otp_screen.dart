@@ -56,28 +56,6 @@ class _OtpScreenState extends State<OtpScreen> {
       body: SafeArea(
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            // if (state is AuthOtpEmailSending) {
-            //   HelperWidgets.showSnackbar(
-            //     context,
-            //     "Sending OTP to your email...",
-            //     'info',
-            //   );
-            // }
-            // if (state is AuthOtpEmailSent) {
-            //   HelperWidgets.showSnackbar(
-            //     context,
-            //     "OTP sent to your email successfully! Please check your email.",
-            //     'success',
-            //   );
-            //   _otp = state.otp;
-            // }
-            // if (state is AuthOtpEmailFailedToSend) {
-            //   HelperWidgets.showSnackbar(
-            //     context,
-            //     "Failed to send OTP to your email: ${state.message} Please try again.",
-            //     'error',
-            //   );
-            // }
             if (state is AuthOtpVerified) {
               BlocProvider.of<AuthCubit>(context).emailPasswordSignUp(
                 _userName,
@@ -115,16 +93,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 'error',
               );
             }
-            if (state is AuthSignInSuccess) {
+            if (state is AuthUserSignedIn) {
               NavigationService.pushAndRemoveUntil('/layout');
-            }
-            if (state is AuthSignInLoading) {}
-            if (state is AuthSignInFailure) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Failed to sign in: ${state.message}',
-                'error',
-              );
             }
           },
           buildWhen: (previous, current) {

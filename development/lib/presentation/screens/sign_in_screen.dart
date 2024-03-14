@@ -120,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (state is AuthSignInSuccess) {
                     HelperWidgets.showSnackbar(
                       context,
-                      "Signed in successfully! Welcome back!🎉",
+                      "Signed in successfully! Welcome ${state.user.name}!🎉",
                       "success",
                     );
                     NavigationService.routeToReplacementNamed("/layout");

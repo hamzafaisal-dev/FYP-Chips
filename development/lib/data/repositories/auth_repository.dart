@@ -55,4 +55,9 @@ class AuthRepository {
   Future<void> sendPasswordResetEmail(String email) async {
     await _authNetwork.sendPasswordResetEmail(email);
   }
+
+  // check if user already signed in
+  User? checkIfUserAlreadySignedIn() {
+    return _authNetwork.checkIfUserAlreadySignedIn();
+  }
 }

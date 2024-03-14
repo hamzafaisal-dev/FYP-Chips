@@ -91,7 +91,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
-    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
     if (widget.arguments != null) {
       _chipDetailsController.text = widget.arguments!["chipDetails"];

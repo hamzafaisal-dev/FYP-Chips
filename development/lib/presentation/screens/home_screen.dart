@@ -25,13 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
-
-    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
-
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
     ChipBloc chipBloc = context.read<ChipBloc>();
-
     chipBloc.add(const FetchChipsStream());
   }
 
@@ -39,30 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
-      // child: BlocBuilder<AuthCubit, AuthState>(
-      //   builder: (context, state) {
-      //     if (state is AuthSignInSuccess) {
-      //       return Container(
-      //         width: double.maxFinite,
-      //         height: double.maxFinite,
-      //         child: Text(state.user.toString()),
-      //       );
-      //     } else {
-      //       return Container(
-      //         width: double.maxFinite,
-      //         height: double.maxFinite,
-      //         child: Text(state.toString()),
-      //       );
-      //     }
-      //   },
-      // ),
       child: BlocBuilder<ChipBloc, ChipState>(
         builder: (context, state) {
           if (state is ChipsStreamLoaded) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //
                 SizedBox(height: 16.h),
 
                 // hey, user name

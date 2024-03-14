@@ -9,6 +9,38 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
+final class AuthUserSignedIn extends AuthState {
+  final UserModel user;
+
+  const AuthUserSignedIn({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+// user state change
+final class AuthCheckingIfUserAlreadySignedIn extends AuthState {}
+
+final class AuthFailedCheckingIfUserAlreadySignedIn extends AuthState {
+  final String message;
+
+  const AuthFailedCheckingIfUserAlreadySignedIn({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class AuthUserAlreadySignedIn extends AuthState {
+  final UserModel user;
+
+  const AuthUserAlreadySignedIn({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+final class AuthUserNotAlreadySignedIn extends AuthState {}
+
 // email password sign in
 final class AuthSignInLoading extends AuthState {}
 

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'auth_state.dart';
 
@@ -10,6 +11,24 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _authRepository = AuthRepository();
 
+  // check if user already signed in
+  Future<void> checkIfUserAlreadySignedIn() async {
+    emit(AuthCheckingIfUserAlreadySignedIn());
+    try {
+      User? user = _authRepository.checkIfUserAlreadySignedIn();
+      if (user == null) {
+        emit(AuthUserNotAlreadySignedIn());
+        emit(AuthInitial());
+      } else {
+        UserModel userModel = await _authRepository.getCurrentUser(user);
+        emit(AuthUserAlreadySignedIn(user: userModel));
+        emit(AuthUserSignedIn(user: userModel));
+      }
+    } catch (error) {
+      emit(AuthFailedCheckingIfUserAlreadySignedIn(message: error.toString()));
+    }
+  }
+
   // email password sign in
   Future<void> emailPasswordSignIn(String email, String password) async {
     emit(AuthSignInLoading());
@@ -17,6 +36,7 @@ class AuthCubit extends Cubit<AuthState> {
       UserModel user =
           await _authRepository.emailPasswordSignIn(email, password);
       emit(AuthSignInSuccess(user: user));
+      emit(AuthUserSignedIn(user: user));
     } catch (error) {
       emit(AuthSignInFailure(message: error.toString()));
     }
@@ -87,7 +107,7 @@ class AuthCubit extends Cubit<AuthState> {
       UserModel user =
           await _authRepository.emailPasswordSignUp(name, email, password);
       emit(AuthSignUpSuccess(user: user));
-      emit(AuthSignInSuccess(user: user));
+      emit(AuthUserSignedIn(user: user));
     } catch (error) {
       emit(AuthSignUpFailure(message: error.toString()));
       emit(AuthInitial());

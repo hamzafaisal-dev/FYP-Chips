@@ -12,6 +12,11 @@ class AuthNetwork {
 
   // Stream<User?> get userAuthChangeStream => _firebaseAuth.userChanges();
 
+  // check if user already signed in
+  User? checkIfUserAlreadySignedIn() {
+    return _firebaseAuth.currentUser;
+  }
+
   // get current user
   Future<UserModel> getCurrentUser(User currentUser) async {
     try {

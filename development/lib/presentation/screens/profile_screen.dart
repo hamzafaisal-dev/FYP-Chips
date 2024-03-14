@@ -25,10 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
-
-    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
   }
 
   @override

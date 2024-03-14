@@ -1,5 +1,6 @@
 import 'package:development/business%20logic/blocs/autofill/autofill_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
+import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/firebase_options.dart';
-import 'package:development/presentation/screens/sign_in_screen.dart';
 import 'package:development/presentation/themes/theme.dart';
 import 'package:development/route_generator.dart';
 import 'package:development/services/navigation_service.dart';
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
-          home: const SignInScreen(),
+          home: const SplashScreen(),
         ),
       ),
     );
