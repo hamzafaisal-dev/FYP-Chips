@@ -95,7 +95,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           FocusScope.of(context).unfocus();
                         },
                         controller: _emailController,
-                        decoration: TextFormFieldStyles.textFormFieldDecoration(
+                        decoration: Styles.textFormFieldDecoration(
                           'j.doe.36963@khi.iba.edu.pk',
                           null,
                           null,

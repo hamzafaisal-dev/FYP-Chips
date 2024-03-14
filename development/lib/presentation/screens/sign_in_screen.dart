@@ -73,7 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   FocusScope.of(context).unfocus();
                 },
                 controller: _emailController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'Enter IBA email address',
                   const Icon(Icons.email_outlined),
                   null,
@@ -93,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'Enter password',
                   const Icon(Icons.lock_outline),
                   IconButton(

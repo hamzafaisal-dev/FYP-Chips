@@ -73,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // name form field
               TextFormField(
                 controller: _nameController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'Full Name',
                   const Icon(Icons.person_outline),
                   null,
@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // email form field
               TextFormField(
                 controller: _emailController,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'IBA Email',
                   const Icon(Icons.email_outlined),
                   null,
@@ -111,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'Password',
                   const Icon(Icons.lock_outline),
                   IconButton(
@@ -136,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // confirm password form field
               TextFormField(
                 obscureText: !_isConfirmPasswordVisible,
-                decoration: TextFormFieldStyles.textFormFieldDecoration(
+                decoration: Styles.textFormFieldDecoration(
                   'Confirm Password',
                   const Icon(Icons.lock_outline),
                   IconButton(

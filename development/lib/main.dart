@@ -22,11 +22,8 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
-
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   runApp(const MyApp());
 }
 

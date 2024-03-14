@@ -44,7 +44,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      decoration: TextFormFieldStyles.textFormFieldDecoration(
+      decoration: Styles.textFormFieldDecoration(
         widget.label,
         widget.prefixIcon,
         widget.suffixIcon,

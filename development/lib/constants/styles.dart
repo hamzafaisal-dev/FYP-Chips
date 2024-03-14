@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TextFormFieldStyles {
+class Styles {
   static InputDecoration textFormFieldDecoration(
     String labelText,
     Widget? prefixIcon,
