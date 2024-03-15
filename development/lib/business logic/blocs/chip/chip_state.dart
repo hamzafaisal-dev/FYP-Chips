@@ -35,6 +35,11 @@ class ChipSuccess extends ChipState {
   List<Object?> get props => [];
 }
 
+class ChipEditSuccess extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
+
 class ChipError extends ChipState {
   final String errorMsg;
   const ChipError({required this.errorMsg});

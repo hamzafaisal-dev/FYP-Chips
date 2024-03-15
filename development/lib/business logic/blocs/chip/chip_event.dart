@@ -28,6 +28,15 @@ class UploadChipEvent extends ChipEvent {
   List<Object?> get props => [newChip];
 }
 
+class EditChipEvent extends ChipEvent {
+  final Map<String, dynamic> editedChip;
+
+  const EditChipEvent({required this.editedChip});
+
+  @override
+  List<Object?> get props => [editedChip];
+}
+
 class DeleteChipEvent extends ChipEvent {
   final String chipId;
   final UserModel currentUser;

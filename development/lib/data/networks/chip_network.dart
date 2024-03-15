@@ -238,6 +238,43 @@ class ChipNetwork {
     return updatedUser;
   }
 
+  // edit chip
+  Future<void> editChip({required Map<String, dynamic> chipMap}) async {
+    //
+
+    // get relevant chip properties from map
+    String chipId = chipMap['chipId'];
+    String jobTitle = chipMap['jobTitle'];
+    String companyName = chipMap['companyName'];
+    String description = chipMap['description'];
+
+    // concatenate all user input to check for profanity
+    String profanityContext = '$jobTitle + $companyName + $description';
+
+    Map<String, dynamic> englishProfanityResponse =
+        await checkEnglishProfanity(profanityContext);
+
+    Map<String, dynamic> urduProfanityResponse =
+        await checkUrduProfanity(profanityContext);
+
+    double englishProfanityScore =
+        double.parse(englishProfanityResponse['Profane']);
+
+    double englishCleanScore = double.parse(englishProfanityResponse['Clean']);
+
+    // aqalmando ne urdu profanity ke liye sirf Profane ka true ya false return karwayawa hai
+    bool urduProfanityScore = bool.parse(urduProfanityResponse['Profane']);
+
+    if (englishProfanityScore >= 70 || urduProfanityScore) {
+      throw 'profane';
+    }
+
+    // ChipModel editedChip = ChipModel.fromMap(chipMap);
+
+    // update chip
+    await _firestore.collection('chips').doc(chipId).update(chipMap);
+  }
+
   // delete chip
   Future<UserModel> deleteChip(String chipId, UserModel currentUser) async {
     late UserModel updatedUser;
@@ -256,7 +293,7 @@ class ChipNetwork {
     List<String> postedChips = user.postedChips;
 
     // if the chip to be deleted exists in user's posted chips array, it is deleted from the array
-    if (postedChips.any((postedChip) => postedChip == chipId)) {
+    if (postedChips.contains(chipId)) {
       postedChips.remove(chipId);
 
       updatedUser = user.copyWith(postedChips: postedChips);

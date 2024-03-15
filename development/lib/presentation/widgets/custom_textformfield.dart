@@ -6,22 +6,22 @@ class CustomTextFormField extends StatefulWidget {
     super.key,
     required this.label,
     required this.controller,
-    this.initialText,
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
-    required this.validatorFunction,
+    this.toolTipMessage,
+    this.validatorFunction,
+    required this.onValueChanged,
   });
 
   final String label;
   final TextEditingController controller;
-
-  final String? initialText;
-
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final String? Function(String value) validatorFunction;
+  final Widget? toolTipMessage;
+  final String? Function(String value)? validatorFunction;
+  final void Function(String value) onValueChanged;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -30,7 +30,6 @@ class CustomTextFormField extends StatefulWidget {
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
-    widget.controller.text = widget.initialText ?? '';
     super.initState();
   }
 
@@ -53,12 +52,19 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       ),
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       validator: (value) {
-        if (value == null || value == '') {
-          return 'Enter a valid value';
-        }
-        widget.validatorFunction(value);
+        if (value == null) return 'Please enter a valid value';
 
-        // widget.controller.clear();
+        if (value.length < 5) {
+          return 'Please enter at least 5 characters';
+        }
+
+        final validationResult = widget.validatorFunction?.call(value);
+
+        if (validationResult != null) {
+          return validationResult;
+        }
+
+        widget.onValueChanged(value);
 
         return null;
       },

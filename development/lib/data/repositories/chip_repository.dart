@@ -20,6 +20,11 @@ class ChipRepository {
     return _chipsNetwork.postChip(chipMap: chipMap);
   }
 
+  // edit chip
+  Future<void> editChip({required Map<String, dynamic> chipMap}) {
+    return _chipsNetwork.editChip(chipMap: chipMap);
+  }
+
   // delete chip
   Future<UserModel> deleteChip({
     required String chipId,

@@ -6,12 +6,15 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
+import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
@@ -31,23 +34,30 @@ class AddChipScreen2 extends StatefulWidget {
 
 class _AddChipScreen2State extends State<AddChipScreen2> {
   late UserModel _authenticatedUser;
+  late ChipModel _chipData;
+  late String? _chipFileUrl;
 
   final _addChipFormKey = GlobalKey<FormState>();
 
   final _chipTitleController = TextEditingController();
   final _companyTitleController = TextEditingController();
   final _chipDetailsController = TextEditingController();
+  final _applicationLinkController = TextEditingController();
 
   File? _selectedImage;
+
+  DateTime? _chipDeadline;
+
+  bool _isEditable = false;
+
+  bool _autoFillEnabled = true;
 
   String _chipTitle = '';
   String _companyTitle = '';
   String _chipDescription = '';
-  final String _applicationLink = ''; // not used filhaal
+  String _applicationLink = ''; // not used filhaal
 
-  DateTime? _chipDeadline;
-
-  void _createChip() {
+  void _checkDeadline() {
     if (_chipDeadline == null) {
       HelperWidgets.showSnackbar(
         context,
@@ -57,14 +67,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
       return;
     }
+  }
+
+  void _createChip() {
+    _checkDeadline();
 
     if (_addChipFormKey.currentState!.validate() && _chipDeadline != null) {
       Map<String, dynamic> newChip = {
-        'jobTitle': _chipTitle,
-        'companyName': _companyTitle,
-        'applicationLink': _applicationLink,
-        'description':
-            _chipDetailsController.text, // widget.arguments!["chipDetails"],
+        'jobTitle': _chipTitleController.text,
+        'companyName': _companyTitleController.text,
+        'applicationLink': _applicationLinkController.text,
+        'description': _chipDetailsController.text,
         'jobMode': '',
         'chipFile': widget.arguments!["chipImage"],
         'locations': const [],
@@ -77,6 +90,24 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       };
 
       BlocProvider.of<ChipBloc>(context).add(UploadChipEvent(newChip: newChip));
+    }
+  }
+
+  void _editChip() {
+    _checkDeadline();
+
+    if (_addChipFormKey.currentState!.validate() && _chipDeadline != null) {
+      ChipModel editedChip = _chipData.copyWith(
+        jobTitle: _chipTitleController.text,
+        companyName: _companyTitleController.text,
+        applicationLink: _applicationLinkController.text,
+        description: _chipDetailsController.text,
+      );
+
+      Map<String, dynamic> editedChipMap = editedChip.toMap();
+
+      BlocProvider.of<ChipBloc>(context)
+          .add(EditChipEvent(editedChip: editedChipMap));
     }
   }
 
@@ -99,12 +130,28 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
     if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 
-    print(authState);
-    print(_authenticatedUser);
-
     if (widget.arguments != null) {
-      _chipDetailsController.text = widget.arguments!["chipDetails"];
-      _selectedImage = widget.arguments!["chipImage"];
+      // the screen from which user came to this screen
+      String routeName = widget.arguments!["routeName"];
+
+      if (routeName == "/add-chip1") {
+        _chipDetailsController.text = widget.arguments!["chipDetails"];
+        _selectedImage = widget.arguments!["chipImage"];
+      }
+
+      if (routeName == "/viewDetails") {
+        _isEditable = true;
+        _autoFillEnabled = false;
+
+        _chipData = widget.arguments!["chipData"];
+
+        _chipTitleController.text = _chipData.jobTitle;
+        _companyTitleController.text = _chipData.companyName;
+        _chipDetailsController.text = _chipData.description!;
+        _applicationLinkController.text = _chipData.applicationLink;
+        _chipDeadline = _chipData.deadline;
+        _chipFileUrl = _chipData.imageUrl;
+      }
     }
 
     _chipDescription = _chipDetailsController.text;
@@ -115,6 +162,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     _chipDetailsController.dispose();
     _chipTitleController.dispose();
     _companyTitleController.dispose();
+    _applicationLinkController.dispose();
 
     super.dispose();
   }
@@ -147,6 +195,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                   _chipDetailsController.text =
                       state.autoFillResponse["description"];
                   _chipDeadline = state.autoFillResponse["deadline"];
+                  _applicationLinkController.text =
+                      state.autoFillResponse["email"];
 
                   HelperWidgets.showSnackbar(
                     context,
@@ -196,6 +246,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                               NavigationService.routeToReplacementNamed(
                                   '/layout');
                             }
+                            if (state is ChipEditSuccess) {
+                              HelperWidgets.showSnackbar(
+                                context,
+                                'Chip edited successfully!',
+                                'success',
+                              );
+
+                              Navigator.pop(context);
+                              NavigationService.routeToReplacementNamed(
+                                  '/layout');
+                            }
                             // if (state is ChipsLoading) {
                             //   HelperWidgets.showSnackbar(
                             //     context,
@@ -217,7 +278,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             return OutlinedButton(
                               onPressed: (state is ChipsLoading)
                                   ? null
-                                  : () => _createChip(),
+                                  : (_isEditable ? _editChip : _createChip),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor:
                                     Theme.of(context).colorScheme.onSecondary,
@@ -225,7 +286,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                               ),
                               child: (state is ChipsLoading)
                                   ? const CustomCircularProgressIndicator()
-                                  : const Text('POST'),
+                                  : (_isEditable
+                                      ? const Text('EDIT')
+                                      : const Text('POST')),
                             );
                           },
                         ),
@@ -249,11 +312,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _chipTitleController,
                       label: ' Chip Title ',
-                      validatorFunction: (value) {
-                        _chipTitle = value;
-
-                        return null;
-                      },
+                      // validatorFunction: (value) =>
+                      //     FormValidators.chipValidator(value),
+                      onValueChanged: (value) => _chipTitle = value,
                     ),
 
                     SizedBox(height: 20.h),
@@ -262,11 +323,26 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _companyTitleController,
                       label: ' Company Title ',
-                      validatorFunction: (value) {
-                        _companyTitle = value;
+                      // validatorFunction: (value) =>
+                      //     FormValidators.chipValidator(value),
+                      onValueChanged: (value) => _companyTitle = value,
+                    ),
 
-                        return null;
-                      },
+                    SizedBox(height: 20.h),
+
+                    CustomTextFormField(
+                      controller: _applicationLinkController,
+                      label: ' Where To Apply ',
+                      suffixIcon: IconButton(
+                        enableFeedback: true,
+                        tooltip:
+                            'This can be a url, a phone number or an email',
+                        onPressed: () {},
+                        icon: const Icon(Icons.info_outline_rounded),
+                      ),
+                      validatorFunction: (value) =>
+                          FormValidators.chipValidator(value),
+                      onValueChanged: (value) => _applicationLink = value,
                     ),
 
                     SizedBox(height: 20.h),
@@ -319,20 +395,26 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     // chip description
                     if (_chipDetailsController.text != '')
                       TextField(
-                        readOnly: true,
+                        readOnly: !_isEditable,
+                        autofocus: true,
                         controller: _chipDetailsController,
                         decoration:
                             const InputDecoration.collapsed(hintText: null),
                         scrollPadding: const EdgeInsets.all(20.0),
-                        minLines: _selectedImage == null ? 8 : 1,
+                        minLines:
+                            (_selectedImage == null && _chipFileUrl == null)
+                                ? 8
+                                : 1,
                         maxLines: 12,
                       ),
 
                     const SizedBox(height: 10),
 
                     // chip image container
-                    if (_selectedImage != null)
-                      ChipImageContainer(selectedImage: _selectedImage!),
+                    if (_selectedImage != null || _chipFileUrl != null)
+                      _isEditable
+                          ? ChipNetworkImageContainer(imageUrl: _chipFileUrl)
+                          : ChipImageContainer(selectedImage: _selectedImage!),
                   ],
                 );
               },
@@ -341,10 +423,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: _autoFillEnabled
+            ? Theme.of(context).colorScheme.onPrimary
+            : Theme.of(context).colorScheme.tertiary,
         disabledElevation: 0,
-        onPressed: _handleAutofillBtnClick,
-        label: const Text('✨ Autofill with AI ✨'),
+        onPressed: _autoFillEnabled ? _handleAutofillBtnClick : null,
+        label: _autoFillEnabled
+            ? const Text('✨ Autofill with AI ✨')
+            : const Text(
+                ' Autofill with AI ',
+                style: TextStyle(color: Colors.grey),
+              ),
       ),
     );
   }

@@ -1,9 +1,18 @@
+import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
+import 'package:development/business%20logic/blocs/chip/chip_event.dart';
+import 'package:development/business%20logic/blocs/chip/chip_state.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
+import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChipDetailsScreen extends StatefulWidget {
@@ -16,7 +25,10 @@ class ChipDetailsScreen extends StatefulWidget {
 }
 
 class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
+  late UserModel _authenticatedUser;
   late ChipModel _chipData;
+
+  bool _isEditable = false;
 
   @override
   void initState() {
@@ -24,6 +36,14 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
     if (widget.arguments != null) {
       _chipData = widget.arguments!["chipData"];
+    }
+
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
+
+    // if user has posted the current chip, the chip becomes editable
+    if (_authenticatedUser.postedChips.contains(_chipData.chipId)) {
+      _isEditable = true;
     }
   }
 
@@ -39,11 +59,65 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
           child: ListView(
             children: [
               //
-              CustomIconButton(
-                iconSvgPath: AssetPaths.leftArrowIconPath,
-                iconWidth: 16.w,
-                iconHeight: 16.h,
-                onTap: () => Navigator.of(context).pop(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //
+                  CustomIconButton(
+                    iconSvgPath: AssetPaths.leftArrowIconPath,
+                    iconWidth: 16.w,
+                    iconHeight: 16.h,
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+
+                  BlocListener<ChipBloc, ChipState>(
+                    listener: (context, state) {
+                      if (state is ChipSuccess) {
+                        Navigator.pop(context);
+
+                        NavigationService.routeToNamed('/layout');
+
+                        HelperWidgets.showSnackbar(
+                            context, 'Chip deleted successfully', 'success');
+                      }
+
+                      if (state is ChipsLoading) {
+                        HelperWidgets.showSnackbar(
+                          context,
+                          'Deleting chip...',
+                          'info',
+                        );
+                      }
+
+                      if (state is ChipError) {
+                        HelperWidgets.showSnackbar(
+                          context,
+                          state.errorMsg,
+                          'error',
+                        );
+                      }
+                    },
+                    child: PopupMenuButton<String>(
+                      onSelected: (String value) {
+                        if (value == '1') {
+                          BlocProvider.of<ChipBloc>(context).add(
+                            DeleteChipEvent(
+                              chipId: _chipData.chipId,
+                              currentUser: _authenticatedUser,
+                            ),
+                          );
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        const PopupMenuItem<String>(
+                          value: '1',
+                          child: Text('Delete'),
+                        ),
+                      ],
+                      icon: const Icon(Icons.more_horiz),
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 14),
@@ -52,10 +126,15 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   //
-                  Text(
-                    _chipData.jobTitle,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  Flexible(
+                    child: Text(
+                      _chipData.jobTitle,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
+
+                  const SizedBox(width: 10),
 
                   CircleAvatar(
                     radius: 22,
@@ -102,36 +181,26 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
               const SizedBox(height: 14),
 
               if (_chipData.imageUrl != null && _chipData.imageUrl != '')
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  height: MediaQuery.of(context).size.width,
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    _chipData.imageUrl!,
-                    fit: BoxFit.contain,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child; // If the image is fully loaded, return the original child.
-                      } else {
-                        return const Center(
-                          child: CustomCircularProgressIndicator(),
-                        );
-                      }
-                    },
-                  ),
-                ),
+                ChipNetworkImageContainer(imageUrl: _chipData.imageUrl!),
             ],
           ),
         ),
       ),
+      floatingActionButton: _isEditable
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.onSecondary,
+              onPressed: () {
+                NavigationService.routeToNamed(
+                  '/add-chip2',
+                  arguments: {
+                    "routeName": "/viewDetails",
+                    "chipData": _chipData,
+                  },
+                );
+              },
+              child: const Icon(Icons.edit, size: 28),
+            )
+          : null,
     );
   }
 }

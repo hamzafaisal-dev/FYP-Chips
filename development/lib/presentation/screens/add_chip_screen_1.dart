@@ -40,6 +40,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
       NavigationService.routeToNamed(
         '/add-chip2',
         arguments: {
+          "routeName": "/add-chip1",
           "chipImage": _selectedImage,
           "chipDetails": _chipDetailsController.text
         },

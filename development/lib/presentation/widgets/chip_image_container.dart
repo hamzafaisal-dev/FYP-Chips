@@ -20,7 +20,7 @@ class _ChipImageContainerState extends State<ChipImageContainer> {
         context: context,
         builder: (context) {
           return Dialog.fullscreen(
-            backgroundColor: Colors.black12,
+            backgroundColor: Colors.black38,
             child: Stack(
               alignment: Alignment.center,
               children: [

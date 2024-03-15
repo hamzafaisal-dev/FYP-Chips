@@ -40,4 +40,30 @@ class FormValidators {
 
     return null;
   }
+
+  static String? chipValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Value cannot be empty';
+    }
+
+    // if (!value.isValidEmail()) {
+    //   return 'Invalid email format';
+    // }
+
+    // if (!value.isValidPhoneNumber()) {
+    //   return 'Invalid phone number format';
+    // }
+
+    // if (!value.isValidLink()) {
+    //   return 'Invalid URL format';
+    // }
+
+    if (!value.isValidEmail() &&
+        !value.isValidPhoneNumber() &&
+        !value.isValidLink()) {
+      return 'Invalid input value';
+    }
+
+    return null;
+  }
 }

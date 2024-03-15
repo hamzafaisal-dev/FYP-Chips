@@ -28,11 +28,32 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
             await _chipRepository.postChip(chipMap: event.newChip);
 
         emit(ChipSuccess());
-      } on FirebaseException catch (error) {
-        String fbError = FirebaseAuthExceptionErrors.getFirebaseError(error);
-        emit(ChipError(errorMsg: fbError));
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
+
+        // these 3 lines are basically the FetchChipsStream event, this is done bec after error state, chips vanished on home
+        emit(ChipsLoading());
+        Stream<List<ChipModel>> chipsStream =
+            _chipRepository.getAllChipsStream();
+        emit(ChipsStreamLoaded(chips: chipsStream));
+      }
+    });
+
+    on<EditChipEvent>((event, emit) async {
+      emit(ChipsLoading());
+
+      try {
+        await _chipRepository.editChip(chipMap: event.editedChip);
+
+        emit(ChipEditSuccess());
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+
+        // these 3 lines are basically the FetchChipsStream event, this is done bec after error state, chips vanished on home
+        emit(ChipsLoading());
+        Stream<List<ChipModel>> chipsStream =
+            _chipRepository.getAllChipsStream();
+        emit(ChipsStreamLoaded(chips: chipsStream));
       }
     });
 
