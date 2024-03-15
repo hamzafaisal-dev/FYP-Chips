@@ -10,14 +10,14 @@ class SettingsActionTile extends StatelessWidget {
     this.subTitle,
     required this.leadingIcon,
     required this.trailingIcon,
-    this.onTap,
+    required this.onTap,
   });
 
   final String title;
   final String? subTitle;
   final SvgPicture leadingIcon;
   final IconData trailingIcon;
-  final void Function()? onTap;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {

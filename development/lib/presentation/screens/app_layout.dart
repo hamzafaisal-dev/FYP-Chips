@@ -68,19 +68,19 @@ class _AppLayoutState extends State<AppLayout> {
         title: Text(title),
 
         // leading
-        leadingWidth: 64.w,
-        leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
-          child: Align(
-            alignment: Alignment.centerLeft,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0.w),
             child: CustomIconButton(
-              iconSvgPath: AssetPaths.hamburgerMenuIconPath,
-              iconWidth: 44.w,
-              iconHeight: 44.h,
-              onTap: () {},
+              iconSvgPath: AssetPaths.alertsIconPath,
+              iconWidth: 18.42.w,
+              iconHeight: 21.67.h,
+              onTap: () {
+                NavigationService.routeToNamed('/alerts');
+              },
             ),
           ),
-        ),
+        ],
       );
     }
 

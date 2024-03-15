@@ -1,5 +1,6 @@
 import 'package:development/presentation/screens/add_chip_screen_1.dart';
 import 'package:development/presentation/screens/add_chip_screen_2.dart';
+import 'package:development/presentation/screens/alerts_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
@@ -70,6 +71,11 @@ class RouteGenerator {
       case '/settings':
         return MaterialPageRoute(
           builder: (context) => const SettingsScreen(),
+        );
+
+      case '/alerts':
+        return MaterialPageRoute(
+          builder: (context) => const AlertsScreen(),
         );
 
       case '/otp':

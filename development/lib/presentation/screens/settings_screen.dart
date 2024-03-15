@@ -1,8 +1,10 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,8 +81,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                         ),
 
-                        // SizedBox(height: 4.h),
-
                         // email
                         Text(
                           _authenticatedUser?.email ?? 'No email found',
@@ -138,6 +138,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () {},
             ),
 
             SizedBox(height: 8.h),
@@ -152,6 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 3.63.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () {},
             ),
 
             SizedBox(height: 16.h),
@@ -173,6 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () {},
             ),
 
             SizedBox(height: 8.h),
@@ -186,6 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () {},
             ),
 
             SizedBox(height: 8.h),
@@ -199,19 +203,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () {},
             ),
 
             SizedBox(height: 8.h),
 
-            // 'About'
-            SettingsActionTile(
-              title: 'About',
-              leadingIcon: SvgPicture.asset(
-                AssetPaths.aboutIconPath,
-                width: 16.w,
-                height: 16.h,
-              ),
-              trailingIcon: Icons.arrow_forward_ios_rounded,
+            // 'Sign out'
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthInitial) {
+                  Navigator.pop(context);
+                  NavigationService.routeToReplacementNamed('/login');
+                  HelperWidgets.showSnackbar(
+                    context,
+                    "Signed out successfully!",
+                    "success",
+                  );
+                }
+              },
+              builder: (context, state) {
+                return SettingsActionTile(
+                  title: 'Sign out',
+                  leadingIcon: SvgPicture.asset(
+                    AssetPaths.aboutIconPath,
+                    width: 16.w,
+                    height: 16.h,
+                  ),
+                  trailingIcon: Icons.arrow_forward_ios_rounded,
+                  onTap: () {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return CustomDialog(
+                          dialogTitle: 'Are you sure?',
+                          dialogContent: 'Do you want to sign out?',
+                          buttonOneText: 'Cancel',
+                          buttonTwoText: 'Sign Out',
+                          buttonOneOnPressed: () => Navigator.pop(context),
+                          buttonTwoOnPressed: () {
+                            BlocProvider.of<AuthCubit>(context).signOut();
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
 
             SizedBox(height: 20.h),
