@@ -66,6 +66,7 @@ class _AppLayoutState extends State<AppLayout> {
 
       return AppBar(
         title: Text(title),
+        automaticallyImplyLeading: false,
 
         // leading
         actions: [

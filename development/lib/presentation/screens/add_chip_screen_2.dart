@@ -35,7 +35,7 @@ class AddChipScreen2 extends StatefulWidget {
 class _AddChipScreen2State extends State<AddChipScreen2> {
   late UserModel _authenticatedUser;
   late ChipModel _chipData;
-  late String? _chipFileUrl;
+  String? _chipFileUrl;
 
   final _addChipFormKey = GlobalKey<FormState>();
 
@@ -312,8 +312,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _chipTitleController,
                       label: ' Chip Title ',
-                      // validatorFunction: (value) =>
-                      //     FormValidators.chipValidator(value),
                       onValueChanged: (value) => _chipTitle = value,
                     ),
 
@@ -323,8 +321,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _companyTitleController,
                       label: ' Company Title ',
-                      // validatorFunction: (value) =>
-                      //     FormValidators.chipValidator(value),
                       onValueChanged: (value) => _companyTitle = value,
                     ),
 
@@ -396,7 +392,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     if (_chipDetailsController.text != '')
                       TextField(
                         readOnly: !_isEditable,
-                        autofocus: true,
+                        // autofocus: true,
                         controller: _chipDetailsController,
                         decoration:
                             const InputDecoration.collapsed(hintText: null),

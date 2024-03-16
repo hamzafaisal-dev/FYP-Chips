@@ -20,7 +20,7 @@ class AutofillBloc extends Bloc<AutofillEvent, AutofillState> {
       try {
         emit(AutofillLoading());
 
-        // if chipFile != null, extract text from image using OCR (create new func for OCR)
+        // if chipFile != null, extract text from image using OCR
         if (chipFile != null) extractedText = await extractImageText(chipFile);
 
         String context = chipDescription + extractedText;

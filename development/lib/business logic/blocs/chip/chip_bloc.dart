@@ -10,14 +10,16 @@ import 'package:development/utils/firebase_helpers.dart';
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
 
+  void _fetchChips(Emitter<ChipState> emit) {
+    emit(ChipsLoading());
+    Stream<List<ChipModel>> chipsStream = _chipRepository.getAllChipsStream();
+    emit(ChipsStreamLoaded(chips: chipsStream));
+  }
+
   ChipBloc() : super(ChipEmpty()) {
     // fetch all chips from dataabase
     on<FetchChipsStream>((event, emit) {
-      emit(ChipsLoading());
-
-      Stream<List<ChipModel>> chipsStream = _chipRepository.getAllChipsStream();
-
-      emit(ChipsStreamLoaded(chips: chipsStream));
+      _fetchChips(emit);
     });
 
     on<UploadChipEvent>((event, emit) async {
@@ -31,11 +33,8 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 
-        // these 3 lines are basically the FetchChipsStream event, this is done bec after error state, chips vanished on home
-        emit(ChipsLoading());
-        Stream<List<ChipModel>> chipsStream =
-            _chipRepository.getAllChipsStream();
-        emit(ChipsStreamLoaded(chips: chipsStream));
+        // fire the fetch chips event again bec after error state, chips vanished on home
+        _fetchChips(emit);
       }
     });
 
@@ -49,11 +48,8 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 
-        // these 3 lines are basically the FetchChipsStream event, this is done bec after error state, chips vanished on home
-        emit(ChipsLoading());
-        Stream<List<ChipModel>> chipsStream =
-            _chipRepository.getAllChipsStream();
-        emit(ChipsStreamLoaded(chips: chipsStream));
+        // fire the fetch chips event again bec after error state, chips vanished on home
+        _fetchChips(emit);
       }
     });
 
@@ -69,6 +65,9 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         emit(ChipSuccess());
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
+
+        // fire the fetch chips event again bec after error state, chips vanished on home
+        _fetchChips(emit);
       }
     });
   }

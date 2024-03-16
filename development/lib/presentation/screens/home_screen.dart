@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is ChipsStreamLoaded) {
             return RefreshIndicator(
               backgroundColor: Theme.of(context).colorScheme.surface,
-              onRefresh: _handleRefresh,
+              onRefresh: () => _handleRefresh(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -73,21 +73,21 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                   BlocListener<ChipBloc, ChipState>(
                     listener: (context, state) {
                       if (state is ChipSuccess) {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
 
-                        NavigationService.routeToNamed('/layout');
+                        NavigationService.routeToReplacementNamed('/layout');
 
                         HelperWidgets.showSnackbar(
                             context, 'Chip deleted successfully', 'success');
                       }
 
-                      if (state is ChipsLoading) {
-                        HelperWidgets.showSnackbar(
-                          context,
-                          'Deleting chip...',
-                          'info',
-                        );
-                      }
+                      // if (state is ChipsLoading) {
+                      //   HelperWidgets.showSnackbar(
+                      //     context,
+                      //     'Deleting chip...',
+                      //     'info',
+                      //   );
+                      // }
 
                       if (state is ChipError) {
                         HelperWidgets.showSnackbar(
