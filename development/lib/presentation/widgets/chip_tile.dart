@@ -1,4 +1,5 @@
 import 'package:development/data/models/chip_model.dart';
+import 'package:development/presentation/widgets/bookmark_icon.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,12 @@ class ChipTile extends StatefulWidget {
 }
 
 class _ChipTileState extends State<ChipTile> {
+  bool _isBookmarked = false;
+
   @override
   Widget build(BuildContext context) {
+    print('build 1');
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
@@ -88,15 +93,11 @@ class _ChipTileState extends State<ChipTile> {
                     ],
                   ),
 
-                  // bookmark icon
-                  CircleAvatar(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    child: Icon(
-                      Icons.bookmark_outline,
-                      size: 22,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                    ),
-                  )
+                  // // bookmark icon
+                  // CustomBookmarkIcon(
+                  //   iconSize: 22,
+                  //   chipId: widget.chipData.chipId,
+                  // ),
                 ],
               ),
 

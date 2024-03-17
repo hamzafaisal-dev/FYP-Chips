@@ -70,5 +70,28 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         _fetchChips(emit);
       }
     });
+
+    on<ChipBookmarkedEvent>((event, emit) async {
+      emit(ChipsLoading());
+
+      try {
+        bool isBookmarked = await _chipRepository.bookmarkChip(
+          chipId: event.chipId,
+          user: event.currentUser,
+        );
+
+        print('isBookmarked $isBookmarked');
+
+        isBookmarked ? emit(ChipBookmarked()) : emit(ChipUnbookmarked());
+
+        // remove this when this whole thing is in the UserCubit
+        _fetchChips(emit);
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+
+        // fire the fetch chips event again bec after error state, chips vanished on home
+        _fetchChips(emit);
+      }
+    });
   }
 }
