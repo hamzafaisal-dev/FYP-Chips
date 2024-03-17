@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
+                  // here are some chips for you
                   RichText(
                     text: TextSpan(
                       text: 'here are some ',

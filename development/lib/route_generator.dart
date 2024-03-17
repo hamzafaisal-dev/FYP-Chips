@@ -5,7 +5,7 @@ import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
 import 'package:development/presentation/screens/otp_screen.dart';
-import 'package:development/presentation/screens/profile_screen.dart';
+import 'package:development/presentation/screens/user_profile_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/screens/sign_up_screen.dart';
@@ -88,9 +88,9 @@ class RouteGenerator {
           );
         }
 
-      case '/profile':
+      case "/user_profile":
         return MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
+          builder: (context) => const UserProfileScreen(),
         );
 
       case '/reset-password':

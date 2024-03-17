@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           width: 120.w,
                           child: FilledButton(
                             onPressed: () =>
-                                NavigationService.routeToNamed('/profile'),
+                                NavigationService.routeToNamed("/user_profile"),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(0),
                             ),
