@@ -8,6 +8,8 @@ import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/buttons/autofill_button.dart';
+import 'package:development/presentation/widgets/buttons/post_chip_button.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
@@ -49,7 +51,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   DateTime? _chipDeadline;
 
   bool _isEditable = false;
-
   bool _autoFillEnabled = true;
 
   String _chipTitle = '';
@@ -275,20 +276,11 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             }
                           },
                           builder: (context, state) {
-                            return OutlinedButton(
-                              onPressed: (state is ChipsLoading)
-                                  ? null
-                                  : (_isEditable ? _editChip : _createChip),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                backgroundColor: Colors.white,
-                              ),
-                              child: (state is ChipsLoading)
-                                  ? const CustomCircularProgressIndicator()
-                                  : (_isEditable
-                                      ? const Text('EDIT')
-                                      : const Text('POST')),
+                            return PostChipButton(
+                              isLoading: (state is ChipsLoading),
+                              isEditable: _isEditable,
+                              onEditChip: _editChip,
+                              onCreateChip: _createChip,
                             );
                           },
                         ),
@@ -418,18 +410,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: _autoFillEnabled
-            ? Theme.of(context).colorScheme.onPrimary
-            : Theme.of(context).colorScheme.tertiary,
-        disabledElevation: 0,
-        onPressed: _autoFillEnabled ? _handleAutofillBtnClick : null,
-        label: _autoFillEnabled
-            ? const Text('✨ Autofill with AI ✨')
-            : const Text(
-                ' Autofill with AI ',
-                style: TextStyle(color: Colors.grey),
-              ),
+      floatingActionButton: AutofillButton(
+        autoFillEnabled: _autoFillEnabled,
+        handleAutofillBtnClick: _handleAutofillBtnClick,
       ),
     );
   }

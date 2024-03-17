@@ -5,8 +5,8 @@ import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/bookmark_icon.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
-import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
@@ -81,13 +81,13 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                             context, 'Chip deleted successfully', 'success');
                       }
 
-                      // if (state is ChipsLoading) {
-                      //   HelperWidgets.showSnackbar(
-                      //     context,
-                      //     'Deleting chip...',
-                      //     'info',
-                      //   );
-                      // }
+                      if (state is ChipsLoading) {
+                        HelperWidgets.showSnackbar(
+                          context,
+                          'Deleting chip...',
+                          'info',
+                        );
+                      }
 
                       if (state is ChipError) {
                         HelperWidgets.showSnackbar(
@@ -136,14 +136,11 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
                   const SizedBox(width: 10),
 
-                  CircleAvatar(
+                  // bookmark icon
+                  CustomBookmarkIcon(
+                    iconSize: 28,
                     radius: 22,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    child: Icon(
-                      Icons.bookmark_outline,
-                      size: 28,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                    ),
+                    chipId: _chipData.chipId,
                   ),
                 ],
               ),
@@ -190,7 +187,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onSecondary,
               onPressed: () {
-                NavigationService.routeToNamed(
+                NavigationService.routeToReplacementNamed(
                   '/add-chip2',
                   arguments: {
                     "routeName": "/viewDetails",

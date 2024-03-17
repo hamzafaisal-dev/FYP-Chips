@@ -76,9 +76,7 @@ class _AppLayoutState extends State<AppLayout> {
               iconSvgPath: AssetPaths.alertsIconPath,
               iconWidth: 18.42.w,
               iconHeight: 21.67.h,
-              onTap: () {
-                NavigationService.routeToNamed('/alerts');
-              },
+              onTap: () => NavigationService.routeToNamed('/alerts'),
             ),
           ),
         ],
@@ -90,7 +88,7 @@ class _AppLayoutState extends State<AppLayout> {
       appBar: getAppbar(),
 
       bottomNavigationBar: SizedBox(
-        height: 64,
+        height: 64.h,
         child: BottomNavigationBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           onTap: (int index) {
