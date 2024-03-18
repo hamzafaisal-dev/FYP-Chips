@@ -290,20 +290,38 @@ class ChipNetwork {
     // get user's posted chips and put them in new 'postedChips' variable
     List<String> postedChips = user.postedChips;
 
+// get user's favorited chips and put them in new 'favoritedChips' variable
+    List<String> favoritedChips = user.favoritedChips;
+
+    // get user's applied chips and put them in new 'appliedChips' variable
+    List<String> appliedChips = user.appliedChips;
+
     // if the chip to be deleted exists in user's posted chips array, it is deleted from the array
     if (postedChips.contains(chipId)) {
       postedChips.remove(chipId);
-
-      updatedUser = user.copyWith(postedChips: postedChips);
-
-      await _firestore
-          .collection('users')
-          .doc(updatedUser.userId)
-          .update(updatedUser.toMap());
-
-      // chip is also deleted from firestore
-      await _firestore.collection('chips').doc(chipId).delete();
     }
+
+    if (favoritedChips.contains(chipId)) {
+      favoritedChips.remove(chipId);
+    }
+
+    if (appliedChips.contains(chipId)) {
+      appliedChips.remove(chipId);
+    }
+
+    updatedUser = user.copyWith(
+      postedChips: postedChips,
+      favoritedChips: favoritedChips,
+      appliedChips: appliedChips,
+    );
+
+    await _firestore
+        .collection('users')
+        .doc(updatedUser.userId)
+        .update(updatedUser.toMap());
+
+    // chip is also deleted from firestore
+    await _firestore.collection('chips').doc(chipId).delete();
 
     return updatedUser;
   }
