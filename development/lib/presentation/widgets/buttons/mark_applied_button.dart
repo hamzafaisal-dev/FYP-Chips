@@ -1,6 +1,3 @@
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/user_model.dart';
@@ -8,23 +5,19 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomBookmarkIcon extends StatefulWidget {
-  const CustomBookmarkIcon({
+class MarkAppliedButton extends StatefulWidget {
+  const MarkAppliedButton({
     super.key,
-    required this.iconSize,
     required this.chipId,
-    this.radius,
   });
 
-  final double? radius;
-  final double iconSize;
   final String chipId;
 
   @override
-  State<CustomBookmarkIcon> createState() => _CustomBookmarkIconState();
+  State<MarkAppliedButton> createState() => _MarkAppliedButtonState();
 }
 
-class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
+class _MarkAppliedButtonState extends State<MarkAppliedButton> {
   late final UserModel? _authenticatedUser;
   bool _isInitiallyBookmarked = false;
 
@@ -35,7 +28,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
-    if (_authenticatedUser!.favoritedChips.contains(widget.chipId)) {
+    if (_authenticatedUser!.appliedChips.contains(widget.chipId)) {
       _isInitiallyBookmarked = true;
     } else {
       _isInitiallyBookmarked = false;
@@ -50,44 +43,59 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
   Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
-        if (state is ChipBookmarkedState) {
+        if (state is ChipAppliedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip added to favorites!',
+            'Chip marked as applied',
             'success',
           );
         }
 
-        if (state is ChipUnbookmarkedState) {
+        if (state is ChipUnAppliedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
+
           HelperWidgets.showSnackbar(
             context,
-            'Chip removed from favorites',
+            'Chip unmarked as applied',
             'info',
+          );
+        }
+
+        if (state is UserErrorState) {
+          HelperWidgets.showSnackbar(
+            context,
+            state.errorMessage,
+            'error',
           );
         }
       },
       builder: (context, state) {
-        return CircleAvatar(
-          radius: widget.radius,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: IconButton(
-            onPressed: () {
-              BlocProvider.of<UserCubit>(context).bookMarkChip(
-                chipId: widget.chipId,
-                currentUser: _authenticatedUser!,
-              );
+        return FilledButton(
+          onPressed: () {
+            BlocProvider.of<UserCubit>(context).markChipAsApplied(
+              chipId: widget.chipId,
+              currentUser: _authenticatedUser!,
+            );
 
-              setState(() => isBookmarked = !isBookmarked);
-            },
-            icon: Icon(
-              isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-              size: widget.iconSize,
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
-          ),
+            setState(() => isBookmarked = !isBookmarked);
+          },
+          child: isBookmarked
+              ? Text(
+                  'Unmark as applied',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 22),
+                )
+              : Text(
+                  'Mark as applied',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 22),
+                ),
         );
       },
     );

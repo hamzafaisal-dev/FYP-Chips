@@ -5,14 +5,6 @@ import 'package:development/data/networks/chip_network.dart';
 class ChipRepository {
   final ChipNetwork _chipsNetwork = ChipNetwork();
 
-  // shift this to User repo when created
-  Future<bool> bookmarkChip({
-    required String chipId,
-    required UserModel user,
-  }) {
-    return _chipsNetwork.bookmarkChip(chipId, user);
-  }
-
   // get list of all chips
   Future<List<ChipModel>> getAllChips() async {
     return await _chipsNetwork.getAllChips();
@@ -24,8 +16,8 @@ class ChipRepository {
   }
 
   // post chip
-  Future<UserModel> postChip({required Map<String, dynamic> chipMap}) {
-    return _chipsNetwork.postChip(chipMap: chipMap);
+  Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
+    return await _chipsNetwork.postChip(chipMap: chipMap);
   }
 
   // edit chip
@@ -37,7 +29,7 @@ class ChipRepository {
   Future<UserModel> deleteChip({
     required String chipId,
     required UserModel user,
-  }) {
-    return _chipsNetwork.deleteChip(chipId, user);
+  }) async {
+    return await _chipsNetwork.deleteChip(chipId, user);
   }
 }

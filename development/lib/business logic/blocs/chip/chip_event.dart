@@ -48,12 +48,4 @@ class DeleteChipEvent extends ChipEvent {
 }
 
 // move this to UserCubit when it's create
-class ChipBookmarkedEvent extends ChipEvent {
-  final String chipId;
-  final UserModel currentUser;
 
-  const ChipBookmarkedEvent({required this.chipId, required this.currentUser});
-
-  @override
-  List<Object?> get props => [chipId, currentUser];
-}

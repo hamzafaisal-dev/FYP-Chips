@@ -21,12 +21,8 @@ class ChipTile extends StatefulWidget {
 }
 
 class _ChipTileState extends State<ChipTile> {
-  bool _isBookmarked = false;
-
   @override
   Widget build(BuildContext context) {
-    print('build 1');
-
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),

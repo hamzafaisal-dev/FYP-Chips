@@ -48,4 +48,8 @@ class AssetPaths {
       'assets/animations/Woman-Sitting-Animation.json';
   static const String angryTomatoAnimation =
       'assets/animations/Angry_Tomato_Animation.json';
+  static const String girlEmptyBoxAnimation =
+      'assets/animations/Girl_Empty_Box.json';
+  static const String appliedEmptyAnimation =
+      'assets/animations/Applied_Empty_Animation.json';
 }

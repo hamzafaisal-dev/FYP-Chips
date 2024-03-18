@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/chip_repository.dart';
-import 'package:development/utils/firebase_helpers.dart';
 
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
+  final AuthCubit authCubit;
 
   void _fetchChips(Emitter<ChipState> emit) {
     emit(ChipsLoading());
@@ -16,7 +16,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     emit(ChipsStreamLoaded(chips: chipsStream));
   }
 
-  ChipBloc() : super(ChipEmpty()) {
+  ChipBloc({required this.authCubit}) : super(ChipEmpty()) {
     // fetch all chips from dataabase
     on<FetchChipsStream>((event, emit) {
       _fetchChips(emit);
@@ -30,6 +30,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
             await _chipRepository.postChip(chipMap: event.newChip);
 
         emit(ChipSuccess());
+        authCubit.authStateUpdatedEvent(updatedUser);
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 
@@ -63,29 +64,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         );
 
         emit(ChipSuccess());
-      } catch (error) {
-        emit(ChipError(errorMsg: error.toString()));
-
-        // fire the fetch chips event again bec after error state, chips vanished on home
-        _fetchChips(emit);
-      }
-    });
-
-    on<ChipBookmarkedEvent>((event, emit) async {
-      emit(ChipsLoading());
-
-      try {
-        bool isBookmarked = await _chipRepository.bookmarkChip(
-          chipId: event.chipId,
-          user: event.currentUser,
-        );
-
-        print('isBookmarked $isBookmarked');
-
-        isBookmarked ? emit(ChipBookmarked()) : emit(ChipUnbookmarked());
-
-        // remove this when this whole thing is in the UserCubit
-        _fetchChips(emit);
+        authCubit.authStateUpdatedEvent(updatedUser);
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 

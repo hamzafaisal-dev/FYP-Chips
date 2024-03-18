@@ -13,43 +13,6 @@ class ChipNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  // shift this to User network when created
-  Future<bool> bookmarkChip(String chipId, UserModel currentUser) async {
-    late UserModel updatedUser;
-    bool isBookmarked = false;
-
-    // get user data from firestore
-    DocumentSnapshot userSnapshot =
-        await _firestore.collection('users').doc(currentUser.userId).get();
-
-    // cast user's data as a Map<String, dynamic>
-    Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
-
-    // convert user map to UserModel
-    UserModel user = UserModel.fromMap(userData);
-
-    // get user's favorited chips and put them in new 'favoritedChips' variable
-    List<String> favoritedChips = user.favoritedChips;
-
-    // if the chip to be bookmarked already exists in user's favorited chips array, it is deleted from the array
-    if (favoritedChips.contains(chipId)) {
-      favoritedChips.remove(chipId);
-    } else {
-      favoritedChips.add(chipId);
-      isBookmarked = true;
-    }
-
-    updatedUser = user.copyWith(favoritedChips: favoritedChips);
-
-    await _firestore
-        .collection('users')
-        .doc(user.userId)
-        .update(updatedUser.toMap());
-
-    return isBookmarked;
-    // return updatedUser;
-  }
-
   // get list of all chips (not used anywhere but don't remove)
   Future<List<ChipModel>> getAllChips() async {
     final chips = await _firestore
@@ -335,7 +298,7 @@ class ChipNetwork {
 
       await _firestore
           .collection('users')
-          .doc(user.userId)
+          .doc(updatedUser.userId)
           .update(updatedUser.toMap());
 
       // chip is also deleted from firestore

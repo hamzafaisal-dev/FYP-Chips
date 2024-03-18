@@ -49,12 +49,4 @@ class ChipError extends ChipState {
 }
 
 // put these states in UserState when it's created
-class ChipBookmarked extends ChipState {
-  @override
-  List<Object?> get props => [];
-}
 
-class ChipUnbookmarked extends ChipState {
-  @override
-  List<Object?> get props => [];
-}

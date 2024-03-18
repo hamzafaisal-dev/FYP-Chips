@@ -38,8 +38,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
-        BlocProvider(create: (context) => UserCubit()),
-        BlocProvider(create: (context) => ChipBloc()),
+        BlocProvider(
+          create: (context) => UserCubit(
+            authCubit: BlocProvider.of<AuthCubit>(context),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ChipBloc(
+            authCubit: BlocProvider.of<AuthCubit>(context),
+          ),
+        ),
         BlocProvider(create: (context) => AutofillBloc()),
       ],
       child: ScreenUtilInit(

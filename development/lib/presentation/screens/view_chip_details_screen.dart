@@ -6,6 +6,7 @@ import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/bookmark_icon.dart';
+import 'package:development/presentation/widgets/buttons/mark_applied_button.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
@@ -29,6 +30,11 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
   late ChipModel _chipData;
 
   bool _isEditable = false;
+  bool _isDeletable = false;
+
+  bool _isInitiallyMarkedApplied = false;
+
+  late bool isApplied;
 
   @override
   void initState() {
@@ -44,7 +50,14 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     // if user has posted the current chip, the chip becomes editable
     if (_authenticatedUser.postedChips.contains(_chipData.chipId)) {
       _isEditable = true;
+      _isDeletable = true;
     }
+
+    if (_authenticatedUser.favoritedChips.contains(_chipData.chipId)) {
+      _isInitiallyMarkedApplied = true;
+    }
+
+    isApplied = _isInitiallyMarkedApplied;
   }
 
   @override
@@ -78,7 +91,10 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                         NavigationService.routeToReplacementNamed('/layout');
 
                         HelperWidgets.showSnackbar(
-                            context, 'Chip deleted successfully', 'success');
+                          context,
+                          'Chip deleted successfully',
+                          'success',
+                        );
                       }
 
                       if (state is ChipsLoading) {
@@ -109,10 +125,16 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                         }
                       },
                       itemBuilder: (BuildContext context) => [
-                        const PopupMenuItem<String>(
-                          value: '1',
-                          child: Text('Delete'),
-                        ),
+                        if (_isDeletable)
+                          const PopupMenuItem<String>(
+                            value: '1',
+                            child: Text('Delete'),
+                          ),
+                        if (!_isDeletable)
+                          const PopupMenuItem<String>(
+                            value: '2',
+                            child: Text('Report Chip'),
+                          ),
                       ],
                       icon: const Icon(Icons.more_horiz),
                     ),
@@ -179,12 +201,17 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
               if (_chipData.imageUrl != null && _chipData.imageUrl != '')
                 ChipNetworkImageContainer(imageUrl: _chipData.imageUrl!),
+
+              const SizedBox(height: 14),
+
+              MarkAppliedButton(chipId: _chipData.chipId),
             ],
           ),
         ),
       ),
       floatingActionButton: _isEditable
           ? FloatingActionButton(
+              key: const Key('Edit FAB'),
               backgroundColor: Theme.of(context).colorScheme.onSecondary,
               onPressed: () {
                 NavigationService.routeToReplacementNamed(

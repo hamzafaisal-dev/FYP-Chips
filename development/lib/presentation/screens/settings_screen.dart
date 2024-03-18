@@ -130,30 +130,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             // 'Notifications'
             SettingsActionTile(
-              title: 'Notifications',
-              subTitle: 'Customize notifications',
+              title: 'Favorited Chips',
+              subTitle: 'View your favorited chips',
               leadingIcon: SvgPicture.asset(
                 AssetPaths.notificationBellIconPath,
                 width: 18.w,
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {},
+              onTap: () => NavigationService.routeToNamed('/favorite-chip'),
             ),
 
             SizedBox(height: 8.h),
 
             // 'More customization'
             SettingsActionTile(
-              title: 'More customization',
-              subTitle: 'Customize more',
+              title: 'Applied Chips',
+              subTitle: 'View your applied chips',
               leadingIcon: SvgPicture.asset(
                 AssetPaths.moreIconPath,
                 width: 18.w,
                 height: 3.63.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {},
+              onTap: () => NavigationService.routeToNamed('/applied-chip'),
             ),
 
             SizedBox(height: 16.h),

@@ -2,6 +2,8 @@ import 'package:development/presentation/screens/add_chip_screen_1.dart';
 import 'package:development/presentation/screens/add_chip_screen_2.dart';
 import 'package:development/presentation/screens/alerts_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
+import 'package:development/presentation/screens/applied_chips_screen.dart';
+import 'package:development/presentation/screens/favorite_chips_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
 import 'package:development/presentation/screens/otp_screen.dart';
@@ -96,6 +98,16 @@ class RouteGenerator {
       case '/reset-password':
         return MaterialPageRoute(
           builder: (context) => const ResetPasswordScreen(),
+        );
+
+      case '/favorite-chip':
+        return MaterialPageRoute(
+          builder: (context) => const FavoriteChipScreen(),
+        );
+
+      case '/applied-chip':
+        return MaterialPageRoute(
+          builder: (context) => const AppliedChipScreen(),
         );
 
       default:

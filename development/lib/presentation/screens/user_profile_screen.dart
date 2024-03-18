@@ -65,7 +65,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Padding(
               padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
               child: UserProfileScreenHeader(
-                  authenticatedUser: _authenticatedUser),
+                authenticatedUser: _authenticatedUser,
+              ),
             ),
 
             // your chips
