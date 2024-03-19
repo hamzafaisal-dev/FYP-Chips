@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
+import 'package:development/data/models/notification_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:uuid/uuid.dart';
 
 class UserNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -39,7 +41,7 @@ class UserNetwork {
   }
 
   Future<Map<String, dynamic>> bookmarkChip(
-      String chipId, UserModel currentUser) async {
+      ChipModel chip, UserModel currentUser) async {
     late UserModel updatedUser;
     bool isBookmarked = false;
 
@@ -57,11 +59,29 @@ class UserNetwork {
     List<String> favoritedChips = user.favoritedChips;
 
     // if the chip to be bookmarked already exists in user's favorited chips array, it is deleted from the array
-    if (favoritedChips.contains(chipId)) {
-      favoritedChips.remove(chipId);
+    if (favoritedChips.contains(chip.chipId)) {
+      favoritedChips.remove(chip.chipId);
     } else {
-      favoritedChips.add(chipId);
+      favoritedChips.insert(0, chip.chipId);
       isBookmarked = true;
+
+      String newNotificationId = const Uuid().v4();
+
+      NotificationModel newNotification = NotificationModel(
+        notificationId: newNotificationId,
+        recipientId: chip.postedBy,
+        senderId: currentUser.userId,
+        jobId: chip.chipId,
+        type: 'bookmark',
+        message: '${currentUser.name} favorited your chip!',
+        timestamp: DateTime.now(),
+        read: false,
+      );
+
+      await _firestore
+          .collection('notifications')
+          .doc(newNotificationId)
+          .set(newNotification.toJson());
     }
 
     updatedUser = user.copyWith(favoritedChips: favoritedChips);
@@ -98,7 +118,7 @@ class UserNetwork {
     if (appliedChips.contains(chipId)) {
       appliedChips.remove(chipId);
     } else {
-      appliedChips.add(chipId);
+      appliedChips.insert(0, chipId);
       isApplied = true;
     }
 

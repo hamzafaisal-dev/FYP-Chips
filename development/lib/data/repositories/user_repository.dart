@@ -12,10 +12,10 @@ class UserRepository {
 
   // bookmark chip
   Future<Map<String, dynamic>> bookmarkChip({
-    required String chipId,
+    required ChipModel chip,
     required UserModel user,
   }) async {
-    return await _userNetwork.bookmarkChip(chipId, user);
+    return await _userNetwork.bookmarkChip(chip, user);
   }
 
   // mark chip as applied

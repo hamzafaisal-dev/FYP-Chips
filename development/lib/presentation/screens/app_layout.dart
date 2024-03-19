@@ -1,4 +1,8 @@
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/data/models/notification_model.dart';
+import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
@@ -6,6 +10,7 @@ import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppLayout extends StatefulWidget {
@@ -16,7 +21,26 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  int currentIndex = 0;
+  late final UserModel? _authenticatedUser;
+
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
+
+    NotificationState notifState =
+        BlocProvider.of<NotificationCubit>(context).state;
+
+    print('notifState is $notifState');
+
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
+
+    BlocProvider.of<NotificationCubit>(context)
+        .fetchUserNotificationsStream(_authenticatedUser!);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +73,7 @@ class _AppLayoutState extends State<AppLayout> {
     AppBar getAppbar() {
       String title;
 
-      switch (currentIndex) {
+      switch (_currentIndex) {
         case 0:
           title = 'Homepage';
         case 1:
@@ -72,11 +96,34 @@ class _AppLayoutState extends State<AppLayout> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20.0.w),
-            child: CustomIconButton(
-              iconSvgPath: AssetPaths.alertsIconPath,
-              iconWidth: 18.42.w,
-              iconHeight: 21.67.h,
-              onTap: () => NavigationService.routeToNamed('/alerts'),
+            child: BlocConsumer<NotificationCubit, NotificationState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is NotificationsStreamLoaded) {
+                  return StreamBuilder<List<NotificationModel>>(
+                      stream: state.notifications,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Badge.count(
+                            count: snapshot.data!.length,
+                            // isLabelVisible: false,
+                            child: CustomIconButton(
+                              iconSvgPath: AssetPaths.alertsIconPath,
+                              iconWidth: 18.42.w,
+                              iconHeight: 21.67.h,
+                              onTap: () => NavigationService.routeToNamed(
+                                  '/alerts',
+                                  arguments: {"notifications": snapshot.data}),
+                            ),
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      });
+                }
+
+                return const Text('notifs laoding');
+              },
             ),
           ),
         ],
@@ -92,9 +139,9 @@ class _AppLayoutState extends State<AppLayout> {
         child: BottomNavigationBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           onTap: (int index) {
-            setState(() => currentIndex = index);
+            setState(() => _currentIndex = index);
           },
-          currentIndex: currentIndex,
+          currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
               icon: Transform.scale(
@@ -115,7 +162,7 @@ class _AppLayoutState extends State<AppLayout> {
         ),
       ),
 
-      body: getContent(currentIndex),
+      body: getContent(_currentIndex),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => NavigationService.routeToNamed('/add-chip1'),

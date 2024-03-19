@@ -3,6 +3,7 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,13 @@ class CustomBookmarkIcon extends StatefulWidget {
   const CustomBookmarkIcon({
     super.key,
     required this.iconSize,
-    required this.chipId,
+    required this.currentChip,
     this.radius,
   });
 
   final double? radius;
   final double iconSize;
-  final String chipId;
+  final ChipModel currentChip;
 
   @override
   State<CustomBookmarkIcon> createState() => _CustomBookmarkIconState();
@@ -35,7 +36,8 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
-    if (_authenticatedUser!.favoritedChips.contains(widget.chipId)) {
+    if (_authenticatedUser!.favoritedChips
+        .contains(widget.currentChip.chipId)) {
       _isInitiallyBookmarked = true;
     } else {
       _isInitiallyBookmarked = false;
@@ -76,7 +78,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
           child: IconButton(
             onPressed: () {
               BlocProvider.of<UserCubit>(context).bookMarkChip(
-                chipId: widget.chipId,
+                chip: widget.currentChip,
                 currentUser: _authenticatedUser!,
               );
 

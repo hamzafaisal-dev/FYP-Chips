@@ -1,5 +1,6 @@
 import 'package:development/business%20logic/blocs/autofill/autofill_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
+import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => NotificationCubit()),
         BlocProvider(
           create: (context) => UserCubit(
             authCubit: BlocProvider.of<AuthCubit>(context),

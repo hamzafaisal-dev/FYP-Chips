@@ -76,9 +76,14 @@ class RouteGenerator {
         );
 
       case '/alerts':
-        return MaterialPageRoute(
-          builder: (context) => const AlertsScreen(),
-        );
+        {
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) => AlertsScreen(arguments: receivedArguments),
+          );
+        }
 
       case '/otp':
         {

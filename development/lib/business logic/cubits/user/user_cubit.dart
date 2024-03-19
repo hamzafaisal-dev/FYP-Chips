@@ -38,12 +38,12 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void bookMarkChip(
-      {required String chipId, required UserModel currentUser}) async {
+      {required ChipModel chip, required UserModel currentUser}) async {
     emit(UserLoadingState());
 
     try {
       Map<String, dynamic> updatedUserData = await _userRepository.bookmarkChip(
-        chipId: chipId,
+        chip: chip,
         user: currentUser,
       );
 

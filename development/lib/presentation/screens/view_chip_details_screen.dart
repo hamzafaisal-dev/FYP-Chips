@@ -162,7 +162,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                   CustomBookmarkIcon(
                     iconSize: 28,
                     radius: 22,
-                    chipId: _chipData.chipId,
+                    currentChip: _chipData,
                   ),
                 ],
               ),
