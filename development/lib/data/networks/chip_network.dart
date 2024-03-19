@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:development/constants/network_urls.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/utils/helper_functions.dart';
@@ -140,6 +141,39 @@ class ChipNetwork {
     }
   }
 
+  // add chip to google sheet
+  Future<Map<String, dynamic>> addChipToGoogleSheet(ChipModel chip) async {
+    final url = Uri.https(NetworkURLS.baseUrl1, '/addChip');
+    final headers = {'Content-Type': 'application/json'};
+    DateTime deadline = chip.deadline;
+    String formattedDeadline =
+        '${deadline.year}-${Helpers.addLeadingZero(deadline.month)}-${Helpers.addLeadingZero(deadline.day)}';
+    final body = jsonEncode({
+      'deadline': formattedDeadline,
+      'title': chip.jobTitle.toString(),
+      'company': chip.companyName.toString(),
+      'where_to_apply': chip.applicationLink.toString(),
+    });
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        return {'success': true};
+      } else {
+        return {
+          'success': false,
+          'message': 'Failed to add chip to google sheet',
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Error: $e',
+      };
+    }
+  }
+
   // post chip
   Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
     //
@@ -232,6 +266,9 @@ class ChipNetwork {
         .collection('users')
         .doc(updatedUser.userId)
         .update(updatedUser.toMap());
+
+    // add chip to google sheet
+    await addChipToGoogleSheet(newChip);
 
     return updatedUser;
   }

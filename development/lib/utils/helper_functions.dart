@@ -21,6 +21,10 @@ class Helpers {
     }
   }
 
+  static String addLeadingZero(int number) {
+    return number.toString().padLeft(2, '0');
+  }
+
   // formats given String to yyyy-mm-dd format
   static DateTime? formatDate(String dateString) {
     try {

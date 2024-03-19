@@ -83,7 +83,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                         iconSvgPath: AssetPaths.leftArrowIconPath,
                         iconWidth: 16.w,
                         iconHeight: 16.h,
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () => NavigationService.goBack(),
                       ),
 
                       // select image btn + next btn
