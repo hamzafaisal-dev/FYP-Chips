@@ -56,8 +56,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
 
           // event fired to emit updated user in app
-          BlocProvider.of<AuthCubit>(context)
-              .authStateUpdatedEvent(state.updatedUser);
+          BlocProvider.of<AuthCubit>(context).userUpdated(state.updatedUser);
 
           HelperWidgets.showSnackbar(
             context,
@@ -70,8 +69,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
 
           // event fired to emit updated user in app
-          BlocProvider.of<AuthCubit>(context)
-              .authStateUpdatedEvent(state.updatedUser);
+          BlocProvider.of<AuthCubit>(context).userUpdated(state.updatedUser);
 
           HelperWidgets.showSnackbar(
             context,

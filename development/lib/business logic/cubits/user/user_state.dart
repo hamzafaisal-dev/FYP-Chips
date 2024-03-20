@@ -75,3 +75,24 @@ final class ChipUnAppliedState extends UserState {
 
   const ChipUnAppliedState({required this.updatedUser});
 }
+
+// user profile related states
+final class UpdatingUserProfile extends UserState {}
+
+final class UserProfileUpdated extends UserState {
+  final UserModel updatedUser;
+
+  const UserProfileUpdated({required this.updatedUser});
+
+  @override
+  List<Object> get props => [updatedUser];
+}
+
+final class UserProfileUpdateFailed extends UserState {
+  final String errorMessage;
+
+  const UserProfileUpdateFailed({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
+}

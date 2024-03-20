@@ -1,5 +1,8 @@
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/user_stat_section.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,6 +61,21 @@ class UserProfileScreenHeader extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+
+                const Spacer(),
+
+                // edit profile button
+                CustomIconButton(
+                  iconSvgPath: AssetPaths.editIconPath,
+                  iconWidth: 17.w,
+                  iconHeight: 17.h,
+                  onTap: () {
+                    NavigationService.routeToNamed(
+                      '/edit-profile',
+                      arguments: {"name": _authenticatedUser!.name},
+                    );
+                  },
                 ),
               ],
             ),

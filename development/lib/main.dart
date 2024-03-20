@@ -40,9 +40,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => NotificationCubit()),
-        BlocProvider(
-          create: (context) => UserCubit(),
-        ),
+        BlocProvider(create: (context) => UserCubit()),
         BlocProvider(create: (context) => ChipBloc()),
         BlocProvider(create: (context) => AutofillBloc()),
       ],

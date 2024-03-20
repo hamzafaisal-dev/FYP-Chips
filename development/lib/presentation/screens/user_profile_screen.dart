@@ -52,7 +52,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               iconSvgPath: AssetPaths.leftArrowIconPath,
               iconWidth: 16.w,
               iconHeight: 16.h,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.goBack(),
             ),
           ),
         ),

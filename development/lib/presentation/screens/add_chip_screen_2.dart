@@ -245,7 +245,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                               // event fired to emit updated user in app
                               BlocProvider.of<AuthCubit>(context)
-                                  .authStateUpdatedEvent(state.updatedUser);
+                                  .userUpdated(state.updatedUser);
 
                               NavigationService.goBack();
                               NavigationService.routeToReplacementNamed(

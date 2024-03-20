@@ -11,15 +11,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _authRepository = AuthRepository();
 
-  //
-  void authStateUpdatedEvent(UserModel updatedUser) {
-    try {
-      print(updatedUser.favoritedChips);
-      emit(AuthUserSignedIn(user: updatedUser));
-    } catch (e) {
-      print(e.toString());
-      // add error state ithay
-    }
+  // method to call when a user updates their profile
+  void userUpdated(UserModel updatedUser) {
+    emit(AuthUserSignedIn(user: updatedUser));
   }
 
   // check if user already signed in

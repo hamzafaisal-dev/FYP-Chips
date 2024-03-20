@@ -22,6 +22,7 @@ class UserNetwork {
     });
   }
 
+  // get user chips
   Future<List<ChipModel>> getUserChips(List<String> chipIds) async {
     List<ChipModel> fetchedChips = [];
 
@@ -40,6 +41,7 @@ class UserNetwork {
     return fetchedChips;
   }
 
+  // bookmark chip
   Future<Map<String, dynamic>> bookmarkChip(
       ChipModel chip, UserModel currentUser) async {
     late UserModel updatedUser;
@@ -94,6 +96,7 @@ class UserNetwork {
     return {"updatedUser": updatedUser, "isBookmarked": isBookmarked};
   }
 
+  // mark chip as applied
   Future<Map<String, dynamic>> markChipAsApplied(
     String chipId,
     UserModel currentUser,
@@ -130,5 +133,18 @@ class UserNetwork {
         .update(updatedUser.toMap());
 
     return {"updatedUser": updatedUser, "isApplied": isApplied};
+  }
+
+  // update user
+  Future<UserModel> updateUser(UserModel user) async {
+    await _firestore
+        .collection('users')
+        .doc(user.userId)
+        .update(user.toMap())
+        .catchError((error) {
+      throw Exception(error.toString());
+    });
+
+    return user;
   }
 }

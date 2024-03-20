@@ -88,7 +88,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                       if (state is ChipDeleteSuccess) {
                         // event fired to emit updated user in app
                         BlocProvider.of<AuthCubit>(context)
-                            .authStateUpdatedEvent(state.updatedUser);
+                            .userUpdated(state.updatedUser);
 
                         NavigationService.routeToReplacementNamed('/layout');
 

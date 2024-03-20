@@ -26,7 +26,13 @@ class UserRepository {
     return await _userNetwork.markChipAsApplied(chipId, user);
   }
 
+  // get user chips
   Future<List<ChipModel>> getUserChips(List<String> chipIds) async {
     return _userNetwork.getUserChips(chipIds);
+  }
+
+  // update user
+  Future<UserModel> updateUser(UserModel user) async {
+    return await _userNetwork.updateUser(user);
   }
 }

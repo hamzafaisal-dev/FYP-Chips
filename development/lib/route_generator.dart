@@ -3,6 +3,7 @@ import 'package:development/presentation/screens/add_chip_screen_2.dart';
 import 'package:development/presentation/screens/alerts_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/applied_chips_screen.dart';
+import 'package:development/presentation/screens/edit_profile_screen.dart';
 import 'package:development/presentation/screens/favorite_chips_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
@@ -92,6 +93,17 @@ class RouteGenerator {
 
           return MaterialPageRoute(
             builder: (context) => OtpScreen(arguments: receivedArguments),
+          );
+        }
+
+      case '/edit-profile':
+        {
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) =>
+                EditProfileScreen(arguments: receivedArguments),
           );
         }
 
