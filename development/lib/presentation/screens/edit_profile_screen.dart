@@ -31,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
-    _nameController.text = widget.arguments?['name'];
+    _nameController.text = _authenticatedUser!.name;
   }
 
   @override
