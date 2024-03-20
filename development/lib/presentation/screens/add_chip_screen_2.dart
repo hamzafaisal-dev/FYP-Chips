@@ -236,14 +236,18 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                         // post btn
                         BlocConsumer<ChipBloc, ChipState>(
                           listener: (context, state) {
-                            if (state is ChipSuccess) {
+                            if (state is ChipAddSuccess) {
                               HelperWidgets.showSnackbar(
                                 context,
                                 'Chip created successfully!',
                                 'success',
                               );
 
-                              Navigator.pop(context);
+                              // event fired to emit updated user in app
+                              BlocProvider.of<AuthCubit>(context)
+                                  .authStateUpdatedEvent(state.updatedUser);
+
+                              NavigationService.goBack();
                               NavigationService.routeToReplacementNamed(
                                   '/layout');
                             }

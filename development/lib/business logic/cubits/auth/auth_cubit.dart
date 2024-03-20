@@ -18,6 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthUserSignedIn(user: updatedUser));
     } catch (e) {
       print(e.toString());
+      // add error state ithay
     }
   }
 

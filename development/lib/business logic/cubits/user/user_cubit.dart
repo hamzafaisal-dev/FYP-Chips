@@ -9,9 +9,8 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository = UserRepository();
-  final AuthCubit authCubit;
 
-  UserCubit({required this.authCubit}) : super(UserInitial());
+  UserCubit() : super(UserInitial());
 
   // fetch user chips stream
   void fetchUserChipsStream(String username) async {
@@ -37,6 +36,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  // bookmark chip
   void bookMarkChip(
       {required ChipModel chip, required UserModel currentUser}) async {
     emit(UserLoadingState());
@@ -51,18 +51,17 @@ class UserCubit extends Cubit<UserState> {
       UserModel updatedUser = updatedUserData["updatedUser"];
 
       isBookmarked
-          ? emit(ChipBookmarkedState())
-          : emit(ChipUnbookmarkedState());
+          ? emit(ChipBookmarkedState(updatedUser: updatedUser))
+          : emit(ChipUnbookmarkedState(updatedUser: updatedUser));
 
       // uncomment this line to fix bug of unbookmarked chip still showing in fav chips screen
       fetchUserChips(updatedUser.favoritedChips);
-
-      authCubit.authStateUpdatedEvent(updatedUser);
     } catch (error) {
       emit(UserErrorState(errorMessage: error.toString()));
     }
   }
 
+  // mark as applied
   void markChipAsApplied(
       {required String chipId, required UserModel currentUser}) async {
     emit(UserLoadingState());
@@ -77,12 +76,12 @@ class UserCubit extends Cubit<UserState> {
       bool isApplied = updatedUserData["isApplied"];
       UserModel updatedUser = updatedUserData["updatedUser"];
 
-      isApplied ? emit(ChipAppliedState()) : emit(ChipUnAppliedState());
+      isApplied
+          ? emit(ChipAppliedState(updatedUser: updatedUser))
+          : emit(ChipUnAppliedState(updatedUser: updatedUser));
 
       // uncomment this line to fix bug of unapplied chip still showing in applied chips screen
       fetchUserChips(updatedUser.appliedChips);
-
-      authCubit.authStateUpdatedEvent(updatedUser);
     } catch (error) {
       emit(UserErrorState(errorMessage: error.toString()));
     }

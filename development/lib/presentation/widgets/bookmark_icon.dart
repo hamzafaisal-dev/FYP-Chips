@@ -55,6 +55,10 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
         if (state is ChipBookmarkedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
 
+          // event fired to emit updated user in app
+          BlocProvider.of<AuthCubit>(context)
+              .authStateUpdatedEvent(state.updatedUser);
+
           HelperWidgets.showSnackbar(
             context,
             'Chip added to favorites!',
@@ -64,6 +68,11 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
 
         if (state is ChipUnbookmarkedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
+
+          // event fired to emit updated user in app
+          BlocProvider.of<AuthCubit>(context)
+              .authStateUpdatedEvent(state.updatedUser);
+
           HelperWidgets.showSnackbar(
             context,
             'Chip removed from favorites',

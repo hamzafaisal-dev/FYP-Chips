@@ -52,10 +52,26 @@ final class UserErrorState extends UserState {
   List<Object> get props => [errorMessage];
 }
 
-final class ChipBookmarkedState extends UserState {}
+final class ChipBookmarkedState extends UserState {
+  final UserModel updatedUser;
 
-final class ChipUnbookmarkedState extends UserState {}
+  const ChipBookmarkedState({required this.updatedUser});
+}
 
-final class ChipAppliedState extends UserState {}
+final class ChipUnbookmarkedState extends UserState {
+  final UserModel updatedUser;
 
-final class ChipUnAppliedState extends UserState {}
+  const ChipUnbookmarkedState({required this.updatedUser});
+}
+
+final class ChipAppliedState extends UserState {
+  final UserModel updatedUser;
+
+  const ChipAppliedState({required this.updatedUser});
+}
+
+final class ChipUnAppliedState extends UserState {
+  final UserModel updatedUser;
+
+  const ChipUnAppliedState({required this.updatedUser});
+}

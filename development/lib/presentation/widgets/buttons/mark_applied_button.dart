@@ -46,6 +46,10 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
         if (state is ChipAppliedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
 
+          // event fired to emit updated user in app
+          BlocProvider.of<AuthCubit>(context)
+              .authStateUpdatedEvent(state.updatedUser);
+
           HelperWidgets.showSnackbar(
             context,
             'Chip marked as applied',
@@ -55,6 +59,10 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
 
         if (state is ChipUnAppliedState) {
           _isInitiallyBookmarked = !_isInitiallyBookmarked;
+
+          // event fired to emit updated user in app
+          BlocProvider.of<AuthCubit>(context)
+              .authStateUpdatedEvent(state.updatedUser);
 
           HelperWidgets.showSnackbar(
             context,

@@ -1,5 +1,6 @@
 import 'package:development/data/models/chip_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:development/data/models/user_model.dart';
 
 abstract class ChipState extends Equatable {
   const ChipState([List props = const []]) : super();
@@ -30,12 +31,25 @@ class ChipsStreamLoaded extends ChipState {
   List<Object?> get props => [chips];
 }
 
-class ChipSuccess extends ChipState {
+class ChipAddSuccess extends ChipState {
+  final UserModel updatedUser;
+
+  const ChipAddSuccess({required this.updatedUser});
+
   @override
   List<Object?> get props => [];
 }
 
 class ChipEditSuccess extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ChipDeleteSuccess extends ChipState {
+  final UserModel updatedUser;
+
+  const ChipDeleteSuccess({required this.updatedUser});
+
   @override
   List<Object?> get props => [];
 }

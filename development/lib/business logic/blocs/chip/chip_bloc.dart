@@ -8,7 +8,6 @@ import 'package:development/data/repositories/chip_repository.dart';
 
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
-  final AuthCubit authCubit;
 
   void _fetchChips(Emitter<ChipState> emit) {
     emit(ChipsLoading());
@@ -16,7 +15,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     emit(ChipsStreamLoaded(chips: chipsStream));
   }
 
-  ChipBloc({required this.authCubit}) : super(ChipEmpty()) {
+  ChipBloc() : super(ChipEmpty()) {
     // fetch all chips from dataabase
     on<FetchChipsStream>((event, emit) {
       _fetchChips(emit);
@@ -29,8 +28,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         UserModel updatedUser =
             await _chipRepository.postChip(chipMap: event.newChip);
 
-        emit(ChipSuccess());
-        authCubit.authStateUpdatedEvent(updatedUser);
+        emit(ChipAddSuccess(updatedUser: updatedUser));
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 
@@ -63,8 +61,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
           user: event.currentUser,
         );
 
-        emit(ChipSuccess());
-        authCubit.authStateUpdatedEvent(updatedUser);
+        emit(ChipDeleteSuccess(updatedUser: updatedUser));
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 

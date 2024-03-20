@@ -41,15 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => NotificationCubit()),
         BlocProvider(
-          create: (context) => UserCubit(
-            authCubit: BlocProvider.of<AuthCubit>(context),
-          ),
+          create: (context) => UserCubit(),
         ),
-        BlocProvider(
-          create: (context) => ChipBloc(
-            authCubit: BlocProvider.of<AuthCubit>(context),
-          ),
-        ),
+        BlocProvider(create: (context) => ChipBloc()),
         BlocProvider(create: (context) => AutofillBloc()),
       ],
       child: ScreenUtilInit(
