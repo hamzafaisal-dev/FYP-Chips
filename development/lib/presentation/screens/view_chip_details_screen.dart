@@ -90,7 +90,8 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                         BlocProvider.of<AuthCubit>(context)
                             .userUpdated(state.updatedUser);
 
-                        NavigationService.routeToReplacementNamed('/layout');
+                        // NavigationService.routeToReplacementNamed('/layout');
+                        NavigationService.goBack();
 
                         HelperWidgets.showSnackbar(
                           context,
