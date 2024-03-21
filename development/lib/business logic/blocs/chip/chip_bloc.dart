@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
-import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/chip_repository.dart';
@@ -16,7 +15,13 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
   }
 
   ChipBloc() : super(ChipEmpty()) {
-    // fetch all chips from dataabase
+    on<FetchChips>((event, emit) async {
+      emit(ChipsLoading());
+      List<ChipModel> searchedchips =
+          await _chipRepository.getAllChips(event.searchText);
+      emit(ChipsLoaded(chips: searchedchips));
+    });
+
     on<FetchChipsStream>((event, emit) {
       _fetchChips(emit);
     });

@@ -6,7 +6,9 @@ abstract class ChipEvent extends Equatable {
 }
 
 class FetchChips extends ChipEvent {
-  const FetchChips() : super();
+  const FetchChips({required this.searchText}) : super();
+
+  final String searchText;
 
   @override
   List<Object?> get props => throw UnimplementedError();

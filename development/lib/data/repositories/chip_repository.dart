@@ -6,8 +6,8 @@ class ChipRepository {
   final ChipNetwork _chipsNetwork = ChipNetwork();
 
   // get list of all chips
-  Future<List<ChipModel>> getAllChips() async {
-    return await _chipsNetwork.getAllChips();
+  Future<List<ChipModel>> getAllChips(String searchText) async {
+    return await _chipsNetwork.getAllChips(searchText);
   }
 
   // get stream of all chips

@@ -6,6 +6,7 @@ import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
+import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final UserModel? _authenticatedUser;
-  // final _searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -35,100 +36,111 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _handleRefresh() async {
     BlocProvider.of<ChipBloc>(context).add(const FetchChipsStream());
+    _searchController.text = '';
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: BlocBuilder<ChipBloc, ChipState>(
-        builder: (context, state) {
-          if (state is ChipsStreamLoaded) {
-            return RefreshIndicator(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              onRefresh: () => _handleRefresh(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16.h),
+      child: RefreshIndicator(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        onRefresh: () => _handleRefresh(),
+        child: BlocBuilder<ChipBloc, ChipState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16.h),
 
-                  // hey, user name
-                  RichText(
-                    text: TextSpan(
-                      text: 'Hello, ',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 36.sp,
-                          ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          // text: 'Farhan Mushi',
-                          text: _authenticatedUser?.name ?? 'John Doe',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 36.sp,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
+                // hey, user name
+                RichText(
+                  text: TextSpan(
+                    text: 'Hello, ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 36.sp,
                         ),
-                      ],
+                    children: <TextSpan>[
+                      TextSpan(
+                        // text: 'Farhan Mushi',
+                        text: _authenticatedUser?.name ?? 'John Doe',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 36.sp,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // here are some chips for you
+                RichText(
+                  text: TextSpan(
+                    text: 'Here are some ',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18.sp,
+                        ),
+                    children: [
+                      TextSpan(
+                        text: 'Chips',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18.sp,
+                            ),
+                      ),
+                      TextSpan(
+                        text: ' for you',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18.sp,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 23.4.h),
+
+                // search bar
+                Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: TextFormField(
+                    controller: _searchController,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    onFieldSubmitted: (value) {
+                      BlocProvider.of<ChipBloc>(context).add(
+                        FetchChips(searchText: value),
+                      );
+                    },
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      hintText: 'Search',
+                      hintStyle: Theme.of(context).textTheme.bodyLarge,
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: 20.w,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 0.w,
+                        vertical: 0.h,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                     ),
                   ),
+                ),
 
-                  // here are some chips for you
-                  RichText(
-                    text: TextSpan(
-                      text: 'Here are some ',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18.sp,
-                          ),
-                      children: [
-                        TextSpan(
-                          text: 'Chips',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18.sp,
-                                  ),
-                        ),
-                        TextSpan(
-                          text: ' for you',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18.sp,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
+                SizedBox(height: 23.4.h),
 
-                  // SizedBox(height: 23.4.h),
-
-                  // search bar
-                  // TextFormField(
-                  //   controller: _searchController,
-                  //   decoration: InputDecoration(
-                  //     fillColor: Colors.white,
-                  //     hintText: 'Search',
-                  //     hintStyle: Theme.of(context).textTheme.bodyLarge,
-                  //     prefixIcon: Icon(
-                  //       Icons.search,
-                  //       size: 20.w,
-                  //     ),
-                  //     contentPadding: EdgeInsets.symmetric(
-                  //       horizontal: 0.w,
-                  //       vertical: 0.h,
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(12.r),
-                  //     ),
-                  //   ),
-                  // ),
-
-                  SizedBox(height: 23.4.h),
-
+                if (state is ChipsStreamLoaded)
                   StreamBuilder(
                     stream: state.chips,
                     builder: (context, snapshot) {
@@ -186,17 +198,50 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const SizedBox();
                     },
                   ),
-                ],
-              ),
+
+                if (state is ChipsLoaded)
+                  if (state.chips.isEmpty)
+                    const Center(
+                      child: Text('Empty hai'),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.chips.length,
+                        itemBuilder: (context, index) {
+                          List<ChipModel> chipData = state.chips;
+                          var chipObject = chipData[index];
+
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 10.8.h),
+                            child: ChipTile(
+                              chipData: chipObject,
+                              onTap: () => NavigationService.routeToNamed(
+                                '/view-chip',
+                                arguments: {"chipData": chipObject},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                if (state is ChipsLoading)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) => ChipTileSkeleton(),
+                    ),
+                  ),
+
+                if (state is ChipError)
+                  Center(
+                    child: Text(state.errorMsg),
+                  )
+              ],
             );
-          }
-
-          if (state is ChipEmpty) {
-            return const Text('khaali hai');
-          }
-
-          return const SizedBox.shrink();
-        },
+          },
+        ),
       ),
     );
   }
