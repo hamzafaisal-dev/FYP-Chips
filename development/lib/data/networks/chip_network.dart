@@ -14,7 +14,18 @@ class ChipNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  // get list of all chips
+  // get a chip by its chipId
+  Future<ChipModel?> getChipById(String chipId) async {
+    final chipDoc = await _firestore.collection('chips').doc(chipId).get();
+
+    if (chipDoc.exists) {
+      return ChipModel.fromMap(chipDoc.data()!);
+    } else {
+      return null;
+    }
+  }
+
+  // get all chips
   Future<List<ChipModel>> getAllChips(String searchText) async {
     final chips = await _firestore
         .collection('chips')
@@ -24,7 +35,8 @@ class ChipNetwork {
     List<ChipModel> allFetchedChips = chips.docs
         .map((docSnapshot) => ChipModel.fromMap(docSnapshot.data()))
         .where((chip) =>
-            chip.jobTitle.toLowerCase().contains(searchText.toLowerCase()))
+            chip.jobTitle.toLowerCase().contains(searchText.toLowerCase()) ||
+            chip.companyName.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
 
     return allFetchedChips;

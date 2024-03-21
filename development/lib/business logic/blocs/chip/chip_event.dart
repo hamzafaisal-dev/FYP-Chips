@@ -5,13 +5,22 @@ abstract class ChipEvent extends Equatable {
   const ChipEvent([List props = const []]) : super();
 }
 
+class FetchChipByIdEvent extends ChipEvent {
+  const FetchChipByIdEvent({required this.chipId});
+
+  final String chipId;
+
+  @override
+  List<Object?> get props => [chipId];
+}
+
 class FetchChips extends ChipEvent {
   const FetchChips({required this.searchText}) : super();
 
   final String searchText;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [searchText];
 }
 
 class FetchChipsStream extends ChipEvent {

@@ -115,9 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: _searchController,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     onFieldSubmitted: (value) {
-                      BlocProvider.of<ChipBloc>(context).add(
-                        FetchChips(searchText: value),
-                      );
+                      if (value.isNotEmpty) {
+                        BlocProvider.of<ChipBloc>(context).add(
+                          FetchChips(searchText: value),
+                        );
+                      }
                     },
                     decoration: InputDecoration(
                       fillColor: Colors.white,

@@ -5,6 +5,10 @@ import 'package:development/data/networks/chip_network.dart';
 class ChipRepository {
   final ChipNetwork _chipsNetwork = ChipNetwork();
 
+  Future<ChipModel?> getChipById(String chipId) async {
+    return await _chipsNetwork.getChipById(chipId);
+  }
+
   // get list of all chips
   Future<List<ChipModel>> getAllChips(String searchText) async {
     return await _chipsNetwork.getAllChips(searchText);

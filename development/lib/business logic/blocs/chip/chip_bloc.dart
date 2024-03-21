@@ -15,6 +15,13 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
   }
 
   ChipBloc() : super(ChipEmpty()) {
+    on<FetchChipByIdEvent>((event, emit) async {
+      emit(ChipsLoading());
+      ChipModel? individualChip =
+          await _chipRepository.getChipById(event.chipId);
+      emit(IndividualChipLoaded(chip: individualChip));
+    });
+
     on<FetchChips>((event, emit) async {
       emit(ChipsLoading());
       List<ChipModel> searchedchips =
