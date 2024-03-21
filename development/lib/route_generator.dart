@@ -1,6 +1,6 @@
 import 'package:development/presentation/screens/add_chip_screen_1.dart';
 import 'package:development/presentation/screens/add_chip_screen_2.dart';
-import 'package:development/presentation/screens/alerts_screen.dart';
+import 'package:development/presentation/screens/notifications_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/applied_chips_screen.dart';
 import 'package:development/presentation/screens/edit_profile_screen.dart';
@@ -76,13 +76,14 @@ class RouteGenerator {
           builder: (context) => const SettingsScreen(),
         );
 
-      case '/alerts':
+      case '/notifications':
         {
           Map<String, dynamic>? receivedArguments =
               settings.arguments as Map<String, dynamic>?;
 
           return MaterialPageRoute(
-            builder: (context) => AlertsScreen(arguments: receivedArguments),
+            builder: (context) =>
+                NotificationsScreen(arguments: receivedArguments),
           );
         }
 

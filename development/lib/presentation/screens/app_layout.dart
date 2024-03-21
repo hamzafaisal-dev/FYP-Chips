@@ -112,7 +112,7 @@ class _AppLayoutState extends State<AppLayout> {
                               iconWidth: 18.42.w,
                               iconHeight: 21.67.h,
                               onTap: () => NavigationService.routeToNamed(
-                                  '/alerts',
+                                  '/notifications',
                                   arguments: {"notifications": snapshot.data}),
                             ),
                           );

@@ -12,18 +12,15 @@ import 'package:development/presentation/widgets/buttons/autofill_button.dart';
 import 'package:development/presentation/widgets/buttons/post_chip_button.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
-import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
-import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 
 class AddChipScreen2 extends StatefulWidget {
   const AddChipScreen2({super.key, this.arguments});

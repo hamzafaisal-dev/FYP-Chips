@@ -4,17 +4,18 @@ import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
-class AlertsScreen extends StatefulWidget {
-  const AlertsScreen({super.key, this.arguments});
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key, this.arguments});
 
   final Map<String, dynamic>? arguments;
 
   @override
-  State<AlertsScreen> createState() => _AlertsScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _AlertsScreenState extends State<AlertsScreen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   late final List<NotificationModel> _notifications;
 
   @override
@@ -32,7 +33,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Alerts'),
+        title: const Text('Notifications'),
         centerTitle: true,
 
         // back button
@@ -53,7 +54,27 @@ class _AlertsScreenState extends State<AlertsScreen> {
       body: Padding(
         padding: const EdgeInsets.only(top: 6),
         child: (_notifications.isEmpty)
-            ? const Center(child: Text('Such empty, much wow'))
+            ? Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 81.h),
+                      child: LottieBuilder.asset(
+                        AssetPaths.manPeekingAnimationPath,
+                        frameRate: FrameRate.max,
+                        width: 279.w,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Text(
+                        "You don't have any notifications yet.",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             : ListView.builder(
                 itemCount: _notifications.length,
                 itemBuilder: (context, index) {

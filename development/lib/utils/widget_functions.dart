@@ -71,7 +71,7 @@ class HelperWidgets {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Lottie.asset(
-                      AssetPaths.womanSittingAnimation,
+                      AssetPaths.womanSittingAnimationPath,
                       frameRate: FrameRate(420),
                     ),
                     Text(
@@ -106,7 +106,7 @@ class HelperWidgets {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Lottie.asset(
-                  AssetPaths.angryTomatoAnimation,
+                  AssetPaths.angryTomatoAnimationPath,
                   // repeat: false,
                   frameRate: FrameRate(200),
                 ),

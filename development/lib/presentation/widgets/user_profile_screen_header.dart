@@ -1,5 +1,7 @@
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/my_flutter_app_icons.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/user_stat_section.dart';
 import 'package:development/services/navigation_service.dart';
@@ -42,7 +44,7 @@ class UserProfileScreenHeader extends StatelessWidget {
                     children: [
                       // name
                       Text(
-                        _authenticatedUser?.username ?? 'User',
+                        _authenticatedUser?.name ?? 'User',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge
@@ -94,6 +96,8 @@ class UserProfileScreenHeader extends StatelessWidget {
               UserStatSection(
                 statisticName: 'Posted Chips',
                 statisticValue: _authenticatedUser?.postedChips.length ?? 0,
+                icon: CustomIcons.feedbackicon,
+                iconColor: Theme.of(context).colorScheme.primary,
               ),
 
               // divider
@@ -110,6 +114,8 @@ class UserProfileScreenHeader extends StatelessWidget {
               UserStatSection(
                 statisticName: 'Saved Chips',
                 statisticValue: _authenticatedUser?.favoritedChips.length ?? 0,
+                icon: CustomIcons.privacypolicyicon,
+                iconColor: CustomColors.darkBlue,
               ),
             ],
           ),

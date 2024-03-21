@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import '../widgets/user_profile_screen_header.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -95,7 +96,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       } else if (snapshot.hasError) {
                         return SelectableText(snapshot.error.toString());
                       } else if (snapshot.data?.isEmpty ?? true) {
-                        return const Text("much empty, such wow");
+                        // return ghost empty animation along with a message
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LottieBuilder.asset(
+                              AssetPaths.ghostEmptyAnimationPath,
+                              width: 234.w,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 10.h),
+                              child: Text(
+                                "You haven't posted any chips yet.",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        );
                       } else if (snapshot.hasData) {
                         return Expanded(
                           child: RefreshIndicator(
@@ -126,7 +143,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                         );
                       } else {
-                        return const Text("something went wrong");
+                        return const Text("woops, something went wrong...");
                       }
                     },
                   );

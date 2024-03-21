@@ -54,8 +54,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       validator: (value) {
         if (value == null) return 'Please enter a valid value';
 
-        if (value.length < 5) {
-          return 'Please enter at least 5 characters';
+        if (value.length < 3) {
+          return 'Please enter at least 3 characters';
         }
 
         final validationResult = widget.validatorFunction?.call(value);

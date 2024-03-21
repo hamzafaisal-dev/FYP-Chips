@@ -2,7 +2,7 @@ import 'package:development/constants/validators.dart';
 
 class FormValidators {
   static String? emailValidator(String? value) {
-    if (value == null || !value.isValidEmail()) {
+    if (value == null || !value.isValidIbaEmail()) {
       return 'Enter a valid IBA email address';
     }
 
@@ -58,7 +58,7 @@ class FormValidators {
     //   return 'Invalid URL format';
     // }
 
-    if (!value.isValidEmail() &&
+    if (!value.isValidIbaEmail() &&
         !value.isValidPhoneNumber() &&
         !value.isValidLink()) {
       return 'Invalid input value';

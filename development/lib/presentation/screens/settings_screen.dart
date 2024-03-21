@@ -128,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             SizedBox(height: 20.h),
 
-            // 'Notifications'
+            // Favorited Chips
             SettingsActionTile(
               title: 'Favorited Chips',
               subTitle: 'View your favorited chips',
@@ -143,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             SizedBox(height: 8.h),
 
-            // 'More customization'
+            // Applied Chips
             SettingsActionTile(
               title: 'Applied Chips',
               subTitle: 'View your applied chips',
@@ -175,7 +175,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {},
+              onTap: () {
+                HelperWidgets.showSnackbar(
+                  context,
+                  "Feature under development... thank you for your patience!😄",
+                  "info",
+                );
+              },
             ),
 
             SizedBox(height: 8.h),
@@ -189,7 +195,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {},
+              onTap: () {
+                HelperWidgets.showSnackbar(
+                  context,
+                  "Feature under development... thank you for your patience!😄",
+                  "info",
+                );
+              },
             ),
 
             SizedBox(height: 8.h),
@@ -203,7 +215,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 18.h,
               ),
               trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {},
+              onTap: () {
+                HelperWidgets.showSnackbar(
+                  context,
+                  "Drafting privacy policy... thank you for your patience!😄",
+                  "info",
+                );
+              },
             ),
 
             SizedBox(height: 8.h),

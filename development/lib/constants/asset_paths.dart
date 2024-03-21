@@ -44,12 +44,16 @@ class AssetPaths {
   // animations
   static const String splashScreenAnimationPath =
       'assets/animations/splash_screen_animation.json';
-  static const String womanSittingAnimation =
-      'assets/animations/Woman-Sitting-Animation.json';
-  static const String angryTomatoAnimation =
-      'assets/animations/Angry_Tomato_Animation.json';
-  static const String girlEmptyBoxAnimation =
-      'assets/animations/Girl_Empty_Box.json';
-  static const String appliedEmptyAnimation =
-      'assets/animations/Applied_Empty_Animation.json';
+  static const String womanSittingAnimationPath =
+      'assets/animations/woman_sitting_animation.json';
+  static const String angryTomatoAnimationPath =
+      'assets/animations/angry_tomato_animation.json';
+  static const String girlEmptyBoxAnimationPath =
+      'assets/animations/girl_empty_box_animation.json';
+  static const String appliedEmptyAnimationPath =
+      'assets/animations/applied_empty_animation.json';
+  static const String ghostEmptyAnimationPath =
+      'assets/animations/ghost_empty_animation.json';
+  static const String manPeekingAnimationPath =
+      'assets/animations/man_peeking_animation.json';
 }

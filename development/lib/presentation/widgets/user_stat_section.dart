@@ -1,4 +1,3 @@
-import 'package:development/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,10 +6,14 @@ class UserStatSection extends StatelessWidget {
     super.key,
     required this.statisticName,
     required this.statisticValue,
+    required this.icon,
+    required this.iconColor,
   });
 
   final String statisticName;
   final int statisticValue;
+  final IconData icon;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +54,8 @@ class UserStatSection extends StatelessWidget {
               ),
             ),
             child: Icon(
-              CustomIcons.feedbackicon,
-              color: Theme.of(context).colorScheme.primary,
+              icon,
+              color: iconColor,
               size: 18.dg,
             ),
           ),

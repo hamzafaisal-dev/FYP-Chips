@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // hey, user name
                   RichText(
                     text: TextSpan(
-                      text: 'hello, ',
+                      text: 'Hello, ',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 36.sp,
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // here are some chips for you
                   RichText(
                     text: TextSpan(
-                      text: 'here are some ',
+                      text: 'Here are some ',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w400,
                             fontSize: 18.sp,
