@@ -66,14 +66,14 @@ class _OtpScreenState extends State<OtpScreen> {
             if (state is AuthOtpNotVerified) {
               HelperWidgets.showSnackbar(
                 context,
-                'Invalid OTP! Please try again!',
+                'Invalid OTP! Please try again!😬',
                 'error',
               );
             }
             if (state is AuthSignUpLoading) {
               HelperWidgets.showSnackbar(
                 context,
-                'OTP Verified Successfully! Creating your account...',
+                'OTP Verified Successfully!🥳',
                 'info',
               );
             }

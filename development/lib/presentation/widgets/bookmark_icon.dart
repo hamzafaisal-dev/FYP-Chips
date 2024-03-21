@@ -60,7 +60,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip added to favorites!',
+            'Chip added to favorites!🎉',
             'success',
           );
         }
@@ -73,7 +73,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip removed from favorites',
+            'Chip removed from favorites!😢',
             'info',
           );
         }

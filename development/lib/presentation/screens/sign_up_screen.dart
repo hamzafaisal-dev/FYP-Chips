@@ -189,7 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   if (state is AuthOtpEmailSending) {
                     HelperWidgets.showSnackbar(
                       context,
-                      "Sending OTP to your email...",
+                      "Sending OTP to your email, thank you for your patience!😄",
                       'info',
                     );
                   }

@@ -94,7 +94,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
                         HelperWidgets.showSnackbar(
                           context,
-                          'Chip deleted successfully',
+                          'Chip deleted successfully!🍟',
                           'success',
                         );
                       }

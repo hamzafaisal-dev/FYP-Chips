@@ -198,7 +198,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                   HelperWidgets.showSnackbar(
                     context,
-                    'Autofill Success!',
+                    'Autofill Success!🥳',
                     'success',
                   );
                 }
@@ -236,7 +236,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             if (state is ChipAddSuccess) {
                               HelperWidgets.showSnackbar(
                                 context,
-                                'Chip created successfully!',
+                                'Chip created successfully!🥳',
                                 'success',
                               );
 
@@ -251,7 +251,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             if (state is ChipEditSuccess) {
                               HelperWidgets.showSnackbar(
                                 context,
-                                'Chip edited successfully!',
+                                'Chip edited successfully!🥳',
                                 'success',
                               );
 

@@ -51,7 +51,7 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip marked as applied',
+            'Chip marked as applied!✅',
             'success',
           );
         }
@@ -64,7 +64,7 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip unmarked as applied',
+            'Chip unmarked as applied!❌',
             'info',
           );
         }

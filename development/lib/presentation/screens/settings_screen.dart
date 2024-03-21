@@ -234,7 +234,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   NavigationService.routeToReplacementNamed('/login');
                   HelperWidgets.showSnackbar(
                     context,
-                    "Signed out successfully!",
+                    "Signed out successfully!👋",
                     "success",
                   );
                 }

@@ -71,17 +71,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               alignment: Alignment.centerRight,
               child: BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
-                  if (state is UpdatingUserProfile) {
-                    HelperWidgets.showSnackbar(
-                      context,
-                      "Updating profile...",
-                      "info",
-                    );
-                  }
+                  if (state is UpdatingUserProfile) {}
                   if (state is UserProfileUpdated) {
                     HelperWidgets.showSnackbar(
                       context,
-                      "Profile updated successfully!",
+                      "Profile updated successfully!🥳",
                       "success",
                     );
 
