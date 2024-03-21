@@ -67,6 +67,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         );
 
         emit(ChipDeleteSuccess(updatedUser: updatedUser));
+        _fetchChips(emit);
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 

@@ -81,8 +81,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                     BlocProvider.of<AuthCubit>(context)
                         .userUpdated(state.updatedUser);
+
                     BlocProvider.of<UserCubit>(context)
                         .fetchUserChipsStream(_authenticatedUser!.username);
+
                     NavigationService.goBack();
                   }
                   if (state is UserProfileUpdateFailed) {
