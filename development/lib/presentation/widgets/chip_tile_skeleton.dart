@@ -1,125 +1,137 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChipTileSkeleton extends StatelessWidget {
+  const ChipTileSkeleton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         child: Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //
-                  Row(
-                    children: [
-                      //
-                      const Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
+              // Row for user profile and posted info
+              _buildUserInfoRow(),
 
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //
-                          Container(
-                            width: 100,
-                            height: 16,
-                            color: Colors.white,
-                          ),
+              // Divider
+              _buildDivider(),
 
-                          const SizedBox(height: 4),
+              // Job title
+              _buildJobTitle(),
 
-                          Container(
-                            width: 80,
-                            height: 12,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              // Job description
+              _buildJobDescription(),
 
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.bookmark_outline,
-                      size: 22,
-                      color: Colors.grey[400],
-                    ),
-                  ),
-                ],
-              ),
+              // Divider
+              _buildDivider(),
 
-              Divider(
-                color: Colors.grey[300],
-                thickness: 1,
-              ),
-
-              Container(
-                height: 30,
-                width: 200,
-                color: Colors.white,
-              ),
-
-              const SizedBox(height: 10),
-
-              Container(
-                height: 50,
-                color: Colors.white,
-              ),
-
-              Divider(
-                color: Colors.grey[300],
-                thickness: 2,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    //
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        //
-                        Icon(
-                          Icons.favorite,
-                          size: 16,
-                          color: Colors.grey[400],
-                        ),
-
-                        const SizedBox(width: 3),
-
-                        Container(
-                          width: 40,
-                          height: 16,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              // Heart icon and post likes
+              _buildLikes(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// Builds the row containing user profile and posted info.
+  Widget _buildUserInfoRow() {
+    return Row(
+      children: [
+        // User profile picture placeholder
+        Padding(
+          padding: EdgeInsets.only(right: 10.w),
+          child: CircleAvatar(
+            radius: 16.r,
+            backgroundColor: Colors.white,
+          ),
+        ),
+
+        // Posted by and time placeholders
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 120.w,
+              height: 16.h,
+              color: Colors.white,
+            ),
+            SizedBox(height: 4.h),
+            Container(
+              width: 80.w,
+              height: 12.h,
+              color: Colors.white,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// Builds the divider widget.
+  Widget _buildDivider() {
+    return Divider(
+      color: Colors.grey[300],
+      thickness: 1.8,
+    );
+  }
+
+  /// Builds the job title widget.
+  Widget _buildJobTitle() {
+    return Container(
+      width: 200.w,
+      height: 16.h,
+      color: Colors.white,
+    );
+  }
+
+  /// Builds the job description widget.
+  Widget _buildJobDescription() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.h),
+      child: Container(
+        width: 200.w,
+        height: 24.h,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  /// Builds the likes widget.
+  Widget _buildLikes() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          // Heart icon and post likes count placeholders
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.favorite,
+                size: 16.sp,
+                color: Colors.grey[400],
+              ),
+              SizedBox(width: 3.w),
+              Container(
+                width: 40.w,
+                height: 16.h,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
