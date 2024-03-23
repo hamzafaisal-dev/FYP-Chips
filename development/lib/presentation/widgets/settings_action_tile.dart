@@ -26,7 +26,7 @@ class SettingsActionTile extends StatelessWidget {
       tileColor: Theme.of(context).colorScheme.surface,
 
       // adjusts padding according to subtitle availability
-      contentPadding: EdgeInsets.fromLTRB(8.w, 0, 20.w, 0),
+      contentPadding: EdgeInsets.fromLTRB(8.w, 0.h, 20.w, 0.h),
 
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14.0.r),

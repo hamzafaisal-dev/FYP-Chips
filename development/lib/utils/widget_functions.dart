@@ -76,7 +76,7 @@ class HelperWidgets {
                     ),
                     Text(
                       dialogText,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     SizedBox(height: 20.h),
                   ],
@@ -111,11 +111,12 @@ class HelperWidgets {
                 ),
                 Text(
                   'Profanity Detected',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const Text(
-                    "Our system has detected some profanity in your input. Please re-check and remove all such instances to create a safe space for all users.",
-                    textAlign: TextAlign.center),
+                  "Our system has detected some profanity in your input. Please re-check and remove all such instances to create a safe space for all users.",
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 20.h),
               ],
             ),

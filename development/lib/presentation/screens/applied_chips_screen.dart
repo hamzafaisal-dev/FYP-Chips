@@ -67,7 +67,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
         // back button
         leadingWidth: 64.w,
         leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
@@ -153,7 +153,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
 
                         Text(
                           "No applied chips yet!",
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],
                     );

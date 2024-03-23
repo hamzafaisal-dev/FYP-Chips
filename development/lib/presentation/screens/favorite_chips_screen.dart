@@ -67,7 +67,7 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
         // back button
         leadingWidth: 64.w,
         leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
@@ -123,7 +123,7 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
               child: Text(
                 'Select Date Range',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: CustomColors.mustard,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
               ),
             ),
@@ -132,28 +132,22 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
 
             BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
-                print(state);
-
                 if (state is UserChipsFetched) {
                   List<ChipModel> usersFavoritedChips = state.userChips;
 
                   if (usersFavoritedChips.isEmpty) {
-                    // Animation if no favorite chips
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        //
                         Lottie.asset(
                           AssetPaths.girlEmptyBoxAnimationPath,
                           frameRate: FrameRate.max,
                           width: 270.w,
                         ),
-
                         SizedBox(height: 20.h),
-
                         Text(
                           "No favorite chips yet!",
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],
                     );
@@ -178,11 +172,6 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
                 } else if (state is UserErrorState) {
                   return Center(child: Text(state.errorMessage));
                 }
-                // else if (state is ChipUnbookmarked) {
-                //   BlocProvider.of<UserCubit>(context).fetchUserChips(
-                //     _authenticatedUser!.favoritedChips,
-                //   );
-                // }
 
                 return const CustomCircularProgressIndicator();
               },

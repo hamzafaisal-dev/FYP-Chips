@@ -158,39 +158,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             SizedBox(height: 16.h),
 
-            // 'Support'
+            // 'Other'
             Text(
-              'Support',
+              'Other',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
 
             SizedBox(height: 20.h),
 
-            // 'Contact'
+            // 'Contact Us'
             SettingsActionTile(
-              title: 'Contact',
+              title: 'Contact Us',
               leadingIcon: SvgPicture.asset(
                 AssetPaths.contactIconPath,
-                width: 18.w,
-                height: 18.h,
-              ),
-              trailingIcon: Icons.arrow_forward_ios_rounded,
-              onTap: () {
-                HelperWidgets.showSnackbar(
-                  context,
-                  "Feature under development... thank you for your patience!😄",
-                  "info",
-                );
-              },
-            ),
-
-            SizedBox(height: 8.h),
-
-            // 'Feedback'
-            SettingsActionTile(
-              title: 'Feedback',
-              leadingIcon: SvgPicture.asset(
-                AssetPaths.feedbackIconPath,
                 width: 18.w,
                 height: 18.h,
               ),

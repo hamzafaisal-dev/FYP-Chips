@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: ListView.builder(
                       itemCount: 10,
-                      itemBuilder: (context, index) => ChipTileSkeleton(),
+                      itemBuilder: (context, index) => const ChipTileSkeleton(),
                     ),
                   ),
 

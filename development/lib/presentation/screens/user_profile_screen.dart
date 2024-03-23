@@ -31,7 +31,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
-    // fetch user chips stream
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
     userCubit.fetchUserChipsStream(_authenticatedUser!.username);
   }
@@ -46,7 +45,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         // back button
         leadingWidth: 64.w,
         leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
@@ -75,7 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               padding: EdgeInsets.only(bottom: 10.h),
               child: Text(
                 "Your Chips",
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
 
@@ -90,17 +89,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         return Expanded(
                           child: ListView.builder(
                             itemCount: 9,
-                            itemBuilder: (context, index) => ChipTileSkeleton(),
+                            itemBuilder: (context, index) =>
+                                const ChipTileSkeleton(),
                           ),
                         );
                       } else if (snapshot.hasError) {
                         return SelectableText(snapshot.error.toString());
                       } else if (snapshot.data?.isEmpty ?? true) {
-                        // return ghost empty animation along with a message
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            LottieBuilder.asset(
+                            Lottie.asset(
                               AssetPaths.ghostEmptyAnimationPath,
                               width: 234.w,
                             ),
@@ -108,7 +107,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               padding: EdgeInsets.only(top: 10.h),
                               child: Text(
                                 "You haven't posted any chips yet.",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: Theme.of(context).textTheme.labelSmall,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],

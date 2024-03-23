@@ -39,7 +39,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         // back button
         leadingWidth: 64.w,
         leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.w),
+          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
@@ -52,14 +52,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 6),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: (_notifications.isEmpty)
             ? Center(
                 child: Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: 81.h),
-                      child: LottieBuilder.asset(
+                      child: Lottie.asset(
                         AssetPaths.manPeekingAnimationPath,
                         frameRate: FrameRate.max,
                         width: 279.w,
@@ -69,7 +69,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       padding: EdgeInsets.only(top: 10.h),
                       child: Text(
                         "You don't have any notifications yet.",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
