@@ -5,13 +5,13 @@ import 'package:development/data/models/user_model.dart';
 class NotificationNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Get user chips stream
+  // get user chips stream
   Stream<List<NotificationModel>> getUsersNotifications(UserModel currentUser) {
     return _firestore
         .collection('notifications')
         .where('recipientId', isEqualTo: currentUser.username)
         .where('read', isEqualTo: false)
-        // .orderBy('timeStamp', descending: true)
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map(

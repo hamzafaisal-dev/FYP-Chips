@@ -7,6 +7,26 @@ import 'package:uuid/uuid.dart';
 class UserNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  void generateNotification(ChipModel chip, UserModel currentUser) async {
+    String newNotificationId = const Uuid().v4();
+
+    NotificationModel newNotification = NotificationModel(
+      notificationId: newNotificationId,
+      recipientId: chip.postedBy,
+      senderId: currentUser.userId,
+      jobId: chip.chipId,
+      type: 'bookmark',
+      message: '${currentUser.name} favorited your chip!',
+      timestamp: DateTime.now(),
+      read: false,
+    );
+
+    await _firestore
+        .collection('notifications')
+        .doc(newNotificationId)
+        .set(newNotification.toJson());
+  }
+
   // Get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _firestore
@@ -67,23 +87,10 @@ class UserNetwork {
       favoritedChips.insert(0, chip.chipId);
       isBookmarked = true;
 
-      String newNotificationId = const Uuid().v4();
-
-      NotificationModel newNotification = NotificationModel(
-        notificationId: newNotificationId,
-        recipientId: chip.postedBy,
-        senderId: currentUser.userId,
-        jobId: chip.chipId,
-        type: 'bookmark',
-        message: '${currentUser.name} favorited your chip!',
-        timestamp: DateTime.now(),
-        read: false,
-      );
-
-      await _firestore
-          .collection('notifications')
-          .doc(newNotificationId)
-          .set(newNotification.toJson());
+      // if chip is user's own posted chip then no notif will be generated
+      if (!currentUser.postedChips.contains(chip.chipId)) {
+        generateNotification(chip, currentUser);
+      }
     }
 
     updatedUser = user.copyWith(favoritedChips: favoritedChips);

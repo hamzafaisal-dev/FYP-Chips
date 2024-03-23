@@ -27,7 +27,7 @@ class NotificationModel {
       jobId: json['jobId'],
       type: json['type'],
       message: json['message'],
-      timestamp: DateTime.parse(json['timestamp']),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp']),
       read: json['read'],
     );
   }
@@ -40,7 +40,7 @@ class NotificationModel {
       'jobId': jobId,
       'type': type,
       'message': message,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp': timestamp.millisecondsSinceEpoch,
       'read': read,
     };
   }

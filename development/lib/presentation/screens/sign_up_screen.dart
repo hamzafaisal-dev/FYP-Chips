@@ -79,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   null,
                   context,
                   null,
+                  null,
                 ),
                 validator: (value) => FormValidators.nameValidator(value),
                 onTapOutside: (event) {
@@ -96,6 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const Icon(Icons.email_outlined),
                   null,
                   context,
+                  null,
                   null,
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -124,6 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   context,
                   null,
+                  null,
                 ),
                 validator: (value) => FormValidators.passwordValidator(value),
                 onTapOutside: (event) {
@@ -149,6 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         : const Icon(Icons.visibility_off),
                   ),
                   context,
+                  null,
                   null,
                 ),
                 validator: (value) => FormValidators.confirmPasswordValidator(

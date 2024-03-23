@@ -32,8 +32,6 @@ class _AppLayoutState extends State<AppLayout> {
     NotificationState notifState =
         BlocProvider.of<NotificationCubit>(context).state;
 
-    print('notifState is $notifState');
-
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
     BlocProvider.of<NotificationCubit>(context)
@@ -106,7 +104,7 @@ class _AppLayoutState extends State<AppLayout> {
                         if (snapshot.hasData) {
                           return Badge.count(
                             count: snapshot.data!.length,
-                            // isLabelVisible: false,
+                            isLabelVisible: snapshot.data!.isNotEmpty,
                             child: CustomIconButton(
                               iconSvgPath: AssetPaths.alertsIconPath,
                               iconWidth: 18.42.w,
