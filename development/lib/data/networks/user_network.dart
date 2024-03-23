@@ -7,24 +7,43 @@ import 'package:uuid/uuid.dart';
 class UserNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // shift this bad boi to noti cubit and call in ui
   void generateNotification(ChipModel chip, UserModel currentUser) async {
     String newNotificationId = const Uuid().v4();
 
-    NotificationModel newNotification = NotificationModel(
-      notificationId: newNotificationId,
-      recipientId: chip.postedBy,
-      senderId: currentUser.userId,
-      jobId: chip.chipId,
-      type: 'bookmark',
-      message: '${currentUser.name} favorited your chip!',
-      timestamp: DateTime.now(),
-      read: false,
-    );
+    // calculate timestamp for 24 hrs ago
+    int twentyFourHoursAgoTimestamp = DateTime.now()
+        .subtract(const Duration(hours: 24))
+        .millisecondsSinceEpoch;
 
-    await _firestore
+    // check if a notif with the same jobId, senderId, and recipientId exists in the past 24 hours
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('notifications')
-        .doc(newNotificationId)
-        .set(newNotification.toJson());
+        .where('jobId', isEqualTo: chip.chipId)
+        .where('senderId', isEqualTo: currentUser.userId)
+        .where('recipientId', isEqualTo: chip.postedBy)
+        .where('timestamp', isGreaterThan: twentyFourHoursAgoTimestamp)
+        .limit(1)
+        .get();
+
+    // if no such notification exists, generate a new notif
+    if (querySnapshot.docs.isEmpty) {
+      NotificationModel newNotification = NotificationModel(
+        notificationId: newNotificationId,
+        recipientId: chip.postedBy,
+        senderId: currentUser.userId,
+        jobId: chip.chipId,
+        type: 'bookmark',
+        message: '${currentUser.name} favorited your chip!',
+        timestamp: DateTime.now(),
+        read: false,
+      );
+
+      await FirebaseFirestore.instance
+          .collection('notifications')
+          .doc(newNotificationId)
+          .set(newNotification.toJson());
+    }
   }
 
   // Get user chips stream
