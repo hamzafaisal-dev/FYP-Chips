@@ -72,7 +72,7 @@ class HelperWidgets {
                   children: [
                     Lottie.asset(
                       AssetPaths.womanSittingAnimationPath,
-                      frameRate: FrameRate(420),
+                      frameRate: FrameRate.max,
                     ),
                     Text(
                       dialogText,
@@ -107,8 +107,7 @@ class HelperWidgets {
               children: [
                 Lottie.asset(
                   AssetPaths.angryTomatoAnimationPath,
-                  // repeat: false,
-                  frameRate: FrameRate(200),
+                  frameRate: FrameRate.max,
                 ),
                 Text(
                   'Profanity Detected',
