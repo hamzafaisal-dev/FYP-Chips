@@ -36,12 +36,12 @@ class _SplashScreenState extends State<SplashScreen> {
             "Welcome back, ${state.user.name}!🎉",
             "success",
           );
-          Future.delayed(const Duration(seconds: 1, milliseconds: 836), () {
+          Future.delayed(Durations.extralong4, () {
             NavigationService.routeToReplacementNamed('/layout');
           });
         }
         if (state is AuthUserNotAlreadySignedIn) {
-          Future.delayed(const Duration(seconds: 1, milliseconds: 836), () {
+          Future.delayed(Durations.extralong4, () {
             NavigationService.routeToReplacementNamed('/login');
           });
         }
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
               AssetPaths.splashScreenAnimationPath,
               repeat: true,
               width: 270.w,
-              frameRate: FrameRate(369),
+              frameRate: FrameRate.max,
             ),
           ),
         );

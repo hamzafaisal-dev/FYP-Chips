@@ -145,7 +145,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                         //
                         Lottie.asset(
                           AssetPaths.appliedEmptyAnimationPath,
-                          frameRate: FrameRate(420),
+                          frameRate: FrameRate.max,
                           width: 270.w,
                         ),
 

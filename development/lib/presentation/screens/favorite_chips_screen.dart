@@ -145,7 +145,7 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
                         //
                         Lottie.asset(
                           AssetPaths.girlEmptyBoxAnimationPath,
-                          frameRate: FrameRate(420),
+                          frameRate: FrameRate.max,
                           width: 270.w,
                         ),
 
