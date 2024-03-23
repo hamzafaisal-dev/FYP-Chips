@@ -50,10 +50,11 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   bool _isEditable = false;
   bool _autoFillEnabled = true;
 
+  // not used filhaal
   String _chipTitle = '';
   String _companyTitle = '';
   String _chipDescription = '';
-  String _applicationLink = ''; // not used filhaal
+  String _applicationLink = '';
 
   void _checkDeadline() {
     if (_chipDeadline == null) {
@@ -259,13 +260,13 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                               NavigationService.routeToReplacementNamed(
                                   '/layout');
                             }
-                            // if (state is ChipsLoading) {
-                            //   HelperWidgets.showSnackbar(
-                            //     context,
-                            //     'Creating chip...',
-                            //     'info',
-                            //   );
-                            // }
+                            if (state is ChipsLoading) {
+                              // HelperWidgets.showSnackbar(
+                              //   context,
+                              //   'Creating chip...',
+                              //   'info',
+                              // );
+                            }
                             if (state is ChipError) {
                               state.errorMsg == 'profane'
                                   ? HelperWidgets.showProfanityDialog(context)
@@ -322,13 +323,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _applicationLinkController,
                       label: ' Where To Apply ',
-                      suffixIcon: IconButton(
-                        enableFeedback: true,
-                        tooltip:
-                            'This can be a url, a phone number or an email',
-                        onPressed: () {},
-                        icon: const Icon(Icons.info_outline_rounded),
-                      ),
+                      toolTipMessage:
+                          'This can be a url, a phone number or an email',
+                      suffixIcon: const Icon(Icons.info_outline_rounded),
                       validatorFunction: (value) =>
                           FormValidators.chipValidator(value),
                       onValueChanged: (value) => _applicationLink = value,
@@ -337,49 +334,60 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     SizedBox(height: 20.h),
 
                     // select chip deadline
-                    Row(
-                      children: [
-                        //
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          alignment: Alignment.centerLeft,
-                          visualDensity: VisualDensity.compact,
-                          onPressed: () async {
-                            final selectedDate = await showDatePicker(
-                              helpText: 'Select Chip Deadline',
-                              context: context,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year, 12, 31),
-                            );
+                    InkWell(
+                      focusColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        final selectedDate = await showDatePicker(
+                          helpText: 'Select Chip Deadline',
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(DateTime.now().year, 12, 31),
+                        );
 
-                            if (selectedDate != null &&
-                                selectedDate != _chipDeadline) {
-                              setState(() => _chipDeadline = selectedDate);
-                            }
-                          },
-                          icon: const Icon(Icons.calendar_month),
-                          iconSize: 26,
-                        ),
+                        if (selectedDate != null &&
+                            selectedDate != _chipDeadline) {
+                          setState(() => _chipDeadline = selectedDate);
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          //
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.centerLeft,
+                            visualDensity: VisualDensity.compact,
+                            focusColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            disabledColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            onPressed: null,
+                            icon: const Icon(Icons.calendar_month),
+                            iconSize: 26,
+                          ),
 
-                        Text(
-                          _chipDeadline == null
-                              ? 'Select Chip Deadline'
-                              : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
+                          Text(
+                            _chipDeadline == null
+                                ? 'Select Chip Deadline'
+                                : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
 
                     const SizedBox(height: 20),
 
                     // 'CHIP DETAILS'
-                    Text(
-                      'CHIP DETAILS:',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 22),
-                    ),
+                    if (_chipDetailsController.text != '')
+                      Text(
+                        'CHIP DETAILS:',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(fontSize: 22),
+                      ),
 
                     // chip description
                     if (_chipDetailsController.text != '')

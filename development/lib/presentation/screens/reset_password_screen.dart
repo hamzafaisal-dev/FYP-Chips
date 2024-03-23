@@ -101,6 +101,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           null,
                           context,
                           null,
+                          null,
                         ).copyWith(
                           fillColor: const Color(0XFFFFF6ED),
                         ),

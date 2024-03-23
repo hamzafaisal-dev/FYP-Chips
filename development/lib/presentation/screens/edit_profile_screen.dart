@@ -162,6 +162,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       null,
                       context,
                       null,
+                      null,
                     ),
                     keyboardType: TextInputType.name,
                     validator: (value) => FormValidators.nameValidator(value),

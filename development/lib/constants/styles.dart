@@ -8,6 +8,7 @@ class Styles {
     Widget? suffixIcon,
     BuildContext context,
     String? hintText,
+    String? toolTipMessage,
   ) {
     return InputDecoration(
       //
@@ -57,7 +58,11 @@ class Styles {
           ? BoxConstraints.tightFor(width: 52.w)
           : BoxConstraints.tightFor(width: 12.w),
 
-      suffixIcon: suffixIcon,
+      suffixIcon: Tooltip(
+        message: toolTipMessage ?? '',
+        triggerMode: TooltipTriggerMode.tap,
+        child: suffixIcon,
+      ),
 
       labelText: labelText,
 

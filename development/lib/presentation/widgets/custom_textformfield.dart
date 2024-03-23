@@ -19,7 +19,7 @@ class CustomTextFormField extends StatefulWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final Widget? toolTipMessage;
+  final String? toolTipMessage;
   final String? Function(String value)? validatorFunction;
   final void Function(String value) onValueChanged;
 
@@ -49,6 +49,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         widget.suffixIcon,
         context,
         widget.hintText,
+        widget.toolTipMessage,
       ),
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       validator: (value) {

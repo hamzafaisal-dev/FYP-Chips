@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:image_cropper/image_cropper.dart';
+
 class AddChipScreen1 extends StatefulWidget {
   const AddChipScreen1({super.key});
 
@@ -28,7 +30,28 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
 
     if (pickedImage == null) return;
 
-    setState(() => _selectedImage = File(pickedImage.path));
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: pickedImage.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: const Color(0xffffba7c),
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() => _selectedImage = File(croppedFile.path));
+    }
   }
 
   void _removeImage() {
@@ -36,22 +59,14 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
   }
 
   void _handleNextScreenClick() {
-    if (_chipDetailsController.text != '' || _selectedImage != null) {
-      NavigationService.routeToNamed(
-        '/add-chip2',
-        arguments: {
-          "routeName": "/add-chip1",
-          "chipImage": _selectedImage,
-          "chipDetails": _chipDetailsController.text
-        },
-      );
-    } else {
-      HelperWidgets.showSnackbar(
-        context,
-        'Please enter a job description or select an image to continue',
-        'error',
-      );
-    }
+    NavigationService.routeToNamed(
+      '/add-chip2',
+      arguments: {
+        "routeName": "/add-chip1",
+        "chipImage": _selectedImage,
+        "chipDetails": _chipDetailsController.text
+      },
+    );
   }
 
   @override
@@ -124,7 +139,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                     controller: _chipDetailsController,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: InputDecoration.collapsed(
-                      hintText: "Paste chip sauce here",
+                      hintText: "Paste chip sauce here\n(optional)",
                       hintStyle:
                           Theme.of(context).textTheme.headlineSmall!.copyWith(
                                 color: Theme.of(context)
