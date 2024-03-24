@@ -128,6 +128,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       state.errorMessage,
                       "error",
                     );
+                    BlocProvider.of<UserCubit>(context)
+                        .fetchUserChipsStream(_authenticatedUser!.username);
                   }
                 },
                 builder: (context, state) {
