@@ -35,4 +35,10 @@ class UserRepository {
   Future<UserModel> updateUser(UserModel user) async {
     return await _userNetwork.updateUser(user);
   }
+
+  // update user password
+  Future<void> updateUserPassword(
+      String oldPassword, String newPassword) async {
+    await _userNetwork.updateUserPassword(oldPassword, newPassword);
+  }
 }

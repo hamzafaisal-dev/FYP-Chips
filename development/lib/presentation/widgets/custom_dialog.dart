@@ -28,13 +28,19 @@ class CustomDialog extends StatelessWidget {
           onPressed: () {
             buttonOneOnPressed();
           },
-          child: Text(buttonOneText),
+          child: Text(
+            buttonOneText,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         ),
         TextButton(
           onPressed: () {
             buttonTwoOnPressed();
           },
-          child: Text(buttonTwoText),
+          child: Text(
+            buttonTwoText,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         ),
       ],
       shadowColor: Theme.of(context).colorScheme.primaryContainer,

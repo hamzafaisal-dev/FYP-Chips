@@ -96,3 +96,17 @@ final class UserProfileUpdateFailed extends UserState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+// user password related states
+final class UpdatingUserPassword extends UserState {}
+
+final class UserPasswordUpdated extends UserState {}
+
+final class UserPasswordUpdateFailed extends UserState {
+  final String errorMessage;
+
+  const UserPasswordUpdateFailed({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
+}

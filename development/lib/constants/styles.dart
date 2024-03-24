@@ -1,7 +1,9 @@
+import 'package:development/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Styles {
+  // Returns InputDecoration for TextFormField
   static InputDecoration textFormFieldDecoration(
     String labelText,
     Widget? prefixIcon,
@@ -11,11 +13,8 @@ class Styles {
     String? toolTipMessage,
   ) {
     return InputDecoration(
-      //
       filled: true,
-
       fillColor: Theme.of(context).colorScheme.surface,
-
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
           width: 1.5.w,
@@ -23,7 +22,6 @@ class Styles {
         ),
         borderRadius: BorderRadius.circular(12.r),
       ),
-
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           width: 1.5.w,
@@ -31,7 +29,6 @@ class Styles {
         ),
         borderRadius: BorderRadius.circular(12.0.r),
       ),
-
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           width: 1.5.w,
@@ -39,7 +36,6 @@ class Styles {
         ),
         borderRadius: BorderRadius.circular(12.0.r),
       ),
-
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           width: 1.5.w,
@@ -47,36 +43,28 @@ class Styles {
         ),
         borderRadius: BorderRadius.circular(12.0.r),
       ),
-
       floatingLabelBehavior: hintText == null
           ? FloatingLabelBehavior.never
           : FloatingLabelBehavior.always,
-
       prefixIcon: prefixIcon,
-
       prefixIconConstraints: prefixIcon != null
           ? BoxConstraints.tightFor(width: 52.w)
           : BoxConstraints.tightFor(width: 12.w),
-
       suffixIcon: Tooltip(
         message: toolTipMessage ?? '',
         triggerMode: TooltipTriggerMode.tap,
         child: suffixIcon,
       ),
-
       labelText: labelText,
-
       hintText: hintText,
-
       labelStyle: TextStyle(
         fontFamily: 'ManropeRegular',
         fontWeight: FontWeight.w500,
         fontSize: 16.0.sp,
         color: Theme.of(context).colorScheme.onSecondaryContainer,
-        // backgroundColor: Colors.red,
         letterSpacing: hintText == null ? 0 : 3,
         backgroundColor:
-            hintText == null ? Colors.transparent : const Color(0XFFFFF3E9),
+            hintText == null ? Colors.transparent : CustomColors.weirdWhite,
       ),
     );
   }

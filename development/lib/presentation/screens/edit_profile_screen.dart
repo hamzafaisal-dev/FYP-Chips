@@ -1,15 +1,16 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/constants/custom_colors.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
+import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -55,11 +56,43 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: CustomIconButton(
-              iconSvgPath: AssetPaths.leftArrowIconPath,
-              iconWidth: 16.w,
-              iconHeight: 16.h,
-              onTap: () => Navigator.of(context).pop(),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                return CustomIconButton(
+                  iconSvgPath: AssetPaths.leftArrowIconPath,
+                  iconWidth: 16.w,
+                  iconHeight: 16.h,
+                  onTap: state is UpdatingUserProfile
+                      ? null
+                      : () {
+                          // if user has made changes, show alert dialog
+                          if (_nameController.text !=
+                              _authenticatedUser!.name) {
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return CustomDialog(
+                                  dialogTitle: 'Discard Changes?',
+                                  dialogContent:
+                                      'Discard changes made to your display name?',
+                                  buttonOneText: 'Cancel',
+                                  buttonTwoText: 'Discard',
+                                  buttonOneOnPressed: () =>
+                                      NavigationService.goBack(),
+                                  buttonTwoOnPressed: () {
+                                    NavigationService.goBack();
+                                    NavigationService.goBack();
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            NavigationService.goBack();
+                          }
+                        },
+                );
+              },
             ),
           ),
         ),
@@ -72,7 +105,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               alignment: Alignment.centerRight,
               child: BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
-                  if (state is UpdatingUserProfile) {}
                   if (state is UserProfileUpdated) {
                     HelperWidgets.showSnackbar(
                       context,
@@ -115,15 +147,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ? const CustomCircularProgressIndicator(
                             width: 13.5,
                             height: 13.5,
+                            color: CustomColors.darkPurple,
                           )
                         : Text(
                             "Save",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                   );
                 },
@@ -190,7 +218,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
             // change password button
             FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                NavigationService.routeToNamed("/change-password");
+              },
               child: const Text('Change Password'),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:development/presentation/screens/about_us_screen.dart';
 import 'package:development/presentation/screens/add_chip_screen_1.dart';
 import 'package:development/presentation/screens/add_chip_screen_2.dart';
+import 'package:development/presentation/screens/change_password_screen.dart';
 import 'package:development/presentation/screens/notifications_screen.dart';
 import 'package:development/presentation/screens/app_layout.dart';
 import 'package:development/presentation/screens/applied_chips_screen.dart';
@@ -76,6 +77,15 @@ class RouteGenerator {
                 ChipDetailsScreen(arguments: receivedArguments),
           );
         }
+
+      case '/change-password':
+        Map<String, dynamic>? receivedArguments =
+            settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+          builder: (context) => ChangePasswordScreen(
+            arguments: receivedArguments,
+          ),
+        );
 
       case '/settings':
         return MaterialPageRoute(

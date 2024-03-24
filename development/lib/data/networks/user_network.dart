@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/notification_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 class UserNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // shift this bad boi to noti cubit and call in ui
   void generateNotification(ChipModel chip, UserModel currentUser) async {
@@ -172,5 +174,24 @@ class UserNetwork {
     });
 
     return user;
+  }
+
+  // update user password
+  Future<void> updateUserPassword(
+      String oldPassword, String newPassword) async {
+    try {
+      User user = _firebaseAuth.currentUser!;
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+        email: user.email!,
+        password: oldPassword,
+      );
+      if (userCredential.user == null) {
+        throw Exception('Invalid password!');
+      }
+      await user.updatePassword(newPassword);
+    } catch (error) {
+      throw Exception(error.toString());
+    }
   }
 }

@@ -97,4 +97,15 @@ class UserCubit extends Cubit<UserState> {
       emit(UserProfileUpdateFailed(errorMessage: error.toString()));
     }
   }
+
+  // update user password
+  void updateUserPassword(String oldPassword, String newPassword) async {
+    emit(UpdatingUserPassword());
+    try {
+      await _userRepository.updateUserPassword(oldPassword, newPassword);
+      emit(UserPasswordUpdated());
+    } catch (error) {
+      emit(UserPasswordUpdateFailed(errorMessage: error.toString()));
+    }
+  }
 }
