@@ -69,7 +69,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       padding: EdgeInsets.only(top: 10.h),
                       child: Text(
                         "You don't have any notifications yet.",
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.labelSmall,
                         textAlign: TextAlign.center,
                       ),
                     ),

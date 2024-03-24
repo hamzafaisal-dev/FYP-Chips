@@ -9,6 +9,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -86,6 +87,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .fetchUserChipsStream(_authenticatedUser!.username);
 
                     NavigationService.goBack();
+                    NavigationService.goBack();
+                    NavigationService.routeToNamed("/user_profile");
                   }
                   if (state is UserProfileUpdateFailed) {
                     HelperWidgets.showSnackbar(
@@ -132,18 +135,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // user avatar
-            Container(
-              width: 100.w,
-              height: 100.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.primary,
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 100.w,
+                height: 100.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
 
             SizedBox(height: 23.4.h),
+
+            // your display name
+            Text(
+              'Your Display Name',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+
+            SizedBox(height: 10.h),
 
             // edit profile form
             Form(
@@ -157,7 +172,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                     controller: _nameController,
                     decoration: Styles.textFormFieldDecoration(
-                      'Your display name',
+                      'Your Display Name',
                       const Icon(Icons.person_outline),
                       null,
                       context,
@@ -169,6 +184,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ],
               ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            // change password button
+            FilledButton(
+              onPressed: () {},
+              child: const Text('Change Password'),
             ),
           ],
         ),

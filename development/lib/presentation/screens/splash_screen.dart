@@ -17,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Durations.short1, () {
+    Future.delayed(Durations.extralong4, () {
       BlocProvider.of<AuthCubit>(context).checkIfUserAlreadySignedIn();
     });
     super.initState();
@@ -41,9 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
           });
         }
         if (state is AuthUserNotAlreadySignedIn) {
-          Future.delayed(Durations.extralong4, () {
-            NavigationService.routeToReplacementNamed('/login');
-          });
+          Future.delayed(
+            Durations.extralong4,
+            () {
+              NavigationService.routeToReplacementNamed('/login');
+            },
+          );
         }
       },
       builder: (context, state) {

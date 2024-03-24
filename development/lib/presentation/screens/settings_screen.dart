@@ -206,6 +206,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             SizedBox(height: 8.h),
 
+            // 'About Us'
+            SettingsActionTile(
+              title: 'About Us',
+              leadingIcon: SvgPicture.asset(
+                AssetPaths.feedbackIconPath,
+                width: 18.w,
+                height: 18.h,
+              ),
+              trailingIcon: Icons.arrow_forward_ios_rounded,
+              onTap: () => NavigationService.routeToNamed('/about-us'),
+            ),
+
+            SizedBox(height: 8.h),
+
             // 'Sign out'
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {

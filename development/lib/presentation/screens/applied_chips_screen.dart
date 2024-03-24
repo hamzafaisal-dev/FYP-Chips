@@ -154,6 +154,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                         Text(
                           "No applied chips yet!",
                           style: Theme.of(context).textTheme.labelSmall,
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     );

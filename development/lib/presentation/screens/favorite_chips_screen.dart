@@ -148,6 +148,7 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
                         Text(
                           "No favorite chips yet!",
                           style: Theme.of(context).textTheme.labelSmall,
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     );

@@ -1,3 +1,4 @@
+import 'package:development/presentation/screens/about_us_screen.dart';
 import 'package:development/presentation/screens/add_chip_screen_1.dart';
 import 'package:development/presentation/screens/add_chip_screen_2.dart';
 import 'package:development/presentation/screens/notifications_screen.dart';
@@ -42,6 +43,11 @@ class RouteGenerator {
       case '/home':
         return MaterialPageRoute(
           builder: (context) => const HomeScreen(),
+        );
+
+      case '/about-us':
+        return MaterialPageRoute(
+          builder: (context) => const AboutUsScreen(),
         );
 
       case '/add-chip1':

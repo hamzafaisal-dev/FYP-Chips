@@ -74,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _nameController,
                 decoration: Styles.textFormFieldDecoration(
-                  'Full Name',
+                  'Your Display Name',
                   const Icon(Icons.person_outline),
                   null,
                   context,

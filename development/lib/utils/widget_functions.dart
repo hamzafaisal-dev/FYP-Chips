@@ -77,6 +77,7 @@ class HelperWidgets {
                     Text(
                       dialogText,
                       style: Theme.of(context).textTheme.labelSmall,
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20.h),
                   ],
