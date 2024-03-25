@@ -162,7 +162,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                   const SizedBox(width: 10),
 
                   // bookmark icon
-                  CustomBookmarkIcon(
+                  CustomBookmarkButton(
                     iconSize: 28,
                     radius: 22,
                     currentChip: _chipData,

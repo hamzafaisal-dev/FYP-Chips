@@ -1,6 +1,3 @@
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
@@ -9,8 +6,8 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CustomBookmarkIcon extends StatefulWidget {
-  const CustomBookmarkIcon({
+class CustomBookmarkButton extends StatefulWidget {
+  const CustomBookmarkButton({
     super.key,
     required this.iconSize,
     required this.currentChip,
@@ -22,10 +19,10 @@ class CustomBookmarkIcon extends StatefulWidget {
   final ChipModel currentChip;
 
   @override
-  State<CustomBookmarkIcon> createState() => _CustomBookmarkIconState();
+  State<CustomBookmarkButton> createState() => _CustomBookmarkButtonState();
 }
 
-class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
+class _CustomBookmarkButtonState extends State<CustomBookmarkButton> {
   late final UserModel? _authenticatedUser;
   bool _isInitiallyBookmarked = false;
 
@@ -83,6 +80,7 @@ class _CustomBookmarkIconState extends State<CustomBookmarkIcon> {
           radius: widget.radius,
           backgroundColor: Theme.of(context).colorScheme.secondary,
           child: IconButton(
+            tooltip: 'Bookmark Chip',
             onPressed: () {
               BlocProvider.of<UserCubit>(context).bookMarkChip(
                 chip: widget.currentChip,
