@@ -138,17 +138,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ? null
                         : () {
                             if (_saveChangesFormKey.currentState!.validate()) {
-                              BlocProvider.of<UserCubit>(context).updateUser(
-                                _authenticatedUser!.copyWith(
-                                  name: _nameController.text,
-                                ),
-                              );
+                              if (_nameController.text ==
+                                  _authenticatedUser!.name) {
+                                HelperWidgets.showSnackbar(
+                                  context,
+                                  "No changes made!🫲🏼🥸🫱🏼",
+                                  "info",
+                                );
+                              } else {
+                                BlocProvider.of<UserCubit>(context).updateUser(
+                                  _authenticatedUser!.copyWith(
+                                    name: _nameController.text,
+                                  ),
+                                );
+                              }
                             }
                           },
                     child: state is UpdatingUserProfile
-                        ? const CustomCircularProgressIndicator(
-                            width: 13.5,
-                            height: 13.5,
+                        ? CustomCircularProgressIndicator(
+                            width: 13.5.w,
+                            height: 13.5.h,
                             color: CustomColors.darkPurple,
                           )
                         : Text(

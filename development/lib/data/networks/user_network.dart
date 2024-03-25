@@ -181,17 +181,20 @@ class UserNetwork {
       String oldPassword, String newPassword) async {
     try {
       User user = _firebaseAuth.currentUser!;
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
-        email: user.email!,
-        password: oldPassword,
-      );
-      if (userCredential.user == null) {
-        throw Exception('Invalid password!');
+      try {
+        await _firebaseAuth.signInWithEmailAndPassword(
+          email: user.email!,
+          password: oldPassword,
+        );
+      } catch (error) {
+        throw 'Invalid password!⚠️';
+      }
+      if (oldPassword == newPassword) {
+        throw 'New password cannot be the same as old password!🤣🫵🏼';
       }
       await user.updatePassword(newPassword);
     } catch (error) {
-      throw Exception(error.toString());
+      throw error.toString();
     }
   }
 }
