@@ -17,11 +17,6 @@ class ChipEmpty extends ChipState {
   List<Object?> get props => [];
 }
 
-class ChipsLoading extends ChipState {
-  @override
-  List<Object?> get props => [];
-}
-
 class IndividualChipLoaded extends ChipState {
   final ChipModel? chip;
 
@@ -80,5 +75,22 @@ class ChipError extends ChipState {
   List<Object?> get props => [errorMsg];
 }
 
-// put these states in UserState when it's created
+class ChipsLoading extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
 
+class ChipCreatingState extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ChipEditingState extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ChipDeletingState extends ChipState {
+  @override
+  List<Object?> get props => [];
+}

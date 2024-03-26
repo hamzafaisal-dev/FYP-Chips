@@ -260,12 +260,23 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                               NavigationService.routeToReplacementNamed(
                                   '/layout');
                             }
-                            if (state is ChipsLoading) {
-                              // HelperWidgets.showSnackbar(
-                              //   context,
-                              //   'Creating chip...',
-                              //   'info',
-                              // );
+                            if (state is ChipCreatingState) {
+                              _autoFillEnabled = false;
+
+                              HelperWidgets.showSnackbar(
+                                context,
+                                'Creating chip...',
+                                'info',
+                              );
+                            }
+                            if (state is ChipEditingState) {
+                              _autoFillEnabled = false;
+
+                              HelperWidgets.showSnackbar(
+                                context,
+                                'Editing chip...',
+                                'info',
+                              );
                             }
                             if (state is ChipError) {
                               state.errorMsg == 'profane'
@@ -279,7 +290,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                           },
                           builder: (context, state) {
                             return PostChipButton(
-                              isLoading: (state is ChipsLoading),
+                              isLoading: (state is ChipCreatingState),
                               isEditable: _isEditable,
                               onEditChip: _editChip,
                               onCreateChip: _createChip,

@@ -100,7 +100,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
                         );
                       }
 
-                      if (state is ChipsLoading) {
+                      if (state is ChipDeletingState) {
                         HelperWidgets.showSnackbar(
                           context,
                           'Deleting chip...',

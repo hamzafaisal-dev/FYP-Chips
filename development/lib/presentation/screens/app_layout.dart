@@ -29,9 +29,6 @@ class _AppLayoutState extends State<AppLayout> {
   void initState() {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
-    NotificationState notifState =
-        BlocProvider.of<NotificationCubit>(context).state;
-
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
     BlocProvider.of<NotificationCubit>(context)
@@ -42,7 +39,6 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
-    // shows dynamic screen content based on btotom navbar index
     Widget getContent(index) {
       Widget widget = const ErrorScreen();
       switch (index) {
@@ -52,15 +48,6 @@ class _AppLayoutState extends State<AppLayout> {
         case 1:
           widget = const SettingsScreen();
           break;
-        // case 2:
-        //   widget = const AddChipScreen();
-        //   break;
-        // case 3:
-        //   widget = const UserProfileScreen();
-        //   break;
-        // case 4:
-        //   widget = const UserScreen();
-        // break;
         default:
           widget = const ErrorScreen();
           break;
@@ -78,10 +65,6 @@ class _AppLayoutState extends State<AppLayout> {
           title = 'Settings';
         case 2:
           title = 'Profile';
-        // case 3:
-        //   title = 'Saved';
-        // case 4:
-        //   title = 'Profile';
         default:
           title = 'IBARA';
       }
@@ -129,9 +112,14 @@ class _AppLayoutState extends State<AppLayout> {
     }
 
     return Scaffold(
-      //
       appBar: getAppbar(),
-
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          getContent(0),
+          getContent(1),
+        ],
+      ),
       bottomNavigationBar: SizedBox(
         height: 64.h,
         child: BottomNavigationBar(
@@ -148,7 +136,6 @@ class _AppLayoutState extends State<AppLayout> {
               ),
               label: 'Home',
             ),
-            // BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add',),
             BottomNavigationBarItem(
               icon: Transform.scale(
                 scale: 1.1,
@@ -159,9 +146,6 @@ class _AppLayoutState extends State<AppLayout> {
           ],
         ),
       ),
-
-      body: getContent(_currentIndex),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () => NavigationService.routeToNamed('/add-chip1'),
         elevation: 0,
@@ -188,7 +172,6 @@ class _AppLayoutState extends State<AppLayout> {
           ),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

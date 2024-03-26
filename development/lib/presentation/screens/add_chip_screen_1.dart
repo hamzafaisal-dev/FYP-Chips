@@ -139,7 +139,7 @@ class _AddChipScreen1State extends State<AddChipScreen1> {
                     controller: _chipDetailsController,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: InputDecoration.collapsed(
-                      hintText: "Paste chip sauce here\n(optional)",
+                      hintText: "Paste job description here\n(optional)",
                       hintStyle:
                           Theme.of(context).textTheme.headlineSmall!.copyWith(
                                 color: Theme.of(context)

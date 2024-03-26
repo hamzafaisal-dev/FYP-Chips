@@ -34,7 +34,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     });
 
     on<UploadChipEvent>((event, emit) async {
-      emit(ChipsLoading());
+      emit(ChipCreatingState());
 
       try {
         UserModel updatedUser =
@@ -50,7 +50,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     });
 
     on<EditChipEvent>((event, emit) async {
-      emit(ChipsLoading());
+      emit(ChipEditingState());
 
       try {
         await _chipRepository.editChip(chipMap: event.editedChip);
@@ -65,7 +65,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     });
 
     on<DeleteChipEvent>((event, emit) async {
-      emit(ChipsLoading());
+      emit(ChipDeletingState());
 
       try {
         UserModel updatedUser = await _chipRepository.deleteChip(
