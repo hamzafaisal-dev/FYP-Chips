@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/constants/network_urls.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:dice_bear/dice_bear.dart';
 
 class AuthNetwork {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -163,6 +163,9 @@ class AuthNetwork {
 
       String userId = newUserCredentials.user!.uid;
 
+      Avatar avatar = DiceBearBuilder.withRandomSeed().build();
+      Uri avatarUri = avatar.svgUri;
+
       UserModel newUser = UserModel(
         userId: userId,
         role: 'user',
@@ -180,6 +183,10 @@ class AuthNetwork {
         updatedAt: null,
         isActive: true,
         isDeleted: false,
+        profilePictureUrl: avatarUri.toString(),
+        likesCount: 0,
+        dislikesCount: 0,
+        bookmarkCount: 0,
       );
 
       await FirebaseFirestore.instance

@@ -7,6 +7,7 @@ import 'package:development/presentation/widgets/user_stat_section.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UserProfileScreenHeader extends StatelessWidget {
   const UserProfileScreenHeader({
@@ -34,7 +35,24 @@ class UserProfileScreenHeader extends StatelessWidget {
             child: Row(
               children: [
                 // user avatar
-                CircleAvatar(radius: 30.r),
+                CircleAvatar(
+                    radius: 25,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.secondaryContainer,
+                    child: ClipOval(
+                      child: SvgPicture.network(
+                        _authenticatedUser!.profilePictureUrl,
+                        // placeholderBuilder: (BuildContext context) =>
+                        //     const AnimatedSkeletonText(
+                        //   height: 80,
+                        //   width: 80,
+                        // ),
+                        height: 60.r,
+                        width: 60.r,
+                        alignment: Alignment.center,
+                        fit: BoxFit.contain,
+                      ),
+                    )),
 
                 // user details
                 Padding(

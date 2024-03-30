@@ -19,6 +19,10 @@ class UserModel {
     required this.updatedAt,
     required this.isActive,
     required this.isDeleted,
+    required this.profilePictureUrl,
+    required this.likesCount,
+    required this.dislikesCount,
+    required this.bookmarkCount,
   });
 
   final String userId;
@@ -26,21 +30,21 @@ class UserModel {
   final String email;
   final String username;
   final String name;
-
   final List<String> postedChips;
   final List<String> appliedChips;
   final List<String> favoritedChips;
   final List<String> binnedChips;
-
   final Map<String, dynamic> preferences;
-
   final int reportCount;
   final bool isBanned;
-
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool isActive;
   final bool isDeleted;
+  final String profilePictureUrl;
+  final int likesCount;
+  final int dislikesCount;
+  final int bookmarkCount;
 
   UserModel copyWith({
     String? userId,
@@ -59,6 +63,10 @@ class UserModel {
     DateTime? updatedAt,
     bool? isActive,
     bool? isDeleted,
+    String? profilePictureUrl,
+    int? likesCount,
+    int? dislikesCount,
+    int? bookmarkCount,
   }) {
     return UserModel(
       userId: userId ?? this.userId,
@@ -77,6 +85,10 @@ class UserModel {
       updatedAt: updatedAt ?? this.updatedAt,
       isActive: isActive ?? this.isActive,
       isDeleted: isDeleted ?? this.isDeleted,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+      likesCount: likesCount ?? this.likesCount,
+      dislikesCount: dislikesCount ?? this.dislikesCount,
+      bookmarkCount: bookmarkCount ?? this.bookmarkCount,
     );
   }
 
@@ -98,6 +110,10 @@ class UserModel {
       'updatedAt': updatedAt?.millisecondsSinceEpoch,
       'isActive': isActive,
       'isDeleted': isDeleted,
+      'profilePictureUrl': profilePictureUrl,
+      'likesCount': likesCount,
+      'dislikesCount': dislikesCount,
+      'bookmarkCount': bookmarkCount,
     };
   }
 
@@ -121,6 +137,10 @@ class UserModel {
           : null,
       isActive: map['isActive'] as bool,
       isDeleted: map['isDeleted'] as bool,
+      profilePictureUrl: map['profilePictureUrl'] as String,
+      likesCount: map['likesCount'] as int,
+      dislikesCount: map['dislikesCount'] as int,
+      bookmarkCount: map['bookmarkCount'] as int,
     );
   }
 
@@ -128,9 +148,4 @@ class UserModel {
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'UserModel(userId: $userId, role: $role, email: $email, userName: $username, name: $name, postedChips: $postedChips, appliedChips: $appliedChips, favoritedChips: $favoritedChips, binnedChips: $binnedChips, preferences: $preferences, reportCount: $reportCount, isBanned: $isBanned, createdAt: $createdAt, updatedAt: $updatedAt, isActive: $isActive, isDeleted: $isDeleted)';
-  }
 }

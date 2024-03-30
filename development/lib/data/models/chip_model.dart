@@ -13,9 +13,13 @@ class ChipModel {
     this.jobType,
     this.experienceRequired,
     required this.deadline,
-    required this.skills,
+    this.skills,
     this.imageUrl,
     this.salary,
+    this.likes,
+    this.dislikes,
+    this.comments,
+    this.favoritedBy,
     required this.postedBy,
     required this.reportCount,
     required this.isFlagged,
@@ -36,10 +40,15 @@ class ChipModel {
   final String? jobType;
   final int? experienceRequired;
   final DateTime deadline;
-  final List<dynamic> skills;
+  final List<dynamic>? skills;
   final String? imageUrl;
   final double? salary;
   final String postedBy;
+
+  final int? likes;
+  final int? dislikes;
+  final List<String>? comments;
+  final List<String>? favoritedBy;
 
   final int reportCount;
   final bool isFlagged;
@@ -66,6 +75,10 @@ class ChipModel {
       imageUrl: map['imageUrl'],
       salary: map['salary'],
       postedBy: map['postedBy'] as String,
+      likes: map['likes'] as int,
+      dislikes: map['dislikes'] as int,
+      comments: List<String>.from(map['comments']),
+      favoritedBy: List<String>.from(map['favoritedBy']),
       reportCount: map['reportCount'] as int,
       isFlagged: map['isFlagged'] as bool,
       isExpired: map['isExpired'] as bool,
@@ -89,6 +102,10 @@ class ChipModel {
     String? jobType,
     int? experienceRequired,
     DateTime? deadline,
+    int? likes,
+    int? dislikes,
+    List<String>? comments,
+    List<String>? favoritedBy,
     List<dynamic>? skills,
     String? imageUrl,
     double? salary,
@@ -112,6 +129,10 @@ class ChipModel {
       jobType: jobType ?? this.jobType,
       experienceRequired: experienceRequired ?? this.experienceRequired,
       deadline: deadline ?? this.deadline,
+      likes: likes ?? this.likes,
+      dislikes: dislikes ?? this.dislikes,
+      comments: comments ?? this.comments,
+      favoritedBy: favoritedBy ?? this.favoritedBy,
       skills: skills ?? this.skills,
       imageUrl: imageUrl ?? this.imageUrl,
       salary: salary ?? this.salary,
@@ -138,6 +159,10 @@ class ChipModel {
       'jobType': jobType,
       'experienceRequired': experienceRequired,
       'deadline': deadline.millisecondsSinceEpoch,
+      'likes': likes,
+      'dislikes': dislikes,
+      'comments': comments,
+      'favoritedBy': favoritedBy,
       'skills': skills,
       'imageUrl': imageUrl,
       'salary': salary,

@@ -13,6 +13,7 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key, this.arguments});
@@ -185,6 +186,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Theme.of(context).colorScheme.primary,
+                ),
+                child: ClipOval(
+                  child: SvgPicture.network(
+                    _authenticatedUser!.profilePictureUrl,
+                  ),
                 ),
               ),
             ),
