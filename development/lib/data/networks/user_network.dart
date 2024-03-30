@@ -48,6 +48,26 @@ class UserNetwork {
     }
   }
 
+  Future<UserModel> findUserByUsername(String username) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('users')
+        .where('userName', isEqualTo: username)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception('User not found with username: $username');
+    }
+
+    DocumentSnapshot userSnapshot = querySnapshot.docs.first;
+
+    Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+
+    UserModel user = UserModel.fromMap(userData);
+
+    return user;
+  }
+
   // Get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _firestore
@@ -88,24 +108,26 @@ class UserNetwork {
     late UserModel updatedUser;
     bool isBookmarked = false;
 
-    // get user data from firestore
-    DocumentSnapshot userSnapshot =
-        await _firestore.collection('users').doc(currentUser.userId).get();
-
-    // cast user's data as a Map<String, dynamic>
-    Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
-
-    // convert user map to UserModel
-    UserModel user = UserModel.fromMap(userData);
+    UserModel user = await findUserByUsername(currentUser.username);
+    UserModel userWhoPostedChip = await findUserByUsername(chip.postedBy);
 
     // get user's favorited chips and put them in new 'favoritedChips' variable
     List<String> favoritedChips = user.favoritedChips;
 
+    List<String> chipFavoritedBy = chip.favoritedBy;
+
+    int chipPostersBookmarkCount = userWhoPostedChip.bookmarkCount;
+
     // if the chip to be bookmarked already exists in user's favorited chips array, it is deleted from the array
     if (favoritedChips.contains(chip.chipId)) {
       favoritedChips.remove(chip.chipId);
+      chipFavoritedBy.remove(user.username);
+      chipPostersBookmarkCount -= 1;
     } else {
       favoritedChips.insert(0, chip.chipId);
+      chipFavoritedBy.insert(0, user.username);
+      chipPostersBookmarkCount += 1;
+
       isBookmarked = true;
 
       // if chip is user's own posted chip then no notif will be generated
@@ -114,12 +136,28 @@ class UserNetwork {
       }
     }
 
-    updatedUser = user.copyWith(favoritedChips: favoritedChips);
+    // roza lag raha hai, pata nahi kia bakwas likhi hai but it works
+    if (userWhoPostedChip.userId == currentUser.userId) {
+      updatedUser = user.copyWith(
+        favoritedChips: favoritedChips,
+        bookmarkCount: chipPostersBookmarkCount,
+      );
+
+      updatedUser = await updateUser(updatedUser);
+    } else {
+      userWhoPostedChip =
+          userWhoPostedChip.copyWith(bookmarkCount: chipPostersBookmarkCount);
+
+      await updateUser(userWhoPostedChip);
+
+      updatedUser = user.copyWith(favoritedChips: favoritedChips);
+      // userWhoPostedChip = await updateUser(updatedUser);
+    }
 
     await _firestore
-        .collection('users')
-        .doc(user.userId)
-        .update(updatedUser.toMap());
+        .collection('chips')
+        .doc(chip.chipId)
+        .update(chip.copyWith(favoritedBy: chipFavoritedBy).toMap());
 
     return {"updatedUser": updatedUser, "isBookmarked": isBookmarked};
   }

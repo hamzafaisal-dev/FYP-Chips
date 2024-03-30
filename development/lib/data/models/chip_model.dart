@@ -16,10 +16,10 @@ class ChipModel {
     this.skills,
     this.imageUrl,
     this.salary,
-    this.likes,
-    this.dislikes,
-    this.comments,
-    this.favoritedBy,
+    required this.likes,
+    required this.dislikes,
+    required this.comments,
+    required this.favoritedBy,
     required this.postedBy,
     required this.reportCount,
     required this.isFlagged,
@@ -45,10 +45,10 @@ class ChipModel {
   final double? salary;
   final String postedBy;
 
-  final int? likes;
-  final int? dislikes;
-  final List<String>? comments;
-  final List<String>? favoritedBy;
+  final int likes;
+  final int dislikes;
+  final List<String> comments;
+  final List<String> favoritedBy;
 
   final int reportCount;
   final bool isFlagged;
