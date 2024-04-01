@@ -1,6 +1,8 @@
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/notification_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/presentation/widgets/notification_tile.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,17 +48,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               iconSvgPath: AssetPaths.leftArrowIconPath,
               iconWidth: 16.w,
               iconHeight: 16.h,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => NavigationService.goBack(),
             ),
           ),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
         child: (_notifications.isEmpty)
             ? Center(
                 child: Column(
                   children: [
+                    //
                     Padding(
                       padding: EdgeInsets.only(top: 81.h),
                       child: Lottie.asset(
@@ -65,6 +68,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         width: 279.w,
                       ),
                     ),
+
                     Padding(
                       padding: EdgeInsets.only(top: 10.h),
                       child: Text(
@@ -81,27 +85,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 itemBuilder: (context, index) {
                   NotificationModel notification = _notifications[index];
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: ListTile(
-                      tileColor: Theme.of(context).colorScheme.surface,
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        child: Icon(
-                          Icons.bookmark,
-                          color: Theme.of(context).colorScheme.onSecondary,
-                        ),
-                      ),
-                      title: Text(notification.message),
-                      subtitle: Text(
-                        Helpers.formatTimeAgo(
-                          notification.timestamp.toString(),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+                  return NotificationTile(notification: notification);
+                },
+              ),
       ),
     );
   }

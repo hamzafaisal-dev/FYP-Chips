@@ -151,7 +151,6 @@ class UserNetwork {
       await updateUser(userWhoPostedChip);
 
       updatedUser = user.copyWith(favoritedChips: favoritedChips);
-      // userWhoPostedChip = await updateUser(updatedUser);
     }
 
     await _firestore
