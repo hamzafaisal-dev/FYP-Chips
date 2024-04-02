@@ -36,23 +36,19 @@ class UserProfileScreenHeader extends StatelessWidget {
               children: [
                 // user avatar
                 CircleAvatar(
-                    radius: 25,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                    child: ClipOval(
-                      child: SvgPicture.network(
-                        _authenticatedUser!.profilePictureUrl,
-                        // placeholderBuilder: (BuildContext context) =>
-                        //     const AnimatedSkeletonText(
-                        //   height: 80,
-                        //   width: 80,
-                        // ),
-                        height: 60.r,
-                        width: 60.r,
-                        alignment: Alignment.center,
-                        fit: BoxFit.contain,
-                      ),
-                    )),
+                  radius: 25.r,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
+                  child: ClipOval(
+                    child: SvgPicture.network(
+                      _authenticatedUser!.profilePictureUrl,
+                      height: 60.h,
+                      width: 60.w,
+                      alignment: Alignment.center,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
 
                 // user details
                 Padding(
@@ -101,7 +97,7 @@ class UserProfileScreenHeader extends StatelessWidget {
             ),
           ),
 
-          //
+          // divider
           Divider(
             thickness: 1,
             height: 0.h,
@@ -110,9 +106,9 @@ class UserProfileScreenHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // posted chips
+              // chips posted
               UserStatSection(
-                statisticName: 'Posted Chips',
+                statisticName: 'Chips Posted',
                 statisticValue: _authenticatedUser?.postedChips.length ?? 0,
                 icon: CustomIcons.feedbackicon,
                 iconColor: Theme.of(context).colorScheme.primary,
@@ -124,14 +120,14 @@ class UserProfileScreenHeader extends StatelessWidget {
                 child: VerticalDivider(
                   color: Theme.of(context).colorScheme.primaryContainer,
                   thickness: 1,
-                  width: 0,
+                  width: 0.w,
                 ),
               ),
 
-              // saved chips
+              // bookmarks received
               UserStatSection(
-                statisticName: 'Saved Chips',
-                statisticValue: _authenticatedUser?.favoritedChips.length ?? 0,
+                statisticName: 'Bookmarks Received',
+                statisticValue: _authenticatedUser?.likesCount ?? 0,
                 icon: CustomIcons.privacypolicyicon,
                 iconColor: CustomColors.darkBlue,
               ),

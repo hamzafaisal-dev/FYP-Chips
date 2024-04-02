@@ -101,6 +101,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Lottie.asset(
                               AssetPaths.ghostEmptyAnimationPath,
                               width: 234.w,
+                              frameRate: FrameRate.max,
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 10.h),

@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserStatSection extends StatelessWidget {
   const UserStatSection({
-    super.key,
+    Key? key,
     required this.statisticName,
     required this.statisticValue,
     required this.icon,
     required this.iconColor,
-  });
+  }) : super(key: key);
 
   final String statisticName;
   final int statisticValue;
@@ -21,11 +21,18 @@ class UserStatSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.min,
       children: [
-        //
+        // Widget for displaying statistic name and value
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Displaying statistic value
+            Text(
+              statisticValue.toString(),
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+
+            // Displaying statistic name
             Text(
               statisticName,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -35,13 +42,10 @@ class UserStatSection extends StatelessWidget {
                         .withOpacity(0.5),
                   ),
             ),
-            Text(
-              statisticValue.toString(),
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
           ],
         ),
 
+        // Widget for displaying the icon
         Padding(
           padding: EdgeInsets.only(left: 25.w),
           child: Container(
