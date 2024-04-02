@@ -10,4 +10,8 @@ class NotificationRepository {
       UserModel currentUser) {
     return _notificationNetwork.getUsersNotifications(currentUser);
   }
+
+  void updateNotification(NotificationModel notification) {
+    _notificationNetwork.updateNotification(notification);
+  }
 }

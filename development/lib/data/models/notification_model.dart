@@ -44,4 +44,26 @@ class NotificationModel {
       'read': read,
     };
   }
+
+  NotificationModel copyWith({
+    String? notificationId,
+    String? recipientId,
+    String? senderId,
+    String? jobId,
+    String? type,
+    String? message,
+    DateTime? timestamp,
+    bool? read,
+  }) {
+    return NotificationModel(
+      notificationId: notificationId ?? this.notificationId,
+      recipientId: recipientId ?? this.recipientId,
+      senderId: senderId ?? this.senderId,
+      jobId: jobId ?? this.jobId,
+      type: type ?? this.type,
+      message: message ?? this.message,
+      timestamp: timestamp ?? this.timestamp,
+      read: read ?? this.read,
+    );
+  }
 }

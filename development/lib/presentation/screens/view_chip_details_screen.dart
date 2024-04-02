@@ -27,7 +27,9 @@ class ChipDetailsScreen extends StatefulWidget {
 
 class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
   late UserModel _authenticatedUser;
-  late ChipModel _chipData;
+  ChipModel? _chipData;
+
+  String? _chipId;
 
   bool _isEditable = false;
   bool _isDeletable = false;
@@ -42,12 +44,10 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
     if (widget.arguments != null) {
       if (widget.arguments!["chipData"] == null) {
-        print('SIUUUUUUUUUUUUUUUUUUUUU');
-
-        String chipId = widget.arguments!["chipId"];
+        _chipId = widget.arguments!["chipId"];
 
         BlocProvider.of<ChipBloc>(context)
-            .add(FetchChipByIdEvent(chipId: chipId));
+            .add(FetchChipByIdEvent(chipId: _chipId!));
       } else {
         _chipData = widget.arguments!["chipData"];
       }
@@ -56,15 +56,16 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
-    // // if user has posted the current chip, the chip becomes editable
-    // if (_authenticatedUser.postedChips.contains(_chipData.chipId)) {
-    //   _isEditable = true;
-    //   _isDeletable = true;
-    // }
+    // if user has posted the current chip, the chip becomes editable
+    if (_authenticatedUser.postedChips.contains(_chipId ?? _chipData?.chipId)) {
+      _isEditable = true;
+      _isDeletable = true;
+    }
 
-    // if (_authenticatedUser.favoritedChips.contains(_chipData.chipId)) {
-    //   _isInitiallyMarkedApplied = true;
-    // }
+    if (_authenticatedUser.favoritedChips
+        .contains(_chipId ?? _chipData?.chipId)) {
+      _isInitiallyMarkedApplied = true;
+    }
 
     isApplied = _isInitiallyMarkedApplied;
   }
@@ -73,7 +74,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<ChipBloc, ChipState>(
       listener: (context, state) {
-        if (state is IndividualChipLoaded) _chipData = state.chip!;
+        if (state is IndividualChipLoaded) _chipData = state.chip;
       },
       builder: (context, state) {
         if (widget.arguments!["chipData"] != null) {
@@ -81,7 +82,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
           return _buildViewScreen(
             context,
-            _chipData,
+            _chipData!,
             _isDeletable,
             _isEditable,
             _authenticatedUser,
@@ -89,13 +90,10 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
         }
 
         if (state is IndividualChipLoaded) {
-          if (state.chip == null) {
-            return Center(child: Text('nae hai bey aisa koi chip'));
-          }
-
           return PopScope(
-            onPopInvoked: (didPop) =>
-                BlocProvider.of<ChipBloc>(context).add(FetchChipsStream()),
+            onPopInvoked: (didPop) {
+              BlocProvider.of<ChipBloc>(context).add(const FetchChipsStream());
+            },
             child: _buildViewScreen(
               context,
               _chipData,
@@ -105,10 +103,10 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
             ),
           );
         } else if (state is ChipError) {
-          return Center(child: Text(state.errorMsg));
+          return Scaffold(body: Center(child: Text(state.errorMsg)));
         }
 
-        return const Center(child: CircularProgressIndicator());
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }
@@ -116,7 +114,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
 Widget _buildViewScreen(
   BuildContext context,
-  ChipModel chipData,
+  ChipModel? chipData,
   bool isDeletable,
   bool isEditable,
   UserModel authenticatedUser,
@@ -128,147 +126,149 @@ Widget _buildViewScreen(
           horizontal: 12,
           vertical: 14,
         ),
-        child: ListView(
-          children: [
-            //
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //
-                CustomIconButton(
-                  iconSvgPath: AssetPaths.leftArrowIconPath,
-                  iconWidth: 16.w,
-                  iconHeight: 16.h,
-                  onTap: () => Navigator.of(context).pop(),
-                ),
+        child: chipData == null
+            ? const Center(child: Text('Looks like this chip has been deleted'))
+            : ListView(
+                children: [
+                  //
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //
+                      CustomIconButton(
+                        iconSvgPath: AssetPaths.leftArrowIconPath,
+                        iconWidth: 16.w,
+                        iconHeight: 16.h,
+                        onTap: () => Navigator.of(context).pop(),
+                      ),
 
-                BlocListener<ChipBloc, ChipState>(
-                  listener: (context, state) {
-                    if (state is ChipDeleteSuccess) {
-                      // event fired to emit updated user in app
-                      BlocProvider.of<AuthCubit>(context)
-                          .userUpdated(state.updatedUser);
+                      BlocListener<ChipBloc, ChipState>(
+                        listener: (context, state) {
+                          if (state is ChipDeleteSuccess) {
+                            // event fired to emit updated user in app
+                            BlocProvider.of<AuthCubit>(context)
+                                .userUpdated(state.updatedUser);
 
-                      // NavigationService.routeToReplacementNamed('/layout');
-                      NavigationService.goBack();
+                            // NavigationService.routeToReplacementNamed('/layout');
+                            NavigationService.goBack();
 
-                      HelperWidgets.showSnackbar(
-                        context,
-                        'Chip deleted successfully!🍟',
-                        'success',
-                      );
-                    }
+                            HelperWidgets.showSnackbar(
+                              context,
+                              'Chip deleted successfully!🍟',
+                              'success',
+                            );
+                          }
 
-                    if (state is ChipDeletingState) {
-                      HelperWidgets.showSnackbar(
-                        context,
-                        'Deleting chip...',
-                        'info',
-                      );
-                    }
+                          if (state is ChipDeletingState) {
+                            HelperWidgets.showSnackbar(
+                              context,
+                              'Deleting chip...',
+                              'info',
+                            );
+                          }
 
-                    if (state is ChipError) {
-                      HelperWidgets.showSnackbar(
-                        context,
-                        state.errorMsg,
-                        'error',
-                      );
-                    }
-                  },
-                  child: PopupMenuButton<String>(
-                    onSelected: (String value) {
-                      if (value == '1') {
-                        BlocProvider.of<ChipBloc>(context).add(
-                          DeleteChipEvent(
-                            chipId: chipData.chipId,
-                            currentUser: authenticatedUser,
-                          ),
-                        );
-                      }
-                    },
-                    itemBuilder: (BuildContext context) => [
-                      if (isDeletable)
-                        const PopupMenuItem<String>(
-                          value: '1',
-                          child: Text('Delete'),
+                          if (state is ChipError) {
+                            HelperWidgets.showSnackbar(
+                              context,
+                              state.errorMsg,
+                              'error',
+                            );
+                          }
+                        },
+                        child: PopupMenuButton<String>(
+                          onSelected: (String value) {
+                            if (value == '1') {
+                              BlocProvider.of<ChipBloc>(context).add(
+                                DeleteChipEvent(
+                                  chipId: chipData.chipId,
+                                  currentUser: authenticatedUser,
+                                ),
+                              );
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => [
+                            if (isDeletable)
+                              const PopupMenuItem<String>(
+                                value: '1',
+                                child: Text('Delete'),
+                              ),
+                            if (!isDeletable)
+                              const PopupMenuItem<String>(
+                                value: '2',
+                                child: Text('Report Chip'),
+                              ),
+                          ],
+                          icon: const Icon(Icons.more_horiz),
                         ),
-                      if (!isDeletable)
-                        const PopupMenuItem<String>(
-                          value: '2',
-                          child: Text('Report Chip'),
-                        ),
+                      ),
                     ],
-                    icon: const Icon(Icons.more_horiz),
                   ),
-                ),
-              ],
-            ),
 
-            const SizedBox(height: 14),
+                  const SizedBox(height: 14),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //
-                Flexible(
-                  child: Text(
-                    chipData.jobTitle,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //
+                      Flexible(
+                        child: Text(
+                          chipData.jobTitle,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      // bookmark icon
+                      CustomBookmarkButton(
+                        iconSize: 28,
+                        radius: 22,
+                        currentChip: chipData,
+                      ),
+                    ],
                   ),
-                ),
 
-                const SizedBox(width: 10),
+                  const SizedBox(height: 14),
 
-                // bookmark icon
-                CustomBookmarkButton(
-                  iconSize: 28,
-                  radius: 22,
-                  currentChip: chipData,
-                ),
-              ],
-            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //
+                      Text(
+                        'Posted By: ${chipData.postedBy}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
 
-            const SizedBox(height: 14),
+                      Text(
+                        Helpers.formatTimeAgo(chipData.createdAt.toString()),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //
-                Text(
-                  'Posted By: ${chipData.postedBy}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                  const SizedBox(height: 14),
 
-                Text(
-                  Helpers.formatTimeAgo(chipData.createdAt.toString()),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
+                  Text(
+                    'Chip Details',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(fontSize: 22),
+                  ),
 
-            const SizedBox(height: 14),
+                  Text(chipData.description ?? 'No description available'),
 
-            Text(
-              'Chip Details',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(fontSize: 22),
-            ),
+                  const SizedBox(height: 14),
 
-            Text(chipData.description ?? 'No description available'),
+                  if (chipData.imageUrl != null && chipData.imageUrl != '')
+                    ChipNetworkImageContainer(imageUrl: chipData.imageUrl!),
 
-            const SizedBox(height: 14),
+                  const SizedBox(height: 14),
 
-            if (chipData.imageUrl != null && chipData.imageUrl != '')
-              ChipNetworkImageContainer(imageUrl: chipData.imageUrl!),
-
-            const SizedBox(height: 14),
-
-            MarkAppliedButton(chipId: chipData.chipId),
-          ],
-        ),
+                  MarkAppliedButton(chipId: chipData.chipId),
+                ],
+              ),
       ),
     ),
     floatingActionButton: isEditable
