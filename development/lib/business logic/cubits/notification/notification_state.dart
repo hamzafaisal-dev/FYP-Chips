@@ -28,3 +28,5 @@ final class NotificationErrorState extends NotificationState {
 
   const NotificationErrorState({required this.errorMessage});
 }
+
+final class NotificationUpdateSuccess extends NotificationState {}

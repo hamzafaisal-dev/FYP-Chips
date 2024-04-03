@@ -10,12 +10,19 @@ class NotificationNetwork {
     return _firestore
         .collection('notifications')
         .where('recipientId', isEqualTo: currentUser.username)
-        .where('read', isEqualTo: false)
+        // .where('read', isEqualTo: false)
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map(
                 (docSnapshot) => NotificationModel.fromJson(docSnapshot.data()))
             .toList());
+  }
+
+  void updateNotification(NotificationModel notification) async {
+    await _firestore
+        .collection('notifications')
+        .doc(notification.notificationId)
+        .update(notification.toJson());
   }
 }

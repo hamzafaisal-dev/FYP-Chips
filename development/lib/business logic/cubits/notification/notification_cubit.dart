@@ -24,4 +24,20 @@ class NotificationCubit extends Cubit<NotificationState> {
       emit(NotificationErrorState(errorMessage: error.toString()));
     }
   }
+
+  void notificationViewedEvent(NotificationModel notification) {
+    // emit(NotificationLoadingState());
+
+    try {
+      if (!notification.read) {
+        notification = notification.copyWith(read: true);
+
+        _notificationRepository.updateNotification(notification);
+      }
+
+      // emit(NotificationUpdateSuccess());
+    } catch (error) {
+      emit(NotificationErrorState(errorMessage: error.toString()));
+    }
+  }
 }
