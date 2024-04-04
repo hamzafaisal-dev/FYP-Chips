@@ -10,17 +10,14 @@ class ContactUsCubit extends Cubit<ContactUsState> {
   final ContactUsRepository _contactUsRepository = ContactUsRepository();
 
   void contactUs(String username, String message) async {
-    print('ContactUsCubit: contactUs');
     emit(ContactUsLoading());
     try {
-      print('ContactUsCubit: try');
       final response = await _contactUsRepository.contactUs(username, message);
       emit(ContactUsSuccess(response['status']));
-      print('ContactUsCubit: success');
+      emit(ContactUsInitial());
     } catch (e) {
-      print('ContactUsCubit: catch');
       emit(ContactUsFailure(e.toString()));
-      print(e.toString());
+      emit(ContactUsInitial());
     }
   }
 }

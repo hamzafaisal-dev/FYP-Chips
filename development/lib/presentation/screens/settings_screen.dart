@@ -11,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../widgets/check_your_profile_banner.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -21,6 +23,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late final UserModel? _authenticatedUser;
 
+  final _contactUsController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -30,8 +34,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _messageController = TextEditingController();
-
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -41,85 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 8.1.h),
 
               // check your profile banner
-              Stack(
-                children: [
-                  // background
-                  Container(
-                    height: 146.h,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 8.w),
-                        child: SvgPicture.asset(
-                          AssetPaths.settingsScreenBannerPath,
-                          width: 133.w,
-                          height: 129.69.h,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // column containing the text and button
-                  Positioned(
-                    top: 20.0.h,
-                    left: 33.0.w,
-                    child: SizedBox(
-                      width: 234.w,
-                      height: 106.h,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // check your profile text
-                          Text(
-                            "Check Your Profile",
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20.0.sp,
-                                    ),
-                          ),
-
-                          // email
-                          Text(
-                            _authenticatedUser?.email ?? 'No email found',
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary
-                                          .withOpacity(0.5),
-                                    ),
-                          ),
-
-                          const Spacer(),
-
-                          // view button
-                          SizedBox(
-                            height: 40.h,
-                            width: 120.w,
-                            child: FilledButton(
-                              onPressed: () => NavigationService.routeToNamed(
-                                  "/user_profile"),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(0),
-                              ),
-                              child: Text(
-                                'View',
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              CheckYourProfileBanner(authenticatedUser: _authenticatedUser),
 
               SizedBox(height: 17.h),
 
@@ -211,83 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   trailingIcon: Icons.arrow_forward_ios_rounded,
                   onTap: () {
                     // show "send us a message" modal bottom sheet
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20.w,
-                              vertical: 20.h,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // title
-                                Text(
-                                  'Contact Us',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
-                                      ?.copyWith(fontSize: 18.sp),
-                                ),
-
-                                SizedBox(height: 20.h),
-
-                                // message text field
-                                TextField(
-                                  controller: _messageController,
-                                  maxLines: 5,
-                                  decoration: InputDecoration(
-                                    hintText: 'Type your message here...',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox(height: 20.h),
-
-                                // send button
-                                SizedBox(
-                                  width: double.maxFinite,
-                                  height: 43.2.h,
-                                  child: BlocListener<ContactUsCubit,
-                                      ContactUsState>(
-                                    listener: (context, state) {
-                                      if (state is ContactUsLoading) {
-                                        Navigator.pop(context);
-                                        HelperWidgets.showSnackbar(
-                                          context,
-                                          "Sending message...⏳",
-                                          "info",
-                                        );
-                                      }
-                                    },
-                                    child: FilledButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ContactUsCubit>(context)
-                                            .contactUs(
-                                          _authenticatedUser?.username ?? '',
-                                          _messageController.text,
-                                        );
-                                        _messageController.clear();
-                                      },
-                                      child: const Text("Send"),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                    handleContactUs(context);
                   },
                 ),
               ),
@@ -337,22 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     trailingIcon: Icons.arrow_forward_ios_rounded,
                     onTap: () {
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) {
-                          return CustomDialog(
-                            dialogTitle: 'Are you sure?',
-                            dialogContent: 'Do you want to sign out?',
-                            buttonOneText: 'Cancel',
-                            buttonTwoText: 'Sign Out',
-                            buttonOneOnPressed: () => Navigator.pop(context),
-                            buttonTwoOnPressed: () {
-                              BlocProvider.of<AuthCubit>(context).signOut();
-                            },
-                          );
-                        },
-                      );
+                      handleSignOut(context);
                     },
                   );
                 },
@@ -363,6 +196,105 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  // sign out method
+  Future<dynamic> handleSignOut(BuildContext context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return CustomDialog(
+          dialogTitle: 'Are you sure?',
+          dialogContent: 'Do you want to sign out?',
+          buttonOneText: 'Cancel',
+          buttonTwoText: 'Sign Out',
+          buttonOneOnPressed: () => Navigator.pop(context),
+          buttonTwoOnPressed: () {
+            BlocProvider.of<AuthCubit>(context).signOut();
+          },
+        );
+      },
+    );
+  }
+
+  // contact us method
+  Future<dynamic> handleContactUs(BuildContext context) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 20.h,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // title
+                Text(
+                  'Contact Us',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 18.sp),
+                ),
+
+                SizedBox(height: 20.h),
+
+                // message text field
+                TextField(
+                  controller: _contactUsController,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Type your message here...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20.h),
+
+                // send button
+                SizedBox(
+                  width: double.maxFinite,
+                  height: 43.2.h,
+                  child: BlocListener<ContactUsCubit, ContactUsState>(
+                    listener: (context, state) {
+                      if (state is ContactUsLoading) {
+                        Navigator.pop(context);
+                        HelperWidgets.showSnackbar(
+                          context,
+                          "Sending message...⏳",
+                          "info",
+                        );
+                      }
+                    },
+                    child: FilledButton(
+                      onPressed: () {
+                        BlocProvider.of<ContactUsCubit>(context).contactUs(
+                          _authenticatedUser?.username ?? '',
+                          _contactUsController.text,
+                        );
+                        _contactUsController.clear();
+                      },
+                      child: const Text("Send"),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
