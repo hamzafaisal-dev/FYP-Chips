@@ -19,6 +19,10 @@ class NavigationService {
         arguments: arguments);
   }
 
+  static void popUntil(String route) {
+    navigatorKey.currentState?.popUntil(ModalRoute.withName(route));
+  }
+
   static dynamic goBack() {
     return navigatorKey.currentState?.pop();
   }

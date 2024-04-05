@@ -132,6 +132,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   padding: EdgeInsets.only(bottom: 10.8.h),
                                   child: ChipTile(
                                     chipData: chip,
+                                    currentUser: _authenticatedUser!,
                                     onTap: () => NavigationService.routeToNamed(
                                       '/view-chip',
                                       arguments: {"chipData": chip},

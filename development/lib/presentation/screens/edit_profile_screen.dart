@@ -69,24 +69,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           // if user has made changes, show alert dialog
                           if (_nameController.text !=
                               _authenticatedUser!.name) {
-                            showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                return CustomDialog(
-                                  dialogTitle: 'Discard Changes?',
-                                  dialogContent:
-                                      'Discard changes made to your display name?',
-                                  buttonOneText: 'Cancel',
-                                  buttonTwoText: 'Discard',
-                                  buttonOneOnPressed: () =>
-                                      NavigationService.goBack(),
-                                  buttonTwoOnPressed: () {
-                                    NavigationService.goBack();
-                                    NavigationService.goBack();
-                                  },
-                                );
-                              },
+                            HelperWidgets.showDiscardChangesDialog(
+                              context,
+                              'Discard changes made to your display name?',
                             );
                           } else {
                             NavigationService.goBack();

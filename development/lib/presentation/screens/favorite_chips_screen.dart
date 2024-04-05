@@ -162,6 +162,7 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
 
                         return ChipTile(
                           chipData: chipData,
+                          currentUser: _authenticatedUser!,
                           onTap: () => NavigationService.routeToNamed(
                             '/view-chip',
                             arguments: {"chipData": chipData},

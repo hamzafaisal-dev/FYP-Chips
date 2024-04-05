@@ -186,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.only(bottom: 10.8.h),
                                 child: ChipTile(
                                   chipData: chipObject,
+                                  currentUser: _authenticatedUser!,
                                   onTap: () => NavigationService.routeToNamed(
                                     '/view-chip',
                                     arguments: {"chipData": chipObject},
@@ -217,6 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: EdgeInsets.only(bottom: 10.8.h),
                             child: ChipTile(
                               chipData: chipObject,
+                              currentUser: _authenticatedUser!,
                               onTap: () => NavigationService.routeToNamed(
                                 '/view-chip',
                                 arguments: {"chipData": chipObject},

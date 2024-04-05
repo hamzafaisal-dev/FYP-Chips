@@ -85,9 +85,13 @@ class _AppLayoutState extends State<AppLayout> {
                       stream: state.notifications,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          List<NotificationModel> notifications = snapshot.data!
+                              .where((notif) => notif.read == false)
+                              .toList();
+
                           return Badge.count(
-                            count: snapshot.data!.length,
-                            isLabelVisible: snapshot.data!.isNotEmpty,
+                            count: notifications.length,
+                            isLabelVisible: notifications.isNotEmpty,
                             child: CustomIconButton(
                               iconSvgPath: AssetPaths.alertsIconPath,
                               iconWidth: 18.42.w,

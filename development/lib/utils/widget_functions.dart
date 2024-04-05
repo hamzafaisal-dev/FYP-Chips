@@ -1,4 +1,6 @@
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/presentation/widgets/custom_dialog.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
@@ -72,7 +74,7 @@ class HelperWidgets {
                   ),
                   Text(
                     dialogText,
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.h),
@@ -105,7 +107,7 @@ class HelperWidgets {
               ),
               Text(
                 'Profanity Detected',
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               const Text(
                 "Our system has detected some profanity in your input. Please re-check and remove all such instances to create a safe space for all users.",
@@ -114,6 +116,28 @@ class HelperWidgets {
               SizedBox(height: 20.h),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  static void showDiscardChangesDialog(
+      BuildContext context, String dialogContent) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return CustomDialog(
+          dialogTitle: 'Discard Changes?',
+          dialogContent:
+              dialogContent, //'Discard changes made to your display name?',
+          buttonOneText: 'Cancel',
+          buttonTwoText: 'Discard',
+          buttonOneOnPressed: () => NavigationService.goBack(),
+          buttonTwoOnPressed: () {
+            NavigationService.goBack();
+            NavigationService.goBack();
+          },
         );
       },
     );

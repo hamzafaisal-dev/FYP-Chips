@@ -1,3 +1,4 @@
+import 'package:development/data/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,11 +10,14 @@ class ChipTile extends StatefulWidget {
   const ChipTile({
     Key? key,
     required this.chipData,
+    required this.currentUser,
     this.onTap,
   }) : super(key: key);
 
   /// The chip data to display.
   final ChipModel chipData;
+
+  final UserModel currentUser;
 
   /// Callback function triggered when the tile is tapped.
   final void Function()? onTap;
@@ -76,7 +80,12 @@ class _ChipTileState extends State<ChipTile> {
           padding: EdgeInsets.only(right: 10.w),
           child: CircleAvatar(
             radius: 16.r,
-            child: const Icon(Icons.person_4_outlined),
+            child: Image.network(
+              widget.currentUser.profilePictureUrl,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.person_4_outlined);
+              },
+            ),
           ),
         ),
 
@@ -139,14 +148,17 @@ class _ChipTileState extends State<ChipTile> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              //
               Icon(
                 CupertinoIcons.heart_fill,
                 size: 18.sp,
                 color: Theme.of(context).colorScheme.primary,
               ),
+
               SizedBox(width: 3.w),
+
               Text(
-                '3.1k',
+                widget.chipData.favoritedBy.length.toString(),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],

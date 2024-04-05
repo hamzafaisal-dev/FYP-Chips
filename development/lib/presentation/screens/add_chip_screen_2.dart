@@ -12,6 +12,7 @@ import 'package:development/presentation/widgets/buttons/autofill_button.dart';
 import 'package:development/presentation/widgets/buttons/post_chip_button.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
+import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
@@ -134,6 +135,11 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       String routeName = widget.arguments!["routeName"];
 
       if (routeName == "/add-chip1") {
+        if (widget.arguments!["chipDetails"] == '' &&
+            widget.arguments!["chipImage"] == null) {
+          _autoFillEnabled = false;
+        }
+
         _chipDetailsController.text = widget.arguments!["chipDetails"];
         _selectedImage = widget.arguments!["chipImage"];
       }
@@ -228,7 +234,12 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                           iconSvgPath: AssetPaths.leftArrowIconPath,
                           iconWidth: 16.w,
                           iconHeight: 16.h,
-                          onTap: () => NavigationService.goBack(),
+                          onTap: () {
+                            HelperWidgets.showDiscardChangesDialog(
+                              context,
+                              'Discard changes? You\'ll have to fill in the details again',
+                            );
+                          },
                         ),
 
                         // post btn
@@ -237,7 +248,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                             if (state is ChipAddSuccess) {
                               HelperWidgets.showSnackbar(
                                 context,
-                                'Chip created successfully!🥳',
+                                'Chip created successfully! 🥳',
                                 'success',
                               );
 
