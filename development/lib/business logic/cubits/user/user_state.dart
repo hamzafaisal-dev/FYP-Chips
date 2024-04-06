@@ -39,19 +39,6 @@ final class FetchingUserChipsFailed extends UserState {
   List<Object> get props => [errorMessage];
 }
 
-// generic loading class for user
-final class UserLoadingState extends UserState {}
-
-// generic error class for user
-final class UserErrorState extends UserState {
-  final String errorMessage;
-
-  const UserErrorState({required this.errorMessage});
-
-  @override
-  List<Object> get props => [errorMessage];
-}
-
 final class ChipBookmarkedState extends UserState {
   final UserModel updatedUser;
 
@@ -106,6 +93,28 @@ final class UserPasswordUpdateFailed extends UserState {
   final String errorMessage;
 
   const UserPasswordUpdateFailed({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+final class UserLoadedState extends UserState {
+  final UserModel user;
+
+  const UserLoadedState({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+// generic loading class for user
+final class UserLoadingState extends UserState {}
+
+// generic error class for user
+final class UserErrorState extends UserState {
+  final String errorMessage;
+
+  const UserErrorState({required this.errorMessage});
 
   @override
   List<Object> get props => [errorMessage];

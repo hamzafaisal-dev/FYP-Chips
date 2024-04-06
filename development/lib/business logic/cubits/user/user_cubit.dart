@@ -11,6 +11,18 @@ class UserCubit extends Cubit<UserState> {
 
   UserCubit() : super(UserInitial());
 
+  // fetch user by userName
+  void fetchUserByUsername(String username) async {
+    emit(UserLoadingState());
+    try {
+      UserModel user = await _userRepository.findUserByUsername(username);
+
+      emit(UserLoadedState(user: user));
+    } catch (error) {
+      emit(UserErrorState(errorMessage: error.toString()));
+    }
+  }
+
   // fetch user chips stream
   void fetchUserChipsStream(String username) async {
     emit(FetchingUserChips());

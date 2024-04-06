@@ -124,10 +124,16 @@ class RouteGenerator {
           );
         }
 
-      case "/user_profile":
-        return MaterialPageRoute(
-          builder: (context) => const UserProfileScreen(),
-        );
+      case '/user_profile':
+        {
+          Map<String, dynamic>? receivedArguments =
+              settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) =>
+                UserProfileScreen(arguments: receivedArguments),
+          );
+        }
 
       case '/reset-password':
         return MaterialPageRoute(

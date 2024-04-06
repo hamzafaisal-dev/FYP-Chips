@@ -6,6 +6,11 @@ class UserRepository {
   final UserNetwork _userNetwork = UserNetwork();
 
   // get user chips stream
+  Future<UserModel> findUserByUsername(String username) {
+    return _userNetwork.findUserByUsername(username);
+  }
+
+  // get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _userNetwork.getUserChipsStream(username);
   }

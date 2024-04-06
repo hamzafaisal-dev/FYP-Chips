@@ -8,14 +8,17 @@ import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserProfileScreenHeader extends StatelessWidget {
   const UserProfileScreenHeader({
     super.key,
     required UserModel? authenticatedUser,
+    required this.isEditable,
   }) : _authenticatedUser = authenticatedUser;
 
   final UserModel? _authenticatedUser;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +40,7 @@ class UserProfileScreenHeader extends StatelessWidget {
                 // user avatar
                 CircleAvatar(
                   radius: 25.r,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   child: ClipOval(
                     child: SvgPicture.network(
                       _authenticatedUser!.profilePictureUrl,
@@ -82,17 +84,18 @@ class UserProfileScreenHeader extends StatelessWidget {
                 const Spacer(),
 
                 // edit profile button
-                CustomIconButton(
-                  iconSvgPath: AssetPaths.editIconPath,
-                  iconWidth: 17.w,
-                  iconHeight: 17.h,
-                  onTap: () {
-                    NavigationService.routeToNamed(
-                      '/edit-profile',
-                      arguments: {"name": _authenticatedUser!.name},
-                    );
-                  },
-                ),
+                if (isEditable)
+                  CustomIconButton(
+                    iconSvgPath: AssetPaths.editIconPath,
+                    iconWidth: 17.w,
+                    iconHeight: 17.h,
+                    onTap: () {
+                      NavigationService.routeToNamed(
+                        '/edit-profile',
+                        arguments: {"name": _authenticatedUser!.name},
+                      );
+                    },
+                  ),
               ],
             ),
           ),

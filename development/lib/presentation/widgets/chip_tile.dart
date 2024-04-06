@@ -1,4 +1,5 @@
 import 'package:development/data/models/user_model.dart';
+import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -93,10 +94,19 @@ class _ChipTileState extends State<ChipTile> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.chipData.postedBy,
-              style: Theme.of(context).textTheme.bodyLarge,
+            //
+            InkWell(
+              onTap: () {
+                NavigationService.routeToNamed('/user_profile', arguments: {
+                  "postedBy": widget.chipData.postedBy,
+                });
+              },
+              child: Text(
+                widget.chipData.postedBy,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
+
             Text(
               Helpers.formatTimeAgo(widget.chipData.createdAt.toString()),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
