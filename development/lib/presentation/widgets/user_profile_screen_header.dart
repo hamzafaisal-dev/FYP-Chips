@@ -22,6 +22,8 @@ class UserProfileScreenHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(isEditable);
+
     return Container(
       width: double.maxFinite,
       decoration: BoxDecoration(

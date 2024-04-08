@@ -13,6 +13,7 @@ import 'package:development/presentation/widgets/buttons/post_chip_button.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
+import 'package:development/presentation/widgets/custom_dropdowns.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
@@ -44,6 +45,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   final _chipDetailsController = TextEditingController();
   final _applicationLinkController = TextEditingController();
 
+  final _salaryTitleController = TextEditingController();
+
   File? _selectedImage;
 
   DateTime? _chipDeadline;
@@ -56,6 +59,10 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   String _companyTitle = '';
   String _chipDescription = '';
   String _applicationLink = '';
+
+  String? _jobMode;
+  String? _jobType;
+  String? _salary;
 
   void _checkDeadline() {
     if (_chipDeadline == null) {
@@ -78,10 +85,10 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
         'companyName': _companyTitleController.text,
         'applicationLink': _applicationLinkController.text,
         'description': _chipDetailsController.text,
-        'jobMode': '',
+        'jobMode': _jobMode,
         'chipFile': widget.arguments!["chipImage"],
         'locations': const [],
-        'jobType': '',
+        'jobType': _jobType,
         'experienceRequired': 0,
         'deadline': _chipDeadline!,
         'skills': const [],
@@ -128,7 +135,6 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
 
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
-    if (authState is AuthSignInSuccess) _authenticatedUser = authState.user;
 
     if (widget.arguments != null) {
       // the screen from which user came to this screen
@@ -154,6 +160,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
         _companyTitleController.text = _chipData.companyName;
         _chipDetailsController.text = _chipData.description!;
         _applicationLinkController.text = _chipData.applicationLink;
+        _salaryTitleController.text = _chipData.salary.toString();
+        _jobMode = _chipData.jobMode;
+        _jobType = _chipData.jobType;
         _chipDeadline = _chipData.deadline;
         _chipFileUrl = _chipData.imageUrl;
       }
@@ -193,6 +202,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                 if (state is AutofillSuccess) {
                   Navigator.pop(context); //removes autofill dialog
 
+                  print(state.autoFillResponse);
+
                   _chipTitleController.text =
                       state.autoFillResponse["job_title"];
                   _companyTitleController.text =
@@ -202,6 +213,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                   _chipDeadline = state.autoFillResponse["deadline"];
                   _applicationLinkController.text =
                       state.autoFillResponse["email"];
+
+                  _jobMode = state.autoFillResponse["mode"] == 'Unknown'
+                      ? 'On-site'
+                      : state.autoFillResponse["mode"];
+
+                  _jobType = state.autoFillResponse["type"];
+
+                  _salaryTitleController.text =
+                      state.autoFillResponse["salary"] == 'Unknown'
+                          ? ''
+                          : state.autoFillResponse["salary"];
 
                   HelperWidgets.showSnackbar(
                     context,
@@ -313,9 +335,9 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
                     SizedBox(height: 20.h),
 
-                    // 'We just need a few more details!'
+                    // 'Fill out the essentials!'
                     Text(
-                      'We just need a few more details!',
+                      'Fill out the essentials!',
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
@@ -328,6 +350,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _chipTitleController,
                       label: ' Chip Title ',
+                      validatorFunction: (value) =>
+                          FormValidators.chipValidator(value),
                       onValueChanged: (value) => _chipTitle = value,
                     ),
 
@@ -337,6 +361,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                     CustomTextFormField(
                       controller: _companyTitleController,
                       label: ' Company Title ',
+                      validatorFunction: (value) =>
+                          FormValidators.chipValidator(value),
                       onValueChanged: (value) => _companyTitle = value,
                     ),
 
@@ -349,7 +375,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                           'This can be a url, a phone number or an email',
                       suffixIcon: const Icon(Icons.info_outline_rounded),
                       validatorFunction: (value) =>
-                          FormValidators.chipValidator(value),
+                          FormValidators.chipLinkValidator(value),
                       onValueChanged: (value) => _applicationLink = value,
                     ),
 
@@ -399,7 +425,65 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
+
+                    Divider(
+                      height: 10.h,
+                      color: Theme.of(context).colorScheme.surface,
+                      thickness: 10,
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    // 'Want to add a few more details?'
+                    Text(
+                      'Want to add a few more details?',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(fontSize: 22),
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.42,
+                          child: JobModeDropdown(
+                            hintText: ' Job Mode ',
+                            value: _jobMode,
+                            onValueChanged: (value) => _jobMode = value,
+                          ),
+                        ),
+
+                        SizedBox(width: 8.w),
+
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: JobTypeDropdown(
+                            hintText: ' Job Type ',
+                            value: _jobType,
+                            onValueChanged: (value) => _jobType = value,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 16.h),
+
+                    // salary textfield
+                    CustomTextFormField(
+                      controller: _salaryTitleController,
+                      label: ' Salary ',
+                      keyBoardInputType: TextInputType.number,
+                      onValueChanged: (value) => _salary = value,
+                    ),
+
+                    SizedBox(height: 20.h),
 
                     // 'CHIP DETAILS'
                     if (_chipDetailsController.text != '')

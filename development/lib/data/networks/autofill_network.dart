@@ -7,13 +7,9 @@ class AutofillNetwork {
   Future<Map<String, dynamic>> sendAutofillRequestN(String context) async {
     final url = Uri.parse('https://yessirfrfr.pythonanywhere.com/autofilling');
 
-    final headers = {
-      'Content-Type': 'application/json',
-    };
+    final headers = {'Content-Type': 'application/json'};
 
-    final body = jsonEncode({
-      'context': context,
-    });
+    final body = jsonEncode({'context': context});
 
     try {
       final response = await http.post(
@@ -51,10 +47,12 @@ class AutofillNetwork {
           'mode': responsedata['mode'].toString(),
         };
       } else {
-        throw Exception(response.statusCode);
+        throw Exception(response);
       }
     } catch (e) {
-      rethrow;
+      throw Exception(e.toString());
+
+      // rethrow;
     }
   }
 }

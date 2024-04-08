@@ -46,6 +46,18 @@ class FormValidators {
       return 'Value cannot be empty';
     }
 
+    if (value.length < 3) {
+      return 'Please enter at least 3 characters';
+    }
+
+    return null;
+  }
+
+  static String? chipLinkValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Value cannot be empty';
+    }
+
     // if (!value.isValidEmail()) {
     //   return 'Invalid email format';
     // }

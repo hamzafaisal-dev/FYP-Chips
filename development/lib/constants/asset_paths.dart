@@ -47,7 +47,7 @@ class AssetPaths {
   static const String womanSittingAnimationPath =
       'assets/animations/woman_sitting_animation.json';
   static const String angryTomatoAnimationPath =
-      'assets/animations/angry_tomato_animation.json';
+      'assets/animations/Angry_Tomato_Animation.json';
   static const String girlEmptyBoxAnimationPath =
       'assets/animations/girl_empty_box_animation.json';
   static const String appliedEmptyAnimationPath =

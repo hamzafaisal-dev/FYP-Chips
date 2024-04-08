@@ -6,6 +6,7 @@ class CustomTextFormField extends StatefulWidget {
     super.key,
     required this.label,
     required this.controller,
+    this.keyBoardInputType,
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatefulWidget {
 
   final String label;
   final TextEditingController controller;
+  final TextInputType? keyBoardInputType;
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -43,6 +45,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      keyboardType: widget.keyBoardInputType ?? TextInputType.text,
       decoration: Styles.textFormFieldDecoration(
         widget.label,
         widget.prefixIcon,
@@ -54,10 +57,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       validator: (value) {
         if (value == null) return 'Please enter a valid value';
-
-        if (value.length < 3) {
-          return 'Please enter at least 3 characters';
-        }
 
         final validationResult = widget.validatorFunction?.call(value);
 

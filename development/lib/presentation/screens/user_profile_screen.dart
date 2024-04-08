@@ -78,21 +78,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     return const UserProfileScreenHeaderSkeleton();
                   }
 
-                  if (widget.arguments != null && state is UserLoadedState) {
-                    return Column(
-                      children: [
-                        UserProfileScreenHeader(
-                          authenticatedUser: state.user,
-                          isEditable: false,
-                        ),
-                      ],
+                  if (widget.arguments?["postedBy"] ==
+                      _authenticatedUser?.username) {
+                    return UserProfileScreenHeader(
+                      authenticatedUser: _authenticatedUser,
+                      isEditable: true,
+                    );
+                  } else if (state is UserLoadedState) {
+                    return UserProfileScreenHeader(
+                      authenticatedUser: state.user,
+                      isEditable: false,
+                    );
+                  } else {
+                    return UserProfileScreenHeader(
+                      authenticatedUser: _authenticatedUser,
+                      isEditable: true,
                     );
                   }
-
-                  return UserProfileScreenHeader(
-                    authenticatedUser: _authenticatedUser,
-                    isEditable: true,
-                  );
                 },
               ),
             ),
