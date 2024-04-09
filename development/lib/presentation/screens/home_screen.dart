@@ -8,8 +8,13 @@ import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../widgets/top_contributor_card.dart';
+import '../widgets/top_contributors_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -103,6 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 SizedBox(height: 23.4.h),
 
+                // top contributors
+                TopContributorsSection(authenticatedUser: _authenticatedUser),
+
+                SizedBox(height: 16.h),
+
                 // search bar
                 Container(
                   width: double.maxFinite,
@@ -149,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Expanded(
                           child: ListView.builder(
                             itemCount: 10,
-                            itemBuilder: (context, index) => ChipTileSkeleton(),
+                            itemBuilder: (context, index) =>
+                                const ChipTileSkeleton(),
                           ),
                         );
                       }
