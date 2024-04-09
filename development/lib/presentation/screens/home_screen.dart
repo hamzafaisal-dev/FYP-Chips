@@ -11,6 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+List<String> jobModes = ['On-site', 'Hybrid', 'Remote'];
+List<String> jobTypes = [
+  'Internship',
+  'Management Trainee',
+  'Contract',
+  'Entry-Level',
+  'Mid-Level',
+  'Senior',
+];
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -36,6 +46,91 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _handleRefresh() async {
     BlocProvider.of<ChipBloc>(context).add(const FetchChipsStream());
     _searchController.text = '';
+  }
+
+  void _handleFilterClick() {
+    showModalBottomSheet(
+      context: context,
+      // showDragHandle: true,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Filter
+                Text(
+                  'Filter',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22.sp,
+                      ),
+                ),
+
+                SizedBox(height: 18.h),
+
+                // Job Type
+                Text(
+                  'Job Type',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18.sp,
+                      ),
+                ),
+
+                SizedBox(height: 8.h),
+
+                Wrap(
+                  children: [
+                    ...jobModes.map(
+                      (jobMode) => Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Chip(
+                          label: Text(jobMode),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 8.h),
+
+                // Job Mode
+                Text(
+                  'Job Mode',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18.sp,
+                      ),
+                ),
+
+                SizedBox(height: 8.h),
+
+                Wrap(
+                  children: [
+                    ...jobTypes.map(
+                      (jobType) => Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Chip(
+                          label: Text(jobType),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -104,39 +199,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 23.4.h),
 
                 // search bar
-                Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: TextFormField(
-                    controller: _searchController,
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    onFieldSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        BlocProvider.of<ChipBloc>(context).add(
-                          FetchChips(searchText: value),
-                        );
-                      }
-                    },
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      hintText: 'Search',
-                      hintStyle: Theme.of(context).textTheme.bodyLarge,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        size: 20.w,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 0.w,
-                        vertical: 0.h,
-                      ),
-                      border: OutlineInputBorder(
+                Stack(
+                  children: [
+                    //
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
+                      child: TextFormField(
+                        controller: _searchController,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        onFieldSubmitted: (value) {
+                          if (value.isNotEmpty) {
+                            BlocProvider.of<ChipBloc>(context).add(
+                              FetchChips(searchText: value),
+                            );
+                          }
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          hintText: 'Search',
+                          hintStyle: Theme.of(context).textTheme.bodyLarge,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            size: 20.w,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 0.w,
+                            vertical: 0.h,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+
+                    Positioned(
+                      top: 5,
+                      bottom: 5,
+                      right: 7,
+                      child: InkWell(
+                        onTap: _handleFilterClick,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            border: Border.all(color: Colors.transparent),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.filter_list),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 SizedBox(height: 23.4.h),
