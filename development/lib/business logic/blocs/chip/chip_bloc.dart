@@ -8,10 +8,23 @@ import 'package:development/data/repositories/chip_repository.dart';
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
 
-  void _fetchChips(Emitter<ChipState> emit) {
+  Future<void> _fetchChips(Emitter<ChipState> emit) async {
     emit(ChipsLoading());
-    Stream<List<ChipModel>> chipsStream = _chipRepository.getAllChipsStream();
-    emit(ChipsStreamLoaded(chips: chipsStream));
+    List<ChipModel> allChips = await _chipRepository.getAllChipsFuture();
+
+    emit(ChipsStreamLoaded(chips: allChips));
+  }
+
+  Future<void> _fetchFilteredChips(
+      Map<String, dynamic> filters, Emitter<ChipState> emit) async {
+    emit(ChipsLoading());
+
+    List<ChipModel> filteredChips =
+        await _chipRepository.getFilteredChips(filters);
+
+    print('filteredChips len: ${filteredChips.length}');
+
+    emit(ChipsStreamLoaded(chips: filteredChips));
   }
 
   ChipBloc() : super(ChipEmpty()) {
@@ -25,12 +38,19 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     on<FetchChips>((event, emit) async {
       emit(ChipsLoading());
       List<ChipModel> searchedchips =
-          await _chipRepository.getAllChips(event.searchText);
+          await _chipRepository.getAllSearchedChips(event.searchText);
       emit(ChipsLoaded(chips: searchedchips));
     });
 
-    on<FetchChipsStream>((event, emit) {
-      _fetchChips(emit);
+    on<FetchChipsStream>((event, emit) async {
+      List<String> jobModes = event.filters["jobModes"] as List<String>;
+      List<String> jobTypes = event.filters["jobTypes"] as List<String>;
+
+      if (jobModes.isNotEmpty || jobTypes.isNotEmpty) {
+        await _fetchFilteredChips(event.filters, emit);
+      } else {
+        await _fetchChips(emit);
+      }
     });
 
     on<UploadChipEvent>((event, emit) async {

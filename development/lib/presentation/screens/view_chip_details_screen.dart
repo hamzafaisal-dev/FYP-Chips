@@ -92,7 +92,9 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
         if (state is IndividualChipLoaded) {
           return PopScope(
             onPopInvoked: (didPop) {
-              BlocProvider.of<ChipBloc>(context).add(const FetchChipsStream());
+              // have to fix the filters thing here later
+              BlocProvider.of<ChipBloc>(context)
+                  .add(FetchChipsStream(filters: {}));
             },
             child: _buildViewScreen(
               context,

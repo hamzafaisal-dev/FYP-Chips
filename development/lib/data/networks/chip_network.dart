@@ -25,8 +25,8 @@ class ChipNetwork {
     }
   }
 
-  // get all chips
-  Future<List<ChipModel>> getAllChips(String searchText) async {
+  // get all searched chips
+  Future<List<ChipModel>> getAllSearchedChips(String searchText) async {
     final chips = await _firestore
         .collection('chips')
         .orderBy('createdAt', descending: true)
@@ -42,19 +42,67 @@ class ChipNetwork {
     return allFetchedChips;
   }
 
-  // get all chips stream
-  Stream<List<ChipModel>> getAllChipsStream() {
-    return _firestore
+  // get all chips future
+  Future<List<ChipModel>> getAllChipsFuture() async {
+    QuerySnapshot snapshot = await _firestore
         .collection('chips')
         .orderBy('createdAt', descending: true)
-        .snapshots()
+        .get();
+
+    List<ChipModel> chips = snapshot.docs
         .map(
-          (querySnapshot) => querySnapshot.docs
-              .map(
-                (docSnapshot) => ChipModel.fromMap(docSnapshot.data()),
-              )
-              .toList(),
-        );
+          (docSnapshot) => ChipModel.fromMap(
+            docSnapshot.data() as Map<String, dynamic>,
+          ),
+        )
+        .toList();
+
+    return chips;
+  }
+
+  // get filtered chips
+  Future<List<ChipModel>> getFilteredChips(Map<String, dynamic> filters) async {
+    List<String> selectedJobModes = filters['jobModes'] as List<String>;
+    List<String> selectedJobTypes = filters['jobTypes'] as List<String>;
+
+    Query query = _firestore.collection('chips');
+
+    List<ChipModel> modeQueryResult = [];
+    List<ChipModel> typeQueryResult = [];
+
+    if (selectedJobModes.isNotEmpty) {
+      QuerySnapshot modeSnapshot = await query
+          .where('jobMode', whereIn: selectedJobModes)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      modeQueryResult = modeSnapshot.docs
+          .map((docSnapshot) =>
+              ChipModel.fromMap(docSnapshot.data() as Map<String, dynamic>))
+          .toList();
+    }
+
+    if (selectedJobTypes.isNotEmpty) {
+      QuerySnapshot typeSnapshot = await query
+          .where('jobType', whereIn: selectedJobTypes)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      typeQueryResult = typeSnapshot.docs
+          .map((docSnapshot) =>
+              ChipModel.fromMap(docSnapshot.data() as Map<String, dynamic>))
+          .toList();
+    }
+
+    List<ChipModel> filteredChips = [];
+    filteredChips.addAll(modeQueryResult);
+    filteredChips.addAll(typeQueryResult);
+
+    print('modeQueryResult: $modeQueryResult');
+    print('typeQueryResult: $typeQueryResult');
+    print('filteredChips: ${filteredChips.length}');
+
+    return filteredChips;
   }
 
   // returns the download url of given file

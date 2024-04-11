@@ -10,13 +10,18 @@ class ChipRepository {
   }
 
   // get list of all chips
-  Future<List<ChipModel>> getAllChips(String searchText) async {
-    return await _chipsNetwork.getAllChips(searchText);
+  Future<List<ChipModel>> getAllSearchedChips(String searchText) async {
+    return await _chipsNetwork.getAllSearchedChips(searchText);
   }
 
   // get stream of all chips
-  Stream<List<ChipModel>> getAllChipsStream() {
-    return _chipsNetwork.getAllChipsStream();
+  Future<List<ChipModel>> getAllChipsFuture() async {
+    return await _chipsNetwork.getAllChipsFuture();
+  }
+
+  // get stream of all chips
+  Future<List<ChipModel>> getFilteredChips(Map<String, dynamic> filters) async {
+    return await _chipsNetwork.getFilteredChips(filters);
   }
 
   // post chip

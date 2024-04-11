@@ -2,6 +2,7 @@ import 'package:development/business%20logic/blocs/autofill/autofill_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/cubits/contact_us/contact_us_cubit.dart';
 import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
+import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChipBloc()),
         BlocProvider(create: (context) => AutofillBloc()),
         BlocProvider(create: (context) => ContactUsCubit()),
+        BlocProvider(create: (context) => SharedPrefCubit()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(414, 896),

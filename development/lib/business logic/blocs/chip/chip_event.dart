@@ -24,7 +24,9 @@ class FetchChips extends ChipEvent {
 }
 
 class FetchChipsStream extends ChipEvent {
-  const FetchChipsStream() : super();
+  const FetchChipsStream({required this.filters}) : super();
+
+  final Map<String, dynamic> filters;
 
   @override
   List<Object?> get props => throw UnimplementedError();
