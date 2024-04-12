@@ -208,8 +208,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       state.autoFillResponse["job_title"];
                   _companyTitleController.text =
                       state.autoFillResponse["company_name"];
-                  _chipDetailsController.text =
-                      state.autoFillResponse["description"];
+                  // _chipDetailsController.text =
+                  //     state.autoFillResponse["description"];
                   _chipDeadline = state.autoFillResponse["deadline"];
                   _applicationLinkController.text =
                       state.autoFillResponse["email"];
@@ -400,6 +400,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                         }
                       },
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           //
                           IconButton(

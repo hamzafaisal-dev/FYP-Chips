@@ -107,6 +107,15 @@ final class UserLoadedState extends UserState {
   List<Object> get props => [user];
 }
 
+final class UsersLoadedState extends UserState {
+  final List<UserModel> users;
+
+  const UsersLoadedState({required this.users});
+
+  @override
+  List<Object> get props => [users];
+}
+
 // generic loading class for user
 final class UserLoadingState extends UserState {}
 

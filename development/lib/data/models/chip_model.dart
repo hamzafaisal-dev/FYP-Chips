@@ -20,7 +20,9 @@ class ChipModel {
     required this.dislikes,
     required this.comments,
     required this.favoritedBy,
+    required this.likedBy,
     required this.postedBy,
+    required this.posterPicture,
     required this.reportCount,
     required this.isFlagged,
     required this.isExpired,
@@ -44,11 +46,13 @@ class ChipModel {
   final String? imageUrl;
   final double? salary;
   final String postedBy;
+  final String posterPicture;
 
   final int likes;
   final int dislikes;
   final List<String> comments;
   final List<String> favoritedBy;
+  final List<String> likedBy;
 
   final int reportCount;
   final bool isFlagged;
@@ -75,10 +79,12 @@ class ChipModel {
       imageUrl: map['imageUrl'],
       salary: map['salary'],
       postedBy: map['postedBy'] as String,
+      posterPicture: map['posterPicture'] as String,
       likes: map['likes'] as int,
       dislikes: map['dislikes'] as int,
       comments: List<String>.from(map['comments']),
       favoritedBy: List<String>.from(map['favoritedBy']),
+      likedBy: List<String>.from(map['likedBy']),
       reportCount: map['reportCount'] as int,
       isFlagged: map['isFlagged'] as bool,
       isExpired: map['isExpired'] as bool,
@@ -106,10 +112,12 @@ class ChipModel {
     int? dislikes,
     List<String>? comments,
     List<String>? favoritedBy,
+    List<String>? likedBy,
     List<dynamic>? skills,
     String? imageUrl,
     double? salary,
     String? postedBy,
+    String? posterPicture,
     int? reportCount,
     bool? isFlagged,
     bool? isExpired,
@@ -133,10 +141,12 @@ class ChipModel {
       dislikes: dislikes ?? this.dislikes,
       comments: comments ?? this.comments,
       favoritedBy: favoritedBy ?? this.favoritedBy,
+      likedBy: likedBy ?? this.likedBy,
       skills: skills ?? this.skills,
       imageUrl: imageUrl ?? this.imageUrl,
       salary: salary ?? this.salary,
       postedBy: postedBy ?? this.postedBy,
+      posterPicture: posterPicture ?? this.posterPicture,
       reportCount: reportCount ?? this.reportCount,
       isFlagged: isFlagged ?? this.isFlagged,
       isExpired: isExpired ?? this.isExpired,
@@ -167,6 +177,8 @@ class ChipModel {
       'imageUrl': imageUrl,
       'salary': salary,
       'postedBy': postedBy,
+      'likedBy': likedBy,
+      'posterPicture': posterPicture,
       'reportCount': reportCount,
       'isFlagged': isFlagged,
       'isExpired': isExpired,

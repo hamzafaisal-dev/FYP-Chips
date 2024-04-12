@@ -23,6 +23,20 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  // fetch users by userNames
+  void fetchUsersByUsernames(List<String> usernames) async {
+    emit(UserLoadingState());
+
+    try {
+      List<UserModel> users =
+          await _userRepository.findUsersByUsernames(usernames);
+
+      emit(UsersLoadedState(users: users));
+    } catch (error) {
+      emit(UserErrorState(errorMessage: error.toString()));
+    }
+  }
+
   // fetch user chips stream
   void fetchUserChipsStream(String username) async {
     emit(FetchingUserChips());

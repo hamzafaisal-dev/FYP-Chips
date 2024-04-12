@@ -4,6 +4,7 @@ import 'package:development/business%20logic/cubits/contact_us/contact_us_cubit.
 import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
+import 'package:development/presentation/screens/likes_screen.dart';
 import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
           home: const SplashScreen(),
+          // home: const LikeScreen(),
         ),
       ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomFilledButtonTheme {
   static final lightFilledButtonTheme = FilledButtonThemeData(
-    style: ElevatedButton.styleFrom(
+    style: FilledButton.styleFrom(
       minimumSize: Size(double.maxFinite, 60.h),
       maximumSize: Size(double.maxFinite, 60.h),
       backgroundColor: const Color(0XFFFDA758),

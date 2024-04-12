@@ -68,6 +68,38 @@ class UserNetwork {
     return user;
   }
 
+  Future<List<UserModel>> findUsersByUsernames(List<String> usernames) async {
+    List<UserModel> users = [];
+
+    for (String username in usernames) {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .where('userName', isEqualTo: username)
+          .limit(1)
+          .get();
+
+      // if user with the given username is found, add it to the list
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot userSnapshot = querySnapshot.docs.first;
+        Map<String, dynamic> userData =
+            userSnapshot.data() as Map<String, dynamic>;
+        UserModel user = UserModel.fromMap(userData);
+        users.add(user);
+      }
+    }
+
+    // check if any usernames were not found
+    if (users.length < usernames.length) {
+      List<String> notFoundUsernames = usernames
+          .where((username) => !users.any((user) => user.username == username))
+          .toList();
+
+      throw Exception('Users not found with usernames: $notFoundUsernames');
+    }
+
+    return users;
+  }
+
   // Get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _firestore

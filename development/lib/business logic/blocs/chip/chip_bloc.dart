@@ -84,6 +84,14 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
       }
     });
 
+    on<LikeChipEvent>((event, emit) async {
+      try {
+        await _chipRepository.editChip(chipMap: event.likedChip);
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+      }
+    });
+
     on<DeleteChipEvent>((event, emit) async {
       emit(ChipDeletingState());
 

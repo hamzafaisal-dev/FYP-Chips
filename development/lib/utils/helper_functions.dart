@@ -36,6 +36,24 @@ class Helpers {
     }
   }
 
+  static String formatExpiryDateString(String dateString) {
+    DateTime expiryDate = DateTime.parse(dateString);
+    DateTime now = DateTime.now();
+
+    if (expiryDate.year == now.year &&
+        expiryDate.month == now.month &&
+        expiryDate.day == now.day) {
+      return 'Expires today';
+    } else if (expiryDate.year == now.year &&
+        expiryDate.month == now.month &&
+        expiryDate.day == now.day + 1) {
+      return 'Expires tomorrow';
+    } else {
+      String formattedDate = DateFormat.yMMMMd().format(expiryDate);
+      return 'Expires on $formattedDate';
+    }
+  }
+
   static String getMimeType(File file) {
     const Map<String, String> mimeTypes = {
       'png': 'image/png',

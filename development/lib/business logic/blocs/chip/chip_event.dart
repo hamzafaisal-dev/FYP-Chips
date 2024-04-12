@@ -50,6 +50,15 @@ class EditChipEvent extends ChipEvent {
   List<Object?> get props => [editedChip];
 }
 
+class LikeChipEvent extends ChipEvent {
+  final Map<String, dynamic> likedChip;
+
+  const LikeChipEvent({required this.likedChip});
+
+  @override
+  List<Object?> get props => [likedChip];
+}
+
 class DeleteChipEvent extends ChipEvent {
   final String chipId;
   final UserModel currentUser;
