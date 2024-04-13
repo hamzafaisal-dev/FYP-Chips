@@ -2,12 +2,16 @@ import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/business%20logic/cubits/comment/comment_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/bookmark_icon.dart';
 import 'package:development/presentation/widgets/buttons/mark_applied_button.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
+import 'package:development/presentation/widgets/comment_box.dart';
+import 'package:development/presentation/widgets/comment_tile.dart';
+import 'package:development/presentation/widgets/comments_section.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
@@ -37,6 +41,9 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
   bool _isInitiallyMarkedApplied = false;
 
   late bool isApplied;
+  bool _commentAutoFocused = false;
+
+  final TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -50,6 +57,8 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
             .add(FetchChipByIdEvent(chipId: _chipId!));
       } else {
         _chipData = widget.arguments!["chipData"];
+
+        _commentAutoFocused = widget.arguments?["commentFocus"] ?? false;
       }
     }
 
@@ -86,6 +95,8 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
             _isDeletable,
             _isEditable,
             _authenticatedUser,
+            _commentController,
+            _commentAutoFocused,
           );
         }
 
@@ -94,15 +105,16 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
             onPopInvoked: (didPop) {
               // have to fix the filters thing here later
               BlocProvider.of<ChipBloc>(context)
-                  .add(FetchChipsStream(filters: {}));
+                  .add(const FetchChipsStream(filters: {}));
             },
             child: _buildViewScreen(
-              context,
-              _chipData,
-              _isDeletable,
-              _isEditable,
-              _authenticatedUser,
-            ),
+                context,
+                _chipData,
+                _isDeletable,
+                _isEditable,
+                _authenticatedUser,
+                _commentController,
+                _commentAutoFocused),
           );
         } else if (state is ChipError) {
           return Scaffold(body: Center(child: Text(state.errorMsg)));
@@ -112,6 +124,12 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
       },
     );
   }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
 }
 
 Widget _buildViewScreen(
@@ -120,6 +138,8 @@ Widget _buildViewScreen(
   bool isDeletable,
   bool isEditable,
   UserModel authenticatedUser,
+  TextEditingController commentController,
+  bool commentAutoFocused,
 ) {
   return Scaffold(
     body: SafeArea(
@@ -216,17 +236,39 @@ Widget _buildViewScreen(
                         child: Text(
                           chipData.jobTitle,
                           style: Theme.of(context).textTheme.headlineMedium,
-                          overflow: TextOverflow.ellipsis,
+                          // overflow: TextOverflow.ellipsis,
                         ),
                       ),
 
                       const SizedBox(width: 10),
 
-                      // bookmark icon
-                      CustomBookmarkButton(
-                        iconSize: 28,
-                        radius: 22,
-                        currentChip: chipData,
+                      Row(
+                        children: [
+                          // bookmark icon
+                          CustomBookmarkButton(
+                            iconSize: 28,
+                            radius: 22,
+                            currentChip: chipData,
+                          ),
+
+                          if (isEditable) const SizedBox(width: 10),
+
+                          if (isEditable)
+                            CustomIconButton(
+                              iconSvgPath: AssetPaths.editIconPath,
+                              iconWidth: 22.w,
+                              iconHeight: 22.h,
+                              onTap: () {
+                                NavigationService.routeToReplacementNamed(
+                                  '/add-chip2',
+                                  arguments: {
+                                    "routeName": "/viewDetails",
+                                    "chipData": chipData
+                                  },
+                                );
+                              },
+                            ),
+                        ],
                       ),
                     ],
                   ),
@@ -269,25 +311,26 @@ Widget _buildViewScreen(
                   const SizedBox(height: 14),
 
                   MarkAppliedButton(chipId: chipData.chipId),
+
+                  const SizedBox(height: 14),
+
+                  const Divider(height: 3, color: Colors.white),
+
+                  const SizedBox(height: 14),
+
+                  CommentsSection(chip: chipData),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
                 ],
               ),
       ),
     ),
-    floatingActionButton: isEditable
-        ? FloatingActionButton(
-            key: const Key('Edit FAB'),
-            backgroundColor: Theme.of(context).colorScheme.onSecondary,
-            onPressed: () {
-              NavigationService.routeToReplacementNamed(
-                '/add-chip2',
-                arguments: {
-                  "routeName": "/viewDetails",
-                  "chipData": chipData,
-                },
-              );
-            },
-            child: const Icon(Icons.edit, size: 28),
-          )
-        : null,
+    floatingActionButton: CommentBox(
+      commentAutoFocused: commentAutoFocused,
+      commentController: commentController,
+      chipData: chipData,
+      authenticatedUser: authenticatedUser,
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
   );
 }

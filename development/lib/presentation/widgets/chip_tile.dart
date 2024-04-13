@@ -65,6 +65,16 @@ class _ChipTileState extends State<ChipTile> {
         .add(LikeChipEvent(likedChip: updatedChip.toMap()));
   }
 
+  void _handleCommentPress() {
+    NavigationService.routeToNamed(
+      '/view-chip',
+      arguments: {
+        "chipData": widget.chipData,
+        "commentFocus": true,
+      },
+    );
+  }
+
   @override
   void initState() {
     _chipLikes = widget.chipData.likedBy.length;
@@ -266,7 +276,7 @@ class _ChipTileState extends State<ChipTile> {
             children: [
               //
               Icon(
-                CupertinoIcons.heart_fill,
+                CupertinoIcons.bookmark_solid,
                 size: 18.sp,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -301,8 +311,8 @@ class _ChipTileState extends State<ChipTile> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(
-                Icons.thumb_up_rounded,
-                size: 20,
+                CupertinoIcons.heart_solid,
+                size: 22,
                 color: _isLiked
                     ? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.onPrimary,
@@ -315,7 +325,7 @@ class _ChipTileState extends State<ChipTile> {
             width: MediaQuery.of(context).size.width * 0.28,
             child: IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 9.h),
-              onPressed: () {},
+              onPressed: _handleCommentPress,
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: const Icon(Icons.comment_rounded, size: 20),

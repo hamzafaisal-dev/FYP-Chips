@@ -54,6 +54,28 @@ class Helpers {
     }
   }
 
+  static String formatCommentTime(String createdAt) {
+    DateTime createdDateTime = DateTime.parse(createdAt);
+    DateTime currentDateTime = DateTime.now();
+    Duration difference = currentDateTime.difference(createdDateTime);
+
+    if (difference.inSeconds < 60) {
+      return '${difference.inSeconds}s';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}m';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours}h';
+    } else if (difference.inDays < 30) {
+      return '${difference.inDays}d';
+    } else if (difference.inDays < 365) {
+      int months = (difference.inDays / 30).floor();
+      return '${months}mon';
+    } else {
+      int years = (difference.inDays / 365).floor();
+      return '${years}y';
+    }
+  }
+
   static String getMimeType(File file) {
     const Map<String, String> mimeTypes = {
       'png': 'image/png',
