@@ -69,7 +69,6 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: RouteGenerator.generateRoutes,
           navigatorKey: NavigationService.navigatorKey,
           home: const SplashScreen(),
-          // home: const LikeScreen(),
         ),
       ),
     );

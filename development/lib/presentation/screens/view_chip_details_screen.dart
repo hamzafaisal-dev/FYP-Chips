@@ -3,6 +3,7 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/comment/comment_cubit.dart';
+import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
@@ -43,11 +44,15 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
   late bool isApplied;
   bool _commentAutoFocused = false;
 
+  late Map<String, dynamic> _filters;
+
   final TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+
+    BlocProvider.of<SharedPrefCubit>(context).getData();
 
     if (widget.arguments != null) {
       if (widget.arguments!["chipData"] == null) {
@@ -81,46 +86,58 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChipBloc, ChipState>(
+    return BlocConsumer<SharedPrefCubit, SharedPrefState>(
       listener: (context, state) {
-        if (state is IndividualChipLoaded) _chipData = state.chip;
+        if (state is SharedPrefDataGet) {
+          _filters = state.data!;
+        }
       },
       builder: (context, state) {
-        if (widget.arguments!["chipData"] != null) {
-          _chipData = widget.arguments!["chipData"];
+        return BlocConsumer<ChipBloc, ChipState>(
+          listener: (context, state) {
+            if (state is IndividualChipLoaded) _chipData = state.chip;
+          },
+          builder: (context, state) {
+            if (widget.arguments!["chipData"] != null) {
+              _chipData = widget.arguments!["chipData"];
 
-          return _buildViewScreen(
-            context,
-            _chipData!,
-            _isDeletable,
-            _isEditable,
-            _authenticatedUser,
-            _commentController,
-            _commentAutoFocused,
-          );
-        }
-
-        if (state is IndividualChipLoaded) {
-          return PopScope(
-            onPopInvoked: (didPop) {
-              // have to fix the filters thing here later
-              BlocProvider.of<ChipBloc>(context)
-                  .add(const FetchChipsStream(filters: {}));
-            },
-            child: _buildViewScreen(
+              return _buildViewScreen(
                 context,
-                _chipData,
+                _chipData!,
                 _isDeletable,
                 _isEditable,
                 _authenticatedUser,
                 _commentController,
-                _commentAutoFocused),
-          );
-        } else if (state is ChipError) {
-          return Scaffold(body: Center(child: Text(state.errorMsg)));
-        }
+                _commentAutoFocused,
+              );
+            }
 
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            if (state is IndividualChipLoaded) {
+              return PopScope(
+                onPopInvoked: (didPop) {
+                  if (didPop) {
+                    BlocProvider.of<ChipBloc>(context)
+                        .add(FetchChipsStream(filters: _filters));
+                  }
+                },
+                child: _buildViewScreen(
+                  context,
+                  _chipData,
+                  _isDeletable,
+                  _isEditable,
+                  _authenticatedUser,
+                  _commentController,
+                  _commentAutoFocused,
+                ),
+              );
+            } else if (state is ChipError) {
+              return Scaffold(body: Center(child: Text(state.errorMsg)));
+            }
+
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+          },
+        );
       },
     );
   }
@@ -144,10 +161,7 @@ Widget _buildViewScreen(
   return Scaffold(
     body: SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 14,
-        ),
+        padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
         child: chipData == null
             ? const Center(child: Text('Looks like this chip has been deleted'))
             : ListView(
@@ -301,7 +315,10 @@ Widget _buildViewScreen(
                         .copyWith(fontSize: 22),
                   ),
 
-                  Text(chipData.description ?? 'No description available'),
+                  Text(
+                    chipData.description ?? 'No description available',
+                    style: const TextStyle(fontSize: 16),
+                  ),
 
                   const SizedBox(height: 14),
 
@@ -321,6 +338,13 @@ Widget _buildViewScreen(
                   CommentsSection(chip: chipData),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+
+                  // CommentBox(
+                  //   commentAutoFocused: commentAutoFocused,
+                  //   commentController: commentController,
+                  //   chipData: chipData,
+                  //   authenticatedUser: authenticatedUser,
+                  // ),
                 ],
               ),
       ),

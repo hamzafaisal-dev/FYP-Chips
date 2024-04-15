@@ -4,9 +4,12 @@ import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/chip_repository.dart';
+import 'package:development/data/repositories/notification_repository.dart';
 
 class ChipBloc extends Bloc<ChipEvent, ChipState> {
   final ChipRepository _chipRepository = ChipRepository();
+  final NotificationRepository _notificationRepository =
+      NotificationRepository();
 
   Future<void> _fetchChips(Emitter<ChipState> emit) async {
     emit(ChipsLoading());
@@ -29,10 +32,14 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
 
   ChipBloc() : super(ChipEmpty()) {
     on<FetchChipByIdEvent>((event, emit) async {
-      emit(ChipsLoading());
-      ChipModel? individualChip =
-          await _chipRepository.getChipById(event.chipId);
-      emit(IndividualChipLoaded(chip: individualChip));
+      try {
+        emit(ChipsLoading());
+        ChipModel? individualChip =
+            await _chipRepository.getChipById(event.chipId);
+        emit(IndividualChipLoaded(chip: individualChip));
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+      }
     });
 
     on<FetchChips>((event, emit) async {
@@ -65,7 +72,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         emit(ChipError(errorMsg: error.toString()));
 
         // fire the fetch chips event again bec after error state, chips vanished on home
-        _fetchChips(emit);
+        await _fetchChips(emit);
       }
     });
 
@@ -80,13 +87,21 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         emit(ChipError(errorMsg: error.toString()));
 
         // fire the fetch chips event again bec after error state, chips vanished on home
-        _fetchChips(emit);
+        await _fetchChips(emit);
       }
     });
 
     on<LikeChipEvent>((event, emit) async {
       try {
         await _chipRepository.editChip(chipMap: event.likedChip);
+
+        ChipModel chip = ChipModel.fromMap(event.likedChip);
+
+        _notificationRepository.createNotification(
+          'like',
+          chip,
+          event.currentUser,
+        );
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
       }
@@ -102,7 +117,7 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         );
 
         emit(ChipDeleteSuccess(updatedUser: updatedUser));
-        _fetchChips(emit);
+        await _fetchChips(emit);
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));
 

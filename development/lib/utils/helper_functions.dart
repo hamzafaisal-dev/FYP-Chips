@@ -40,7 +40,11 @@ class Helpers {
     DateTime expiryDate = DateTime.parse(dateString);
     DateTime now = DateTime.now();
 
-    if (expiryDate.year == now.year &&
+    if (now.year >= expiryDate.year &&
+        now.month >= expiryDate.month &&
+        now.day > expiryDate.day) {
+      return 'Already expired 😔';
+    } else if (expiryDate.year == now.year &&
         expiryDate.month == now.month &&
         expiryDate.day == now.day) {
       return 'Expires today';
@@ -74,6 +78,16 @@ class Helpers {
       int years = (difference.inDays / 365).floor();
       return '${years}y';
     }
+  }
+
+  // checks if deadline is expiring in 3 days or less
+  static bool expiringInThreeDays(DateTime deadline) {
+    String dateString = deadline.toString();
+    DateTime date = DateTime.parse(dateString);
+    DateTime currentDate = DateTime.now();
+    Duration difference = date.difference(currentDate);
+
+    return difference.inDays <= 3;
   }
 
   static String getMimeType(File file) {

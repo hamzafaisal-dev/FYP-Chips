@@ -14,6 +14,8 @@ class ChipNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
+  final String NSFW_API_ENDPOINT = 'https://chips.pythonanywhere.com/nsfwimage';
+
   // get a chip by its chipId
   Future<ChipModel?> getChipById(String chipId) async {
     final chipDoc = await _firestore.collection('chips').doc(chipId).get();
@@ -127,7 +129,37 @@ class ChipNetwork {
 
     String fileUrl = await storageRef.getDownloadURL();
 
+    String result = await checkimageProfanity(fileUrl);
+
+    if (result == 'Profane') throw 'profane';
+
     return fileUrl;
+  }
+
+  //network method for image profanity
+  Future<String> checkimageProfanity(String input) async {
+    final url = Uri.parse(NSFW_API_ENDPOINT);
+
+    final headers = {'Content-Type': 'application/json'};
+
+    final body = jsonEncode({'image_link': input});
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final responsedata = jsonDecode(response.body);
+        return responsedata['result'];
+      } else {
+        throw response.statusCode;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   //network method for english profanity

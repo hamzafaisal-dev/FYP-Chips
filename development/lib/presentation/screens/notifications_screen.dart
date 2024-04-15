@@ -26,8 +26,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       _notifications = widget.arguments!["notifications"];
     }
 
-    print('_notifications are $_notifications');
-
     super.initState();
   }
 

@@ -20,27 +20,29 @@ class _ChipNetworkImageContainerState extends State<ChipNetworkImageContainer> {
         context: context,
         builder: (context) {
           return Dialog.fullscreen(
-            backgroundColor: Colors.black38,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.network(imageUrl),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    color: Colors.black45,
-                    height: 40,
-                    width: 400,
-                    child: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: Colors.white),
+            backgroundColor: Colors.black,
+            child: InteractiveViewer(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.network(imageUrl),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      color: Colors.black45,
+                      height: 40,
+                      width: 400,
+                      child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close, color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });
@@ -53,21 +55,20 @@ class _ChipNetworkImageContainerState extends State<ChipNetworkImageContainer> {
         onTap: () => _showPictureFullScreen(widget.imageUrl!),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.onPrimary,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
           ),
-          height: MediaQuery.of(context).size.width,
-          width: MediaQuery.of(context).size.width,
+          // height: null,
+          // width: null,
           child: Image.network(
             widget.imageUrl!,
             fit: BoxFit.contain,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width,
+            // height: null,
+            // width: null,
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
-              // If the image is fully loaded, return the original child.
               if (loadingProgress == null) {
                 return child;
               } else {

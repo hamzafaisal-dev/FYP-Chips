@@ -17,28 +17,31 @@ class TopContributorsSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         //
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'This Week\'s Top Contributors',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.sp,
-                  ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: Text(
-                'See All',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'This Week\'s Top Contributors',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
-                      color: Theme.of(context).primaryColor,
+                      fontSize: 18.sp,
                     ),
               ),
-            ),
-          ],
+              InkWell(
+                onTap: () {},
+                child: Text(
+                  'See All',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.sp,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                ),
+              ),
+            ],
+          ),
         ),
 
         SizedBox(height: 16.h),

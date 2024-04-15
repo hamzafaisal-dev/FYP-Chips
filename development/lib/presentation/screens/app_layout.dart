@@ -1,12 +1,14 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/notification_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/presentation/widgets/search_bar.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   late final UserModel? _authenticatedUser;
+  final _searchController = TextEditingController();
 
   int _currentIndex = 0;
 
@@ -43,7 +46,7 @@ class _AppLayoutState extends State<AppLayout> {
       Widget widget = const ErrorScreen();
       switch (index) {
         case 0:
-          widget = const HomeScreen();
+          widget = HomeScreen(searchController: _searchController);
           break;
         case 1:
           widget = const SettingsScreen();
@@ -70,10 +73,18 @@ class _AppLayoutState extends State<AppLayout> {
       }
 
       return AppBar(
-        title: Text(title),
+        scrolledUnderElevation: 1,
+        shadowColor: Colors.black,
+        backgroundColor: CustomColors.weirdWhite,
+        title: (_currentIndex == 0)
+            ? Padding(
+                padding: EdgeInsets.only(left: 4.w),
+                child: CustomSearchBar(searchController: _searchController),
+              )
+            : Text(title),
         automaticallyImplyLeading: false,
 
-        // leading
+        //
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20.0.w),
@@ -127,6 +138,7 @@ class _AppLayoutState extends State<AppLayout> {
       bottomNavigationBar: SizedBox(
         height: 64.h,
         child: BottomNavigationBar(
+          elevation: 5,
           backgroundColor: Theme.of(context).colorScheme.surface,
           onTap: (int index) {
             setState(() => _currentIndex = index);

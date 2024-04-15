@@ -1,4 +1,5 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
@@ -60,6 +61,10 @@ class _CustomBookmarkButtonState extends State<CustomBookmarkButton> {
             'Chip added to favorites!🎉',
             'success',
           );
+
+          // send notification to recipient on successful bookmark
+          BlocProvider.of<NotificationCubit>(context).createNotificationEvent(
+              'bookmark', widget.currentChip, _authenticatedUser!);
         }
 
         if (state is ChipUnbookmarkedState) {

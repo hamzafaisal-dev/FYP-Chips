@@ -1,52 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
-import 'package:development/data/models/notification_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
 
 class UserNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  // shift this bad boi to noti cubit and call in ui
-  void generateNotification(ChipModel chip, UserModel currentUser) async {
-    String newNotificationId = const Uuid().v4();
-
-    // calculate timestamp for 24 hrs ago
-    int twentyFourHoursAgoTimestamp = DateTime.now()
-        .subtract(const Duration(hours: 24))
-        .millisecondsSinceEpoch;
-
-    // check if a notif with the same jobId, senderId, and recipientId exists in the past 24 hours
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('notifications')
-        .where('jobId', isEqualTo: chip.chipId)
-        .where('senderId', isEqualTo: currentUser.userId)
-        .where('recipientId', isEqualTo: chip.postedBy)
-        .where('timestamp', isGreaterThan: twentyFourHoursAgoTimestamp)
-        .limit(1)
-        .get();
-
-    // if no such notification exists, generate a new notif
-    if (querySnapshot.docs.isEmpty) {
-      NotificationModel newNotification = NotificationModel(
-        notificationId: newNotificationId,
-        recipientId: chip.postedBy,
-        senderId: currentUser.userId,
-        jobId: chip.chipId,
-        type: 'bookmark',
-        message: '${currentUser.name} favorited your chip!',
-        timestamp: DateTime.now(),
-        read: false,
-      );
-
-      await FirebaseFirestore.instance
-          .collection('notifications')
-          .doc(newNotificationId)
-          .set(newNotification.toJson());
-    }
-  }
 
   Future<UserModel> findUserByUsername(String username) async {
     QuerySnapshot querySnapshot = await _firestore
@@ -161,11 +120,6 @@ class UserNetwork {
       chipPostersBookmarkCount += 1;
 
       isBookmarked = true;
-
-      // if chip is user's own posted chip then no notif will be generated
-      if (!currentUser.postedChips.contains(chip.chipId)) {
-        generateNotification(chip, currentUser);
-      }
     }
 
     // roza lag raha hai, pata nahi kia bakwas likhi hai but it works

@@ -1,3 +1,4 @@
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -51,9 +52,10 @@ class EditChipEvent extends ChipEvent {
 }
 
 class LikeChipEvent extends ChipEvent {
+  final UserModel currentUser;
   final Map<String, dynamic> likedChip;
 
-  const LikeChipEvent({required this.likedChip});
+  const LikeChipEvent({required this.likedChip, required this.currentUser});
 
   @override
   List<Object?> get props => [likedChip];

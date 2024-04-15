@@ -80,7 +80,7 @@ class UserCubit extends Cubit<UserState> {
           : emit(ChipUnbookmarkedState(updatedUser: updatedUser));
 
       // uncomment this line to fix bug of unbookmarked chip still showing in fav chips screen
-      fetchUserChips(updatedUser.favoritedChips);
+      // fetchUserChips(updatedUser.favoritedChips);
     } catch (error) {
       emit(UserErrorState(errorMessage: error.toString()));
     }

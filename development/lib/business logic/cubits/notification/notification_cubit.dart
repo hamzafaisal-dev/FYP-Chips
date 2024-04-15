@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/notification_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/notification_repository.dart';
@@ -20,6 +21,15 @@ class NotificationCubit extends Cubit<NotificationState> {
           _notificationRepository.getAllNotificationStream(currentUser);
 
       emit(NotificationsStreamLoaded(notifications: notificationStream));
+    } catch (error) {
+      emit(NotificationErrorState(errorMessage: error.toString()));
+    }
+  }
+
+  void createNotificationEvent(
+      String notifType, ChipModel chip, UserModel currentUser) {
+    try {
+      _notificationRepository.createNotification(notifType, chip, currentUser);
     } catch (error) {
       emit(NotificationErrorState(errorMessage: error.toString()));
     }
