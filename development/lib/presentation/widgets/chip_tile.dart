@@ -20,16 +20,12 @@ class ChipTile extends StatefulWidget {
     Key? key,
     required this.chipData,
     required this.currentUser,
-    this.onTap,
   }) : super(key: key);
 
   /// The chip data to display.
   final ChipModel chipData;
 
   final UserModel currentUser;
-
-  /// Callback function triggered when the tile is tapped.
-  final void Function()? onTap;
 
   @override
   State<ChipTile> createState() => _ChipTileState();
@@ -86,6 +82,13 @@ class _ChipTileState extends State<ChipTile> {
     );
   }
 
+  void _handleChipPress() {
+    NavigationService.routeToNamed(
+      '/view-chip',
+      arguments: {"chipData": widget.chipData},
+    );
+  }
+
   @override
   void initState() {
     _chipLikes = widget.chipData.likedBy.length;
@@ -105,80 +108,83 @@ class _ChipTileState extends State<ChipTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 0,
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.r),
-        splashColor: Colors.transparent,
-        onTap: widget.onTap,
-        child: Padding(
-          padding: EdgeInsets.only(top: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Row for user profile and posted info
-              _buildUserInfoRow(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      child: Card(
+        shape: const RoundedRectangleBorder(
+            // borderRadius: BorderRadius.circular(10),
+            ),
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        child: InkWell(
+          // borderRadius: BorderRadius.circular(12.r),
+          splashColor: Colors.transparent,
+          onTap: _handleChipPress,
+          child: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Row for user profile and posted info
+                _buildUserInfoRow(),
 
-              // Divider
-              _buildDivider(),
+                // Divider
+                _buildDivider(),
 
-              // Job title
-              _buildJobTitle(),
+                // Job title
+                _buildJobTitle(),
 
-              // Job description
-              if (_chipHasDescription) _buildJobDescription(),
+                // Job description
+                if (_chipHasDescription) _buildJobDescription(),
 
-              // Divider
-              // _buildDivider(),
+                // Divider
+                // _buildDivider(),
 
-              if (1 != 1) //(_chipHasImage)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Material(
-                      elevation: 3,
-                      shadowColor: Colors.grey,
-                      // borderRadius: BorderRadius.circular(12),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Image.network(
-                          widget.chipData.imageUrl!,
-                          fit: BoxFit.contain,
-                          width: MediaQuery.of(context).size.width * 0.85,
-                          height: null,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return const Center(
-                                child: CustomCircularProgressIndicator(),
-                              );
-                            }
-                          },
+                if (1 != 1) //(_chipHasImage)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Material(
+                        elevation: 3,
+                        shadowColor: Colors.grey,
+                        // borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 0),
+                          child: Image.network(
+                            widget.chipData.imageUrl!,
+                            fit: BoxFit.contain,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: null,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CustomCircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
 
-              // Heart icon and post likes
-              _buildInfo(),
+                // Heart icon and post likes
+                _buildInfo(),
 
-              _buildInteractionsCount(_chipLikes, _chipComments),
+                _buildInteractionsCount(_chipLikes, _chipComments),
 
-              // Divider
-              _buildDivider(),
+                // Divider
+                _buildDivider(),
 
-              // Likes, Comments waghera
-              _buildInteractions(),
-            ],
+                // Likes, Comments waghera
+                _buildInteractions(),
+              ],
+            ),
           ),
         ),
       ),
@@ -193,7 +199,7 @@ class _ChipTileState extends State<ChipTile> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           child: CircleAvatar(
-            radius: 16.r,
+            radius: 20.r,
             child: ClipOval(
               child: SvgPicture.network(
                 widget.chipData.posterPicture,
@@ -219,9 +225,10 @@ class _ChipTileState extends State<ChipTile> {
             //
             InkWell(
               onTap: () {
-                NavigationService.routeToNamed('/user_profile', arguments: {
-                  "postedBy": widget.chipData.postedBy,
-                });
+                NavigationService.routeToNamed(
+                  '/user_profile',
+                  arguments: {"postedBy": widget.chipData.postedBy},
+                );
               },
               child: Text(
                 widget.chipData.postedBy,

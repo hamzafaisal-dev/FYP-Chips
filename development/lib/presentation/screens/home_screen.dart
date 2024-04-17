@@ -3,12 +3,15 @@ import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
+import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_image_tile.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
 import 'package:development/presentation/widgets/search_bar.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,6 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
 
+    BlocProvider.of<UserCubit>(context).fetchTopContributors();
+
     SharedPrefCubit sharedPrefCubit = BlocProvider.of<SharedPrefCubit>(context);
     sharedPrefCubit.getData();
   }
@@ -58,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 0.w),
         child: RefreshIndicator(
           backgroundColor: Theme.of(context).colorScheme.surface,
           onRefresh: () => _handleRefresh(),
@@ -139,22 +144,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : Expanded(
                             child: ListView.builder(
-                              itemCount: state.chips.length,
+                              padding: EdgeInsets.zero,
+                              itemCount: state.chips.length +
+                                  1, // Add 1 for the TopContributorsSection widget
                               itemBuilder: (context, index) {
-                                List<ChipModel> chipData = state.chips;
-                                ChipModel chipObject = chipData[index];
+                                if (index == 0) {
+                                  // Render the TopContributorsSection widget at the first position
+                                  return TopContributorsSection(
+                                      authenticatedUser: _authenticatedUser);
+                                } else {
+                                  // Render the remaining items normally after the TopContributorsSection
+                                  List<ChipModel> chipData = state.chips;
+                                  ChipModel chipObject = chipData[index - 1];
 
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 10.8.h),
-                                  child: ChipTile(
-                                    chipData: chipObject,
-                                    currentUser: _authenticatedUser!,
-                                    onTap: () => NavigationService.routeToNamed(
-                                      '/view-chip',
-                                      arguments: {"chipData": chipObject},
-                                    ),
-                                  ),
-                                );
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 10.8.h),
+                                    child: (chipObject.imageUrl == '')
+                                        ? ChipTile(
+                                            chipData: chipObject,
+                                            currentUser: _authenticatedUser!,
+                                          )
+                                        : ChipImageTile(
+                                            chipData: chipObject,
+                                            currentUser: _authenticatedUser!,
+                                          ),
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -167,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     else
                       Expanded(
                         child: ListView.builder(
+                          padding: EdgeInsets.zero,
                           itemCount: state.chips.length,
                           itemBuilder: (context, index) {
                             List<ChipModel> chipData = state.chips;
@@ -174,14 +190,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             return Padding(
                               padding: EdgeInsets.only(bottom: 10.8.h),
-                              child: ChipTile(
-                                chipData: chipObject,
-                                currentUser: _authenticatedUser!,
-                                onTap: () => NavigationService.routeToNamed(
-                                  '/view-chip',
-                                  arguments: {"chipData": chipObject},
-                                ),
-                              ),
+                              child: (chipObject.imageUrl == '')
+                                  ? ChipTile(
+                                      chipData: chipObject,
+                                      currentUser: _authenticatedUser!,
+                                    )
+                                  : ChipImageTile(
+                                      chipData: chipObject,
+                                      currentUser: _authenticatedUser!,
+                                    ),
                             );
                           },
                         ),
@@ -190,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is ChipsLoading)
                     Expanded(
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: 10,
                         itemBuilder: (context, index) =>
                             const ChipTileSkeleton(),

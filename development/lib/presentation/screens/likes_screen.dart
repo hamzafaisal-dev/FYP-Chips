@@ -1,14 +1,19 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/data/networks/chip_network.dart';
+import 'package:development/data/networks/user_network.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 class LikeScreen extends StatefulWidget {
   const LikeScreen({super.key, this.arguments});
@@ -26,6 +31,14 @@ class _LikeScreenState extends State<LikeScreen> {
 
     BlocProvider.of<UserCubit>(context).fetchUsersByUsernames(userNames);
 
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      print(isAllowed);
+
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+
     super.initState();
   }
 
@@ -41,6 +54,7 @@ class _LikeScreenState extends State<LikeScreen> {
 
         // back button
         leadingWidth: 64.w,
+
         leading: Padding(
           padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
           child: Align(
@@ -49,20 +63,32 @@ class _LikeScreenState extends State<LikeScreen> {
               iconSvgPath: AssetPaths.leftArrowIconPath,
               iconWidth: 16.w,
               iconHeight: 16.h,
-              onTap: () => NavigationService.goBack(),
+              onTap: () {
+                BlocProvider.of<UserCubit>(context).fetchTopContributors();
+
+                NavigationService.goBack();
+              },
             ),
           ),
         ),
+
+        actions: [
+          IconButton(
+            onPressed: () async {
+              print('pressed');
+
+              await UserNetwork().getTopContributors();
+            },
+            icon: Icon(Icons.abc),
+          )
+        ],
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          print(state);
-
           if (state is UsersLoadedState) {
             return Column(
               children: [
                 //
-
                 Divider(
                   height: 10,
                   thickness: 1,

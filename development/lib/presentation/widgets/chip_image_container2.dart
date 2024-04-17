@@ -60,13 +60,13 @@ class _ChipNetworkImageContainerState extends State<ChipNetworkImageContainer> {
               Radius.circular(10),
             ),
           ),
-          // height: null,
-          // width: null,
+          height: null,
+          width: null,
           child: Image.network(
             widget.imageUrl!,
             fit: BoxFit.contain,
-            // height: null,
-            // width: null,
+            height: null,
+            width: null,
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) {

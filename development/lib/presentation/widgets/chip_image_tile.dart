@@ -2,6 +2,8 @@ import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_image_container2.dart';
+import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,9 @@ class ChipImageTile extends StatefulWidget {
 }
 
 class _ChipImageTileState extends State<ChipImageTile> {
+  bool _chipHasImage = false;
+  bool _chipHasDescription = true;
+
   bool _isLiked = false;
   late int _chipLikes;
   late int _chipComments;
@@ -81,6 +86,13 @@ class _ChipImageTileState extends State<ChipImageTile> {
     );
   }
 
+  void _handleChipPress() {
+    NavigationService.routeToNamed(
+      '/view-chip',
+      arguments: {"chipData": widget.chipData},
+    );
+  }
+
   @override
   void initState() {
     _chipLikes = widget.chipData.likedBy.length;
@@ -92,53 +104,92 @@ class _ChipImageTileState extends State<ChipImageTile> {
       _isLiked = true;
     }
 
+    _chipHasDescription = widget.chipData.description != '' ? true : false;
+    _chipHasImage = widget.chipData.imageUrl != '' ? true : false;
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      elevation: 0,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12.r),
-        splashColor: Colors.transparent,
-        onTap: widget.onTap,
-        child: Padding(
-          padding: EdgeInsets.only(top: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Row for user profile and posted info
-              _buildUserInfoRow(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+            // borderRadius: BorderRadius.circular(10),
+            ),
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12.r),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: _handleChipPress,
+          child: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Row for user profile and posted info
+                _buildUserInfoRow(),
 
-              // Divider
-              _buildDivider(),
+                // Divider
+                _buildDivider(),
 
-              // Job title
-              _buildJobTitle(),
+                // // Job title
+                // _buildJobTitle(),
 
-              // Job description
-              if (widget.chipData.description!.isNotEmpty)
-                _buildJobDescription(),
+                // // Job description
+                // if (_chipHasDescription) _buildJobDescription(),
 
-              // Divider
-              // _buildDivider(),
+                // Divider
+                // _buildDivider(),
 
-              // Heart icon and post likes
-              _buildInfo(),
+                if (_chipHasImage) //(_chipHasImage)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Material(
+                        elevation: 3,
+                        shadowColor: Colors.grey,
+                        // borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 0),
+                          child: Image.network(
+                            widget.chipData.imageUrl!,
+                            fit: BoxFit.contain,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: null,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CustomCircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
 
-              _buildInteractionsCount(_chipLikes, _chipComments),
+                // Heart icon and post likes
+                // _buildInfo(),
 
-              // Divider
-              _buildDivider(),
+                _buildInteractionsCount(_chipLikes, _chipComments),
 
-              // Likes, Comments waghera
-              _buildInteractions(),
-            ],
+                // Divider
+                _buildDivider(),
+
+                // Likes, Comments waghera
+                _buildInteractions(),
+              ],
+            ),
           ),
         ),
       ),
@@ -281,7 +332,7 @@ class _ChipImageTileState extends State<ChipImageTile> {
 
   Widget _buildInteractionsCount(int likesCount, int commentsCount) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18.w, 4.h, 8.w, 0),
+      padding: EdgeInsets.fromLTRB(18.w, 18.h, 8.w, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

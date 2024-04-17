@@ -22,7 +22,8 @@ class CommentTile extends StatelessWidget {
           //
           CircleAvatar(
             radius: 25.r,
-            backgroundColor: Colors.yellow,
+            backgroundColor:
+                Theme.of(context).colorScheme.primary.withOpacity(0.4),
             child: ClipOval(
               child: SvgPicture.network(
                 comment.posterProfilePicture,

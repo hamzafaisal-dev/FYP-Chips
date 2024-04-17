@@ -61,6 +61,19 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  // fetch top contributors
+  void fetchTopContributors() async {
+    emit(FetchingTopContributors());
+    try {
+      List<Map<String, dynamic>> topContributors =
+          await _userRepository.getTopContributors();
+
+      emit(TopContributorsLoadedState(topContributors: topContributors));
+    } catch (error) {
+      emit(TopContributorsErrorState(errorMessage: error.toString()));
+    }
+  }
+
   // bookmark chip
   void bookMarkChip(
       {required ChipModel chip, required UserModel currentUser}) async {

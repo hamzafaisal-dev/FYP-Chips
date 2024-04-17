@@ -59,6 +59,62 @@ class UserNetwork {
     return users;
   }
 
+  Future<List<Map<String, dynamic>>> getTopContributors() async {
+    try {
+      // Calculate the timestamps for the start and end of the current week
+      DateTime now = DateTime.now();
+      DateTime startOfWeek =
+          DateTime(now.year, now.month, now.day - now.weekday);
+      DateTime endOfWeek = startOfWeek.add(const Duration(days: 7));
+
+      // Convert start and end timestamps to milliseconds since epoch
+      int startTimestamp = startOfWeek.millisecondsSinceEpoch;
+      int endTimestamp = endOfWeek.millisecondsSinceEpoch;
+
+      // Query Firestore for documents created within the current week
+      QuerySnapshot snapshot = await _firestore
+          .collection('chips')
+          .where('createdAt', isGreaterThanOrEqualTo: startTimestamp)
+          .where('createdAt', isLessThan: endTimestamp)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      // Map documents to ChipModel objects
+      List<ChipModel> chipsThisWeek = snapshot.docs
+          .map(
+            (docSnapshot) =>
+                ChipModel.fromMap(docSnapshot.data() as Map<String, dynamic>),
+          )
+          .toList();
+
+      // Count chips posted by each user and collect profile picture URL
+      Map<String, int> postCounts = {};
+      Map<String, String> profilePictureUrls = {};
+
+      chipsThisWeek.forEach((chip) {
+        postCounts.update(chip.postedBy, (value) => value + 1,
+            ifAbsent: () => 1);
+        profilePictureUrls[chip.postedBy] = chip.posterPicture;
+      });
+
+      // Prepare list of maps with post counts and profile picture URLs
+      List<Map<String, dynamic>> chipsWithCounts = postCounts.entries
+          .map((entry) => {
+                'postedBy': entry.key,
+                'profilePictureUrl': profilePictureUrls[entry.key],
+                'postCount': entry.value,
+              })
+          .toList();
+
+      // Sort the list in descending order based on postCount
+      chipsWithCounts.sort((a, b) => b['postCount'].compareTo(a['postCount']));
+
+      return chipsWithCounts;
+    } catch (error) {
+      return []; // Return empty list in case of error
+    }
+  }
+
   // Get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _firestore

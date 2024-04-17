@@ -9,8 +9,8 @@ class SharedRefNetwork {
     final List<String>? jobTypes = prefs.getStringList('jobTypes');
 
     Map<String, dynamic> selectedFilters = {
-      'jobModes': jobModes,
-      'jobTypes': jobTypes,
+      'jobModes': jobModes ?? <String>[],
+      'jobTypes': jobTypes ?? <String>[],
     };
 
     return selectedFilters;

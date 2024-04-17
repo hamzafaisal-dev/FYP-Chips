@@ -128,3 +128,23 @@ final class UserErrorState extends UserState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+final class FetchingTopContributors extends UserState {}
+
+final class TopContributorsLoadedState extends UserState {
+  final List<Map<String, dynamic>> topContributors;
+
+  const TopContributorsLoadedState({required this.topContributors});
+
+  @override
+  List<Object> get props => [topContributors];
+}
+
+final class TopContributorsErrorState extends UserState {
+  final String errorMessage;
+
+  const TopContributorsErrorState({required this.errorMessage});
+
+  @override
+  List<Object> get props => [errorMessage];
+}

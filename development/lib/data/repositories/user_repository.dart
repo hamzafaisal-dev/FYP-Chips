@@ -14,6 +14,10 @@ class UserRepository {
     return _userNetwork.findUsersByUsernames(usernames);
   }
 
+  Future<List<Map<String, dynamic>>> getTopContributors() async {
+    return await _userNetwork.getTopContributors();
+  }
+
   // get user chips stream
   Stream<List<ChipModel>> getUserChipsStream(String username) {
     return _userNetwork.getUserChipsStream(username);

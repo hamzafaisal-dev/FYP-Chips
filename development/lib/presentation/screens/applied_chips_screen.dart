@@ -169,10 +169,6 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                         return ChipTile(
                           chipData: chipData,
                           currentUser: _authenticatedUser!,
-                          onTap: () => NavigationService.routeToNamed(
-                            '/view-chip',
-                            arguments: {"chipData": chipData},
-                          ),
                         );
                       },
                     ),

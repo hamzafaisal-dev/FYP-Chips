@@ -331,20 +331,18 @@ Widget _buildViewScreen(
 
                   const SizedBox(height: 14),
 
-                  const Divider(height: 3, color: Colors.white),
+                  Material(
+                    elevation: 2,
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    color: Colors.white,
+                    child: const Divider(height: 1, color: Colors.white),
+                  ),
 
                   const SizedBox(height: 14),
 
                   CommentsSection(chip: chipData),
 
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-
-                  // CommentBox(
-                  //   commentAutoFocused: commentAutoFocused,
-                  //   commentController: commentController,
-                  //   chipData: chipData,
-                  //   authenticatedUser: authenticatedUser,
-                  // ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 ],
               ),
       ),

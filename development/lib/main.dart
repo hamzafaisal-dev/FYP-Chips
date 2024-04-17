@@ -17,6 +17,7 @@ import 'package:development/firebase_options.dart';
 import 'package:development/presentation/themes/theme.dart';
 import 'package:development/route_generator.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -37,6 +38,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'chips_notification_channel',
+        channelName: 'Chips',
+        channelDescription: 'Chips notification channel',
+        playSound: true,
+      ),
+    ],
+    debug: true,
+  );
 
   runApp(const MyApp());
 }

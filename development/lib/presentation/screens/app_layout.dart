@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -103,13 +104,25 @@ class _AppLayoutState extends State<AppLayout> {
                           return Badge.count(
                             count: notifications.length,
                             isLabelVisible: notifications.isNotEmpty,
-                            child: CustomIconButton(
-                              iconSvgPath: AssetPaths.alertsIconPath,
-                              iconWidth: 18.42.w,
-                              iconHeight: 21.67.h,
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               onTap: () => NavigationService.routeToNamed(
-                                  '/notifications',
-                                  arguments: {"notifications": snapshot.data}),
+                                '/notifications',
+                                arguments: {"notifications": snapshot.data},
+                              ),
+                              child: Transform.scale(
+                                scale: 1.2,
+                                child: SvgPicture.asset(
+                                  AssetPaths.alertsIconPath,
+                                  width: 18.42.w,
+                                  height: 21.67.h,
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).colorScheme.onPrimary,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         }

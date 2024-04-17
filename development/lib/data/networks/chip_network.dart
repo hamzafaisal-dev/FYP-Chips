@@ -14,7 +14,8 @@ class ChipNetwork {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  final String NSFW_API_ENDPOINT = 'https://chips.pythonanywhere.com/nsfwimage';
+  final String NSFW_API_ENDPOINT =
+      'https://chips.pythonanywhere.com/profanity/image';
 
   // get a chip by its chipId
   Future<ChipModel?> getChipById(String chipId) async {
@@ -58,6 +59,8 @@ class ChipNetwork {
           ),
         )
         .toList();
+
+    print(chips);
 
     return chips;
   }
@@ -128,6 +131,8 @@ class ChipNetwork {
     await storageRef.putFile(file, metadata);
 
     String fileUrl = await storageRef.getDownloadURL();
+
+    print(fileUrl);
 
     String result = await checkimageProfanity(fileUrl);
 
@@ -271,7 +276,6 @@ class ChipNetwork {
   // post chip
   Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
     //
-
     late UserModel updatedUser;
 
     // get all chip properties from map
@@ -368,7 +372,7 @@ class ChipNetwork {
         .update(updatedUser.toMap());
 
     // add chip to google sheet
-    await addChipToGoogleSheet(newChip);
+    // await addChipToGoogleSheet(newChip);
 
     return updatedUser;
   }

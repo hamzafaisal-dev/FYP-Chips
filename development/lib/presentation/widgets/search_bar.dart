@@ -1,12 +1,14 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/widgets/custom_filter_chip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 List<String> jobModes = ['On-site', 'Hybrid', 'Remote'];
 
@@ -223,12 +225,19 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             child: Container(
               height: 40,
               width: 32,
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.tertiary,
                 border: Border.all(color: Colors.transparent),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.filter_list),
+              child: SvgPicture.asset(
+                AssetPaths.filterIconPath,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.onPrimary,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ),
         ),

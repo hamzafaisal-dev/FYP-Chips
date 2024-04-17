@@ -2,6 +2,7 @@ import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/services/notification_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
@@ -126,6 +127,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       "success",
                     );
                     NavigationService.routeToReplacementNamed("/layout");
+
+                    print('we here login');
+                    NotificationService.createChipsNotification(
+                        state.user.name);
                   }
                   if (state is AuthSignInFailure) {
                     HelperWidgets.showSnackbar(

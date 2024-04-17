@@ -2,6 +2,7 @@ import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/themes/custom_themes/pinput_theme.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/services/notification_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +84,12 @@ class _OtpScreenState extends State<OtpScreen> {
                 'Account Created Successfully! Welcome to Chips!🍟',
                 'success',
               );
+
               BlocProvider.of<AuthCubit>(context)
                   .sendOnboardingEmail(state.user);
+
+              print('we here sign up');
+              NotificationService.createChipsNotification(state.user.name);
             }
             if (state is AuthSignUpFailure) {
               HelperWidgets.showSnackbar(
