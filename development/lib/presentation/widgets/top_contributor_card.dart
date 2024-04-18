@@ -126,7 +126,7 @@ class TopContributorCardAlt extends StatelessWidget {
                 Container(
                   // color: Colors.red,
                   child: Text(
-                    'Become A\nTop Contributor',
+                    'Become A\n Contributor',
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme

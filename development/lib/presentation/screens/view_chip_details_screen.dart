@@ -18,6 +18,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -242,6 +243,7 @@ Widget _buildViewScreen(
 
                   const SizedBox(height: 14),
 
+                  // chip title + bookmark icon
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -289,18 +291,145 @@ Widget _buildViewScreen(
 
                   const SizedBox(height: 14),
 
+                  // Posted By + Posted Time
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //
-                      Text(
-                        'Posted By: ${chipData.postedBy}',
-                        style: Theme.of(context).textTheme.bodyLarge,
+                      Row(
+                        children: [
+                          //
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Posted By: ',
+                                    ),
+                                    TextSpan(
+                                      text: chipData.postedBy,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
 
                       Text(
                         Helpers.formatTimeAgo(chipData.createdAt.toString()),
                         style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  // Apply Here + Copy to clipboard
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //
+                      Row(
+                        children: [
+                          //
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //
+                              Text(
+                                'Apply Here:',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+
+                              const SizedBox(width: 5),
+
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  chipData.applicationLink,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        visualDensity: VisualDensity.compact,
+                        onPressed: () {
+                          Clipboard.setData(
+                                  ClipboardData(text: chipData.applicationLink))
+                              .then((_) {
+                            HelperWidgets.showSnackbar(
+                                context, 'Copied to clipboard!', 'success');
+                          });
+                        },
+                        icon: const Icon(Icons.copy, size: 20),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  // Deadline
+                  Row(
+                    children: [
+                      //
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //
+                          Text(
+                            'Last Date To Apply:',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+
+                          const SizedBox(width: 5),
+
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlueAccent,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              Helpers.formatDateTimeString(
+                                  chipData.deadline.toString()),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.surface,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

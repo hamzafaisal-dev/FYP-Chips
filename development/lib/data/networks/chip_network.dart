@@ -60,8 +60,6 @@ class ChipNetwork {
         )
         .toList();
 
-    print(chips);
-
     return chips;
   }
 

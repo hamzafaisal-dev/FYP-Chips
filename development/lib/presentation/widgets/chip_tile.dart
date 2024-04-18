@@ -138,41 +138,6 @@ class _ChipTileState extends State<ChipTile> {
                 // Job description
                 if (_chipHasDescription) _buildJobDescription(),
 
-                // Divider
-                // _buildDivider(),
-
-                if (1 != 1) //(_chipHasImage)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Material(
-                        elevation: 3,
-                        shadowColor: Colors.grey,
-                        // borderRadius: BorderRadius.circular(12),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 0),
-                          child: Image.network(
-                            widget.chipData.imageUrl!,
-                            fit: BoxFit.contain,
-                            width: MediaQuery.of(context).size.width * 0.85,
-                            height: null,
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              } else {
-                                return const Center(
-                                  child: CustomCircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
                 // Heart icon and post likes
                 _buildInfo(),
 

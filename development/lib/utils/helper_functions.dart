@@ -36,6 +36,14 @@ class Helpers {
     }
   }
 
+  static String formatDateTimeString(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateFormat formatter =
+        DateFormat('MMMM d, yyyy'); // Change format as needed
+    String formattedDate = formatter.format(dateTime);
+    return formattedDate;
+  }
+
   static String formatExpiryDateString(String dateString) {
     DateTime expiryDate = DateTime.parse(dateString);
     DateTime now = DateTime.now();

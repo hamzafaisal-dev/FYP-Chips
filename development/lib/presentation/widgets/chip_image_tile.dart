@@ -137,16 +137,7 @@ class _ChipImageTileState extends State<ChipImageTile> {
                 // Divider
                 _buildDivider(),
 
-                // // Job title
-                // _buildJobTitle(),
-
-                // // Job description
-                // if (_chipHasDescription) _buildJobDescription(),
-
-                // Divider
-                // _buildDivider(),
-
-                if (_chipHasImage) //(_chipHasImage)
+                if (_chipHasImage)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Container(
@@ -204,7 +195,7 @@ class _ChipImageTileState extends State<ChipImageTile> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           child: CircleAvatar(
-            radius: 16.r,
+            radius: 20.r,
             child: ClipOval(
               child: SvgPicture.network(
                 widget.chipData.posterPicture,
