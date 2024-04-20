@@ -78,10 +78,7 @@ class _AppLayoutState extends State<AppLayout> {
         shadowColor: Colors.black,
         backgroundColor: CustomColors.weirdWhite,
         title: (_currentIndex == 0)
-            ? Padding(
-                padding: EdgeInsets.only(left: 4.w),
-                child: CustomSearchBar(searchController: _searchController),
-              )
+            ? CustomSearchBar(searchController: _searchController)
             : Text(title),
         automaticallyImplyLeading: false,
 

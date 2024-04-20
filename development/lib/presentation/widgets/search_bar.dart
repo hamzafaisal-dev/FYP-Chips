@@ -36,6 +36,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   List<String> _selectedJobModes = [];
   List<String> _selectedJobTypes = [];
 
+  IconData leadingIcon = Icons.search;
+
   void _handleJobModeChipClick(String jobMode) {
     _selectedJobModes.contains(jobMode)
         ? _selectedJobModes.remove(jobMode)
@@ -188,7 +190,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             }) =>
                 null,
             onTapOutside: (event) => FocusScope.of(context).unfocus(),
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                setState(() => leadingIcon = Icons.close);
+              } else {
+                setState(() => leadingIcon = Icons.search);
+              }
+            },
             onFieldSubmitted: (value) {
               if (value.isNotEmpty) {
                 BlocProvider.of<ChipBloc>(context).add(
@@ -201,7 +209,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               hintText: 'Search',
               hintStyle: Theme.of(context).textTheme.bodyLarge,
               prefixIcon: Icon(
-                Icons.search,
+                leadingIcon,
                 size: 20.w,
               ),
               contentPadding: EdgeInsets.symmetric(

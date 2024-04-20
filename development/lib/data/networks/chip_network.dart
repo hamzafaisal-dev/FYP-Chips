@@ -238,6 +238,38 @@ class ChipNetwork {
     }
   }
 
+  //network method for jobnojob
+  Future<Map<String, dynamic>> checkJobValidity(String input) async {
+    final url = Uri.parse('https://chips.pythonanywhere.com/job');
+
+    final headers = {'Content-Type': 'application/json'};
+
+    final body = jsonEncode({'input': input});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final responsedata = jsonDecode(response.body);
+
+        print('responsedata is $responsedata');
+
+        return {
+          'prediction': responsedata['prediction'].toString(),
+          'confidence': responsedata['confidence'].toString(),
+        };
+      } else {
+        return {
+          'error': 'Error: ${response.statusCode}',
+        };
+      }
+    } catch (e) {
+      return {
+        'error': 'Error: $e',
+      };
+    }
+  }
+
   // add chip to google sheet
   Future<Map<String, dynamic>> addChipToGoogleSheet(ChipModel chip) async {
     final url = Uri.https(NetworkURLS.baseUrl1, '/addChip');
@@ -294,14 +326,24 @@ class ChipNetwork {
     String username = currentUser.username;
     String chipId = const Uuid().v4();
 
-    // concatenate all user input to check for profanity
-    String profanityContext = '$jobTitle + $companyName + $description';
+    // concatenate all user input to check for profanity and job validity
+    String context = '$jobTitle $companyName $description';
+
+    print('context is $context');
+
+    Map<String, dynamic> jobValidityResponse = await checkJobValidity(context);
+
+    if (int.parse(jobValidityResponse['prediction']) == 0) {
+      throw 'not-job';
+    } else if (int.parse(jobValidityResponse['prediction']) == 1) {
+      throw 'job';
+    }
 
     Map<String, dynamic> englishProfanityResponse =
-        await checkEnglishProfanity(profanityContext);
+        await checkEnglishProfanity(context);
 
     Map<String, dynamic> urduProfanityResponse =
-        await checkUrduProfanity(profanityContext);
+        await checkUrduProfanity(context);
 
     double englishProfanityScore =
         double.parse(englishProfanityResponse['Profane']);

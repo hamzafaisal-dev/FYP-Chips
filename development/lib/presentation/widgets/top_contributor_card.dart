@@ -2,6 +2,7 @@ import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TopContributorCard extends StatelessWidget {
   const TopContributorCard({
@@ -57,6 +58,13 @@ class TopContributorCard extends StatelessWidget {
                         width: double.maxFinite,
                         alignment: Alignment.center,
                         fit: BoxFit.contain,
+                        placeholderBuilder: (context) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: CircleAvatar(radius: 40.r),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -123,17 +131,14 @@ class TopContributorCardAlt extends StatelessWidget {
                   ),
                 ),
 
-                Container(
-                  // color: Colors.red,
-                  child: Text(
-                    'Become A\n Contributor',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontSize: 16),
-                  ),
-                ),
+                Text(
+                  'Become A\n Contributor',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontSize: 16),
+                )
               ],
             ),
           ),

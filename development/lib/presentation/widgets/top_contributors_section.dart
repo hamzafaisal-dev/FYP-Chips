@@ -8,12 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TopContributorsSection extends StatelessWidget {
-  const TopContributorsSection({
-    super.key,
-    required UserModel? authenticatedUser,
-  }) : _authenticatedUser = authenticatedUser;
-
-  final UserModel? _authenticatedUser;
+  const TopContributorsSection({super.key});
 
   @override
   Widget build(BuildContext context) {

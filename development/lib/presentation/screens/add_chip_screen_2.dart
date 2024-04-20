@@ -312,13 +312,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                               );
                             }
                             if (state is ChipError) {
-                              state.errorMsg == 'profane'
-                                  ? HelperWidgets.showProfanityDialog(context)
-                                  : HelperWidgets.showSnackbar(
-                                      context,
-                                      state.errorMsg,
-                                      'error',
-                                    );
+                              if (state.errorMsg == 'profane') {
+                                HelperWidgets.showProfanityDialog(context);
+                              } else if (state.errorMsg == 'not-job') {
+                                HelperWidgets.showNotJobDialog(context);
+                              } else {
+                                HelperWidgets.showSnackbar(
+                                  context,
+                                  state.errorMsg,
+                                  'error',
+                                );
+                              }
                             }
                           },
                           builder: (context, state) {

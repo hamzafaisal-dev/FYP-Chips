@@ -121,6 +121,34 @@ class HelperWidgets {
     );
   }
 
+  static void showNotJobDialog(BuildContext context) {
+    showAdaptiveDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                AssetPaths.angryTomatoAnimationPath,
+                frameRate: FrameRate.max,
+              ),
+              Text(
+                'JOBN\'T?',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const Text(
+                "Our system has detected that your post may not be an accurate job listing. If you think this was a mistake, please dismiss this dialog",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   static void showDiscardChangesDialog(
       BuildContext context, String dialogContent) {
     showDialog(

@@ -4,6 +4,7 @@ import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
+import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_image_tile.dart';
@@ -15,6 +16,7 @@ import 'package:development/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import '../widgets/top_contributors_section.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -145,13 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         : Expanded(
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
-                              itemCount: state.chips.length +
-                                  1, // Add 1 for the TopContributorsSection widget
+                              // Add 1 for the TopContributorsSection widget
+                              itemCount: state.chips.length + 1,
                               itemBuilder: (context, index) {
                                 if (index == 0) {
                                   // Render the TopContributorsSection widget at the first position
-                                  return TopContributorsSection(
-                                      authenticatedUser: _authenticatedUser);
+                                  return const TopContributorsSection();
                                 } else {
                                   // Render the remaining items normally after the TopContributorsSection
                                   List<ChipModel> chipData = state.chips;
@@ -176,8 +177,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   if (state is ChipsLoaded)
                     if (state.chips.isEmpty)
-                      const Center(
-                        child: Text('Empty hai'),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //
+                            const SizedBox(height: 140),
+
+                            Lottie.asset(
+                              AssetPaths.ghostEmptyAnimationPath,
+                              frameRate: FrameRate.max,
+                              repeat: false,
+                              animate: false,
+                              width: 300,
+                            ),
+
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Text(
+                                'OOPS! NO CHIPS FOUND',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     else
                       Expanded(

@@ -352,7 +352,7 @@ Widget _buildViewScreen(
                               const SizedBox(width: 5),
 
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.35,
+                                // width: MediaQuery.of(context).size.width * 0.35,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 6,
                                   vertical: 4,
