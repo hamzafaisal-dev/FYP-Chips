@@ -18,6 +18,8 @@ class AssetPaths {
       'assets/images/banners/login_screen_banner.svg';
   static const String otpScreenBannerPath =
       'assets/images/banners/otp_screen_banner.svg';
+  static const String aboutUsScreenBannerPath =
+      'assets/images/banners/about_us_screen_banner.png';
 
   // images: icons
   static const String aboutIconPath = 'assets/images/icons/about_icon.svg';
@@ -52,9 +54,16 @@ class AssetPaths {
   static const String girlEmptyBoxAnimationPath =
       'assets/animations/girl_empty_box_animation.json';
   static const String appliedEmptyAnimationPath =
-      'assets/animations/Applied_Empty_Animation.json';
+      'assets/animations/applied_empty_animation.json';
   static const String ghostEmptyAnimationPath =
       'assets/animations/ghost_empty_animation.json';
   static const String manPeekingAnimationPath =
       'assets/animations/man_peeking_animation.json';
+
+  // images : team members
+  static const String aun = 'assets/images/team members/aun.jpg';
+  static const String hamza = 'assets/images/team members/hamza.png';
+  static const String hassan = 'assets/images/team members/hassan.jpeg';
+  static const String umar = 'assets/images/team members/umar.jpeg';
+  static const String younas = 'assets/images/team members/younas.jpeg';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppbarTheme {
@@ -13,6 +14,11 @@ class CustomAppbarTheme {
       fontSize: 18.sp,
       fontWeight: FontWeight.w700,
       color: const Color(0XFF573353),
+    ),
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
     ),
   );
 }

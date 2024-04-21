@@ -7,6 +7,7 @@ import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shar
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/presentation/screens/likes_screen.dart';
 import 'package:development/presentation/screens/splash_screen.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,10 +24,10 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
+      // statusBarIconBrightness: Brightness.dark,
+      // statusBarBrightness: Brightness.light,
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
+      // systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
 
@@ -75,14 +76,22 @@ class MyApp extends StatelessWidget {
         designSize: const Size(414, 896),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (_, child) => MaterialApp(
-          title: 'Chips',
-          debugShowCheckedModeBanner: false,
-          theme: CustomAppTheme.lightTheme,
-          themeMode: ThemeMode.system,
-          onGenerateRoute: RouteGenerator.generateRoutes,
-          navigatorKey: NavigationService.navigatorKey,
-          home: const SplashScreen(),
+        builder: (_, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness:
+                Helpers.getStatusBarIconBrightness(context),
+            statusBarBrightness: Helpers.getStatusBarBrightness(context),
+          ),
+          child: MaterialApp(
+            title: 'Chips',
+            debugShowCheckedModeBanner: false,
+            theme: CustomAppTheme.lightTheme,
+            themeMode: ThemeMode.light,
+            onGenerateRoute: RouteGenerator.generateRoutes,
+            navigatorKey: NavigationService.navigatorKey,
+            home: const SplashScreen(),
+          ),
         ),
       ),
     );

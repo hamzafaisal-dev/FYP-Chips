@@ -1,8 +1,22 @@
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Helpers {
+  // Get the brightness of the status bar icon
+  static Brightness getStatusBarIconBrightness(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return brightness == Brightness.light ? Brightness.dark : Brightness.light;
+  }
+
+  // Get the brightness of the status bar
+  static Brightness getStatusBarBrightness(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return brightness == Brightness.light ? Brightness.light : Brightness.dark;
+  }
+
   static String formatTimeAgo(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
     DateTime now = DateTime.now();
