@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/data/repositories/auth_repository.dart';
-import 'package:development/utils/firebase_helpers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

@@ -1,8 +1,6 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +35,6 @@ class ChipImageTile extends StatefulWidget {
 
 class _ChipImageTileState extends State<ChipImageTile> {
   bool _chipHasImage = false;
-  bool _chipHasDescription = true;
 
   bool _isLiked = false;
   late int _chipLikes;
@@ -104,7 +101,6 @@ class _ChipImageTileState extends State<ChipImageTile> {
       _isLiked = true;
     }
 
-    _chipHasDescription = widget.chipData.description != '' ? true : false;
     _chipHasImage = widget.chipData.imageUrl != '' ? true : false;
 
     super.initState();

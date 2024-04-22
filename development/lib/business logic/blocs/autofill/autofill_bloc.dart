@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:development/data/repositories/autofill_repository.dart';
-import 'package:development/utils/helper_functions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 part 'autofill_event.dart';

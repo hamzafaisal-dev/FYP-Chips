@@ -1,17 +1,13 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
-import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/presentation/widgets/chip_tile.dart';
-import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/user_prof_screen_header_skeleton.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import '../widgets/user_profile_screen_header.dart';
 
 class UserProfileScreen extends StatefulWidget {

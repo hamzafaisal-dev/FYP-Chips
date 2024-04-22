@@ -3,7 +3,6 @@ import 'package:development/data/models/notification_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/notification_tile.dart';
 import 'package:development/services/navigation_service.dart';
-import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
