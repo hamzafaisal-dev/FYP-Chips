@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/constants/network_urls.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:dice_bear/dice_bear.dart';
@@ -48,10 +50,21 @@ class AuthNetwork {
       UserModel authenticatedUser =
           UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>);
 
-      // print(authenticatedUser);
+      // log event
+      Helpers.logEvent(
+        authenticatedUser.userId,
+        "sign-in",
+        [authenticatedUser.toMap()],
+      );
 
       return authenticatedUser;
     } catch (error) {
+      // log event
+      Helpers.logEvent(
+        "n/a",
+        "sign-in-failed",
+        [email],
+      );
       throw Exception(error.toString());
     }
   }
@@ -90,29 +103,29 @@ class AuthNetwork {
   }
 
   // add user email to google sheet
-  Future<Map<String, dynamic>> addUserEmailToGoogleSheet(String email) async {
-    final url = Uri.https(NetworkURLS.baseUrl1, '/addUser');
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({'email': email});
+  // Future<Map<String, dynamic>> addUserEmailToGoogleSheet(String email) async {
+  //   final url = Uri.https(NetworkURLS.baseUrl1, '/addUser');
+  //   final headers = {'Content-Type': 'application/json'};
+  //   final body = jsonEncode({'email': email});
 
-    try {
-      final response = await http.post(url, headers: headers, body: body);
+  //   try {
+  //     final response = await http.post(url, headers: headers, body: body);
 
-      if (response.statusCode == 200) {
-        return {'success': true};
-      } else {
-        return {
-          'success': false,
-          'message': 'Failed to add user email to google sheet',
-        };
-      }
-    } catch (e) {
-      return {
-        'success': false,
-        'message': 'Error: $e',
-      };
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       return {'success': true};
+  //     } else {
+  //       return {
+  //         'success': false,
+  //         'message': 'Failed to add user email to google sheet',
+  //       };
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       'success': false,
+  //       'message': 'Error: $e',
+  //     };
+  //   }
+  // }
 
   // verify otp
   bool verifyOtp(String userInput, String otp) {
@@ -194,7 +207,14 @@ class AuthNetwork {
           .doc(newUserCredentials.user!.uid)
           .set(newUser.toMap());
 
-      await addUserEmailToGoogleSheet(email);
+      // await addUserEmailToGoogleSheet(email);
+
+      // log event
+      Helpers.logEvent(
+        newUser.userId,
+        "sign-up",
+        [newUser.toMap()],
+      );
 
       return newUser;
     } catch (error) {
@@ -230,6 +250,13 @@ class AuthNetwork {
 
   // sign out
   Future<void> signOut() async {
+    // log event
+    Helpers.logEvent(
+      _firebaseAuth.currentUser!.uid,
+      "sign-out",
+      [],
+    );
+
     try {
       await _firebaseAuth.signOut();
     } catch (error) {
@@ -244,6 +271,13 @@ class AuthNetwork {
     } catch (error) {
       throw Exception(error.toString());
     }
+
+    // log event
+    Helpers.logEvent(
+      "n/a",
+      "request-password-reset",
+      [email],
+    );
   }
 
   // update user
@@ -272,6 +306,12 @@ class AuthNetwork {
   Future<void> changePassword(String newPassword) async {
     try {
       await _firebaseAuth.currentUser!.updatePassword(newPassword);
+      // log event
+      Helpers.logEvent(
+        _firebaseAuth.currentUser!.uid,
+        "change-password",
+        [],
+      );
     } catch (error) {
       throw Exception(error.toString());
     }

@@ -81,6 +81,12 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     }
 
     isApplied = _isInitiallyMarkedApplied;
+
+    Helpers.logEvent(
+      _authenticatedUser.userId,
+      "view-chip",
+      [_chipData],
+    );
   }
 
   @override

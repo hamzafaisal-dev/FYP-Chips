@@ -5,6 +5,7 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/user_prof_screen_header_skeleton.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -76,16 +77,31 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   if (widget.arguments?["postedBy"] ==
                       _authenticatedUser?.username) {
+                    Helpers.logEvent(
+                      _authenticatedUser!.userId,
+                      "view-own-profile",
+                      [_authenticatedUser],
+                    );
                     return UserProfileScreenHeader(
                       authenticatedUser: _authenticatedUser,
                       isEditable: true,
                     );
                   } else if (state is UserLoadedState) {
+                    Helpers.logEvent(
+                      _authenticatedUser!.userId,
+                      "view-profile",
+                      [state.user],
+                    );
                     return UserProfileScreenHeader(
                       authenticatedUser: state.user,
                       isEditable: false,
                     );
                   } else {
+                    Helpers.logEvent(
+                      _authenticatedUser!.userId,
+                      "view-own-profile",
+                      [_authenticatedUser],
+                    );
                     return UserProfileScreenHeader(
                       authenticatedUser: _authenticatedUser,
                       isEditable: true,

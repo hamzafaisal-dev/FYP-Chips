@@ -6,6 +6,7 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,14 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
     super.initState();
 
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
-    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
+    if (authState is AuthUserSignedIn) {
+      _authenticatedUser = authState.user;
+      Helpers.logEvent(
+        _authenticatedUser!.userId,
+        "view-favorite-chips",
+        [_authenticatedUser],
+      );
+    }
 
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
     userCubit.fetchUserChips(_authenticatedUser!.favoritedChips);

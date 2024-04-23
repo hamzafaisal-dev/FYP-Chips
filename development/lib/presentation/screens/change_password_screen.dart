@@ -7,6 +7,7 @@ import 'package:development/presentation/widgets/custom_circular_progress_indica
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -196,6 +197,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     );
                     BlocProvider.of<UserCubit>(context)
                         .fetchUserChipsStream(_authenticatedUser!.username);
+                    Helpers.logEvent(
+                      _authenticatedUser!.userId,
+                      "change-password",
+                      [_authenticatedUser],
+                    );
                     NavigationService.goBack();
                   }
                   if (state is UserPasswordUpdateFailed) {
