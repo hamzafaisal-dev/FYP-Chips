@@ -61,7 +61,7 @@ class NotificationNetwork {
           recipientId: chip.postedBy,
           senderId: currentUser.userId,
           jobId: chip.chipId,
-          type: 'bookmark',
+          type: notifType,
           message: '${currentUser.name} $keyword your chip!',
           timestamp: DateTime.now(),
           read: false,

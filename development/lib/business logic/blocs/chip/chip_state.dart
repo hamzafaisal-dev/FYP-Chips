@@ -20,7 +20,7 @@ class ChipEmpty extends ChipState {
 class IndividualChipLoaded extends ChipState {
   final ChipModel? chip;
 
-  IndividualChipLoaded({required this.chip}) : super([chip]);
+  IndividualChipLoaded({required this.chip});
 
   @override
   List<Object?> get props => [chip];

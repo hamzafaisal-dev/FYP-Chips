@@ -34,8 +34,10 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
     on<FetchChipByIdEvent>((event, emit) async {
       try {
         emit(ChipsLoading());
+
         ChipModel? individualChip =
             await _chipRepository.getChipById(event.chipId);
+
         emit(IndividualChipLoaded(chip: individualChip));
       } catch (error) {
         emit(ChipError(errorMsg: error.toString()));

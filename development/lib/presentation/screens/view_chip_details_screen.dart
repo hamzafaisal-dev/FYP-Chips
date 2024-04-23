@@ -49,6 +49,8 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
   @override
   void initState() {
+    print('inited');
+
     super.initState();
 
     BlocProvider.of<SharedPrefCubit>(context).getData();
@@ -99,10 +101,10 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
       },
       builder: (context, state) {
         return BlocConsumer<ChipBloc, ChipState>(
-          listener: (context, state) {
-            if (state is IndividualChipLoaded) _chipData = state.chip;
-          },
+          listener: (context, state) {},
           builder: (context, state) {
+            if (state is IndividualChipLoaded) _chipData = state.chip;
+
             if (widget.arguments!["chipData"] != null) {
               _chipData = widget.arguments!["chipData"];
 
@@ -118,24 +120,35 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
             }
 
             if (state is IndividualChipLoaded) {
-              return PopScope(
-                onPopInvoked: (didPop) {
-                  if (didPop) {
-                    BlocProvider.of<ChipBloc>(context)
-                        .add(FetchChipsStream(filters: _filters));
-                  }
-                },
-                child: _buildViewScreen(
-                  context,
-                  _chipData,
-                  _isDeletable,
-                  _isEditable,
-                  _authenticatedUser,
-                  _commentController,
-                  _commentAutoFocused,
-                ),
+              print(state.chip!.companyName);
+
+              print('_filters are $_filters');
+
+              return _buildViewScreen(
+                context,
+                _chipData,
+                _isDeletable,
+                _isEditable,
+                _authenticatedUser,
+                _commentController,
+                _commentAutoFocused,
               );
-            } else if (state is ChipError) {
+            }
+
+            // lawd in high heaven above, pls forgive me for this godforsaken jugaar. we goin to pRodUciTioN in 2 days
+            if (state is ChipsStreamLoaded) {
+              return _buildViewScreen(
+                context,
+                _chipData,
+                _isDeletable,
+                _isEditable,
+                _authenticatedUser,
+                _commentController,
+                _commentAutoFocused,
+              );
+            }
+
+            if (state is ChipError) {
               return Scaffold(body: Center(child: Text(state.errorMsg)));
             }
 
@@ -168,7 +181,9 @@ Widget _buildInfoThing(
       const SizedBox(width: 4),
 
       Container(
-        // width: MediaQuery.of(context).size.width * 0.35,
+        width: tileText.length >= 45
+            ? MediaQuery.of(context).size.width * 0.55
+            : null,
         padding: const EdgeInsets.symmetric(
           horizontal: 6,
           vertical: 4,
