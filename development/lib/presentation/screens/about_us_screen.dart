@@ -1,12 +1,38 @@
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
+import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 
-class AboutUsScreen extends StatelessWidget {
+import '../widgets/team_member_tile.dart';
+
+class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
+
+  @override
+  State<AboutUsScreen> createState() => _AboutUsScreenState();
+}
+
+class _AboutUsScreenState extends State<AboutUsScreen> {
+  late final UserModel? _authenticatedUser;
+
+  @override
+  void initState() {
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
+    if (authState is AuthUserSignedIn) {
+      _authenticatedUser = authState.user;
+      Helpers.logEvent(
+        _authenticatedUser!.userId,
+        "read-about-us",
+        [_authenticatedUser],
+      );
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,52 +153,6 @@ class AboutUsScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TeamMemberTile extends StatelessWidget {
-  const TeamMemberTile({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.subtitle,
-    required this.username,
-  });
-
-  final String imagePath;
-  final String title;
-  final String subtitle;
-  final String username;
-
-  Future<void> _launchUrl(String b) async {
-    final Uri url = Uri.parse(b);
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw Exception('Could not launch $b');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        radius: 24.w,
-        backgroundImage: AssetImage(imagePath),
-      ),
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      subtitle: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
-      onTap: () {
-        _launchUrl('https://www.linkedin.com/in/$username/');
-      },
     );
   }
 }

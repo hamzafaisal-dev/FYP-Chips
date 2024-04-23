@@ -1,9 +1,6 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/presentation/widgets/chip_image_container2.dart';
-import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

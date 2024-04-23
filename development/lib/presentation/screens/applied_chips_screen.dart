@@ -1,6 +1,3 @@
-import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
-import 'package:development/business%20logic/blocs/chip/chip_event.dart';
-import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
@@ -8,10 +5,9 @@ import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
-import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
-import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +29,14 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
     super.initState();
 
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
-    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
+    if (authState is AuthUserSignedIn) {
+      _authenticatedUser = authState.user;
+      Helpers.logEvent(
+        _authenticatedUser!.userId,
+        "view-applied-chips",
+        [_authenticatedUser],
+      );
+    }
 
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
     userCubit.fetchUserChips(_authenticatedUser!.appliedChips);

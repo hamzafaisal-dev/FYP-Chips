@@ -19,7 +19,7 @@ class AssetPaths {
   static const String otpScreenBannerPath =
       'assets/images/banners/otp_screen_banner.svg';
   static const String aboutUsScreenBannerPath =
-      'assets/images/banners/about_us_screen_banner.png';
+      'assets/images/banners/about_us_screen_banner.jpg';
 
   // images: icons
   static const String aboutIconPath = 'assets/images/icons/about_icon.svg';

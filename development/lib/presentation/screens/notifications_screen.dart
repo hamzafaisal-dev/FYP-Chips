@@ -1,10 +1,13 @@
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/notification_model.dart';
+import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/notification_tile.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
@@ -19,9 +22,20 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   late final List<NotificationModel> _notifications;
+  late final UserModel? _authenticatedUser;
 
   @override
   void initState() {
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
+    if (authState is AuthUserSignedIn) {
+      _authenticatedUser = authState.user;
+      Helpers.logEvent(
+        _authenticatedUser!.userId,
+        "check-notificaitons",
+        [_authenticatedUser],
+      );
+    }
+
     if (widget.arguments != null) {
       _notifications = widget.arguments!["notifications"];
     }

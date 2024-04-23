@@ -5,6 +5,7 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/settings_action_tile.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -152,6 +153,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 trailingIcon: Icons.arrow_forward_ios_rounded,
                 onTap: () {
+                  Helpers.logEvent(
+                    _authenticatedUser!.userId,
+                    "view-privacy-policy",
+                    [_authenticatedUser],
+                  );
                   HelperWidgets.showSnackbar(
                     context,
                     "Drafting privacy policy... thank you for your patience!😄",
@@ -281,7 +287,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: FilledButton(
                       onPressed: () {
                         BlocProvider.of<ContactUsCubit>(context).contactUs(
-                          _authenticatedUser?.username ?? '',
+                          _authenticatedUser!,
                           _contactUsController.text,
                         );
                         _contactUsController.clear();

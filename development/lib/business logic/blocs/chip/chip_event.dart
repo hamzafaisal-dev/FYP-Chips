@@ -1,4 +1,3 @@
-import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 

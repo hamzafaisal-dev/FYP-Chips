@@ -5,10 +5,10 @@ import 'package:development/constants/custom_colors.dart';
 import 'package:development/constants/styles.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
-import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,6 +132,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   "info",
                                 );
                               } else {
+                                Helpers.logEvent(
+                                  _authenticatedUser!.userId,
+                                  "change-display-name",
+                                  [
+                                    _authenticatedUser!.name,
+                                    _nameController.text,
+                                    _authenticatedUser
+                                  ],
+                                );
                                 BlocProvider.of<UserCubit>(context).updateUser(
                                   _authenticatedUser!.copyWith(
                                     name: _nameController.text,

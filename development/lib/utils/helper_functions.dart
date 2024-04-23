@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:ui';
-
+import 'package:development/constants/network_urls.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
 class Helpers {
   // Get the brightness of the status bar icon
@@ -128,5 +130,31 @@ class Helpers {
         mimeTypes[extension.toLowerCase()] ?? 'application/octet-stream';
 
     return mimeType;
+  }
+
+  // log event
+  static void logEvent(
+    String userId,
+    String eventType,
+    List<dynamic> parameters,
+  ) async {
+    var eventPayload = {
+      "userId": userId,
+      "timestamp": DateTime.now().toIso8601String(),
+      "eventType": eventType,
+      "eventParameters": parameters,
+    };
+
+    try {
+      http.post(
+        Uri.parse(NetworkURLS.logEventUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(eventPayload),
+      );
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 }

@@ -7,7 +7,6 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/screens/error_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
-import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/search_bar.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';

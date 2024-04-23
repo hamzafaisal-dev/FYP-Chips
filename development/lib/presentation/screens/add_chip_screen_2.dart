@@ -12,7 +12,6 @@ import 'package:development/presentation/widgets/buttons/autofill_button.dart';
 import 'package:development/presentation/widgets/buttons/post_chip_button.dart';
 import 'package:development/presentation/widgets/chip_image_container.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
-import 'package:development/presentation/widgets/custom_dialog.dart';
 import 'package:development/presentation/widgets/custom_dropdowns.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';

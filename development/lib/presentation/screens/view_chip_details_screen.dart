@@ -2,7 +2,6 @@ import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
-import 'package:development/business%20logic/cubits/comment/comment_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/data/models/chip_model.dart';
@@ -11,7 +10,6 @@ import 'package:development/presentation/widgets/bookmark_icon.dart';
 import 'package:development/presentation/widgets/buttons/mark_applied_button.dart';
 import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/comment_box.dart';
-import 'package:development/presentation/widgets/comment_tile.dart';
 import 'package:development/presentation/widgets/comments_section.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
@@ -83,6 +81,12 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     }
 
     isApplied = _isInitiallyMarkedApplied;
+
+    Helpers.logEvent(
+      _authenticatedUser.userId,
+      "view-chip",
+      [_chipData],
+    );
   }
 
   @override

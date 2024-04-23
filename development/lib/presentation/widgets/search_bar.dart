@@ -1,8 +1,11 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
+import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_filter_chip.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +35,7 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   late Map<String, dynamic> _filters;
+  late final UserModel? _authenticatedUser;
 
   List<String> _selectedJobModes = [];
   List<String> _selectedJobTypes = [];
@@ -146,6 +150,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
                         BlocProvider.of<ChipBloc>(context)
                             .add(FetchChipsStream(filters: _filters));
+
+                        // log event
+                        Helpers.logEvent(
+                          _authenticatedUser!.userId,
+                          "apply-filters",
+                          [_filters],
+                        );
                       },
                       child: const Text('Apply Filters'),
                     ),
@@ -161,8 +172,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   void initState() {
-    _filters = {"jobModes": <String>[], "jobTypes": <String>[]};
-
+    _filters = {"jobModes": [], "jobTypes": []};
+    AuthState authState = BlocProvider.of<AuthCubit>(context).state;
+    if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
     super.initState();
   }
 
@@ -199,6 +211,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             },
             onFieldSubmitted: (value) {
               if (value.isNotEmpty) {
+                // log event
+                Helpers.logEvent(
+                  _authenticatedUser!.userId,
+                  "search-chips",
+                  [value],
+                );
                 BlocProvider.of<ChipBloc>(context).add(
                   FetchChips(searchText: value),
                 );

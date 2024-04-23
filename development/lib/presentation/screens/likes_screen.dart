@@ -3,17 +3,14 @@ import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
 import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
-import 'package:development/data/networks/chip_network.dart';
 import 'package:development/data/networks/user_network.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/services/navigation_service.dart';
-import 'package:development/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uuid/uuid.dart';
 
 class LikeScreen extends StatefulWidget {
   const LikeScreen({super.key, this.arguments});

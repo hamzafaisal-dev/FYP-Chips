@@ -7,7 +7,6 @@ import 'package:development/presentation/widgets/comment_tile_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shimmer/shimmer.dart';
 
 class CommentsSection extends StatefulWidget {
   const CommentsSection({super.key, required this.chip});
