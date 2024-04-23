@@ -90,7 +90,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     return BlocConsumer<SharedPrefCubit, SharedPrefState>(
       listener: (context, state) {
         if (state is SharedPrefDataGet) {
-          _filters = state.data!;
+          _filters = state.data;
         }
       },
       builder: (context, state) {
@@ -148,6 +148,42 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     _commentController.dispose();
     super.dispose();
   }
+}
+
+Widget _buildInfoThing(
+    BuildContext context, String leadingText, String tileText, Color color) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      //
+      Text(
+        leadingText,
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
+
+      const SizedBox(width: 4),
+
+      Container(
+        // width: MediaQuery.of(context).size.width * 0.35,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 6,
+          vertical: 4,
+        ),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          tileText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.surface,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 Widget _buildViewScreen(
@@ -340,38 +376,11 @@ Widget _buildViewScreen(
                       Row(
                         children: [
                           //
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //
-                              Text(
-                                'Apply Here:',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-
-                              const SizedBox(width: 5),
-
-                              Container(
-                                // width: MediaQuery.of(context).size.width * 0.35,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.greenAccent,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  chipData.applicationLink,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          _buildInfoThing(
+                            context,
+                            'Apply Here: ',
+                            chipData.applicationLink,
+                            Colors.greenAccent,
                           ),
                         ],
                       ),
@@ -394,42 +403,31 @@ Widget _buildViewScreen(
 
                   const SizedBox(height: 14),
 
+                  // Company Name
+                  Row(
+                    children: [
+                      //
+                      _buildInfoThing(
+                        context,
+                        'Employer Name: ',
+                        chipData.companyName,
+                        Colors.lightBlueAccent,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+
                   // Deadline
                   Row(
                     children: [
                       //
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //
-                          Text(
-                            'Last Date To Apply:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-
-                          const SizedBox(width: 5),
-
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              Helpers.formatDateTimeString(
-                                  chipData.deadline.toString()),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ],
+                      _buildInfoThing(
+                        context,
+                        'Last Date To Apply:',
+                        Helpers.formatDateTimeString(
+                            chipData.deadline.toString()),
+                        Colors.lightBlueAccent,
                       ),
                     ],
                   ),

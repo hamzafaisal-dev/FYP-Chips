@@ -10,10 +10,22 @@ class NotificationTile extends StatelessWidget {
 
   final NotificationModel notification;
 
+  IconData _generateIcon(String notificationMessage) {
+    if (notificationMessage.contains('saved')) {
+      return Icons.bookmark;
+    } else if (notificationMessage.contains('liked')) {
+      return Icons.thumb_up_rounded;
+    } else if (notificationMessage.contains('commented')) {
+      return Icons.comment;
+    } else {
+      return Icons.notifications;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.only(bottom: 0),
       child: ListTile(
           //
           tileColor: notification.read
@@ -23,8 +35,9 @@ class NotificationTile extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.secondary,
             child: Icon(
-              Icons.bookmark,
+              _generateIcon(notification.message),
               color: Theme.of(context).colorScheme.onSecondary,
+              size: 22,
             ),
           ),
           title: Text(notification.message),

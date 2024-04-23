@@ -32,6 +32,8 @@ class AutofillNetwork {
           throw 'The image does not seem to contain any meaningful text';
         }
 
+        print('${responsedata['foi']} ${responsedata['foi'].runtimeType}');
+
         return {
           'company_name': responsedata['company_name'].toString(),
           'job_title': responsedata['job_title'].toString(),
@@ -45,6 +47,7 @@ class AutofillNetwork {
           'sex': responsedata['sex'].toString(),
           'experience': responsedata['experience'].toString(),
           'mode': responsedata['mode'].toString(),
+          'foi': List<String>.from(responsedata['foi']),
         };
       } else {
         throw Exception(response);

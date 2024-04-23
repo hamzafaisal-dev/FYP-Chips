@@ -41,6 +41,8 @@ class NotificationNetwork {
                   ? 'commented on'
                   : '';
 
+      print(notifType);
+
       // check if a notif with the same type, jobId, senderId, and recipientId exists in the past 24 hours
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('notifications')
@@ -69,6 +71,8 @@ class NotificationNetwork {
             .collection('notifications')
             .doc(newNotificationId)
             .set(newNotification.toJson());
+      } else {
+        print('ppop is ${querySnapshot.docs.first.data()}');
       }
     }
   }

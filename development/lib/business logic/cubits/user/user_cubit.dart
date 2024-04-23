@@ -94,6 +94,8 @@ class UserCubit extends Cubit<UserState> {
 
       // uncomment this line to fix bug of unbookmarked chip still showing in fav chips screen
       // fetchUserChips(updatedUser.favoritedChips);
+
+      fetchTopContributors();
     } catch (error) {
       emit(UserErrorState(errorMessage: error.toString()));
     }
@@ -119,7 +121,9 @@ class UserCubit extends Cubit<UserState> {
           : emit(ChipUnAppliedState(updatedUser: updatedUser));
 
       // uncomment this line to fix bug of unapplied chip still showing in applied chips screen
-      fetchUserChips(updatedUser.appliedChips);
+      // fetchUserChips(updatedUser.appliedChips);
+
+      fetchTopContributors();
     } catch (error) {
       emit(UserErrorState(errorMessage: error.toString()));
     }

@@ -64,6 +64,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   String? _jobType;
   String? _salary;
 
+  List<dynamic> foi = [];
+
   void _checkDeadline() {
     if (_chipDeadline == null) {
       HelperWidgets.showSnackbar(
@@ -91,7 +93,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
         'jobType': _jobType,
         'experienceRequired': 0,
         'deadline': _chipDeadline!,
-        'skills': const [],
+        'skills': foi,
         'salary': 0.0,
         'currentUser': _authenticatedUser,
       };
@@ -186,10 +188,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 14,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           child: Form(
             key: _addChipFormKey,
             child: BlocConsumer<AutofillBloc, AutofillState>(
@@ -202,14 +201,17 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                 if (state is AutofillSuccess) {
                   Navigator.pop(context); //removes autofill dialog
 
-                  print(state.autoFillResponse);
+                  print(state.autoFillResponse["foi"]);
 
                   _chipTitleController.text =
                       state.autoFillResponse["job_title"];
+
                   _companyTitleController.text =
                       state.autoFillResponse["company_name"];
-                  // _chipDetailsController.text =
-                  //     state.autoFillResponse["description"];
+                  _chipDetailsController.text =
+                      _chipDetailsController.text == ''
+                          ? state.autoFillResponse["description"]
+                          : '';
                   _chipDeadline = state.autoFillResponse["deadline"];
                   _applicationLinkController.text =
                       state.autoFillResponse["email"];
@@ -224,6 +226,10 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       state.autoFillResponse["salary"] == 'Unknown'
                           ? ''
                           : state.autoFillResponse["salary"];
+
+                  foi = state.autoFillResponse["foi"] == 'Unknown'
+                      ? <String>[]
+                      : state.autoFillResponse["foi"];
 
                   HelperWidgets.showSnackbar(
                     context,
@@ -243,6 +249,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                 }
               },
               builder: (context, state) {
+                bool goBackEnabled = true;
+
                 return ListView(
                   children: [
                     //
@@ -252,14 +260,20 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //
-                        CustomIconButton(
-                          iconSvgPath: AssetPaths.leftArrowIconPath,
-                          iconWidth: 16.w,
-                          iconHeight: 16.h,
-                          onTap: () {
-                            HelperWidgets.showDiscardChangesDialog(
-                              context,
-                              'Discard changes? You\'ll have to fill in the details again',
+                        BlocBuilder<ChipBloc, ChipState>(
+                          builder: (context, state) {
+                            return CustomIconButton(
+                              iconSvgPath: AssetPaths.leftArrowIconPath,
+                              iconWidth: 16.w,
+                              iconHeight: 16.h,
+                              onTap: () {
+                                if (state is! ChipCreatingState) {
+                                  HelperWidgets.showDiscardChangesDialog(
+                                    context,
+                                    'Discard changes? You\'ll have to fill in the details again',
+                                  );
+                                }
+                              },
                             );
                           },
                         ),
@@ -380,7 +394,11 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       suffixIcon: const Icon(Icons.info_outline_rounded),
                       validatorFunction: (value) =>
                           FormValidators.chipLinkValidator(value),
-                      onValueChanged: (value) => _applicationLink = value,
+                      onValueChanged: (value) {
+                        goBackEnabled = !goBackEnabled;
+
+                        _applicationLink = value;
+                      },
                     ),
 
                     SizedBox(height: 20.h),
@@ -530,9 +548,14 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
           ),
         ),
       ),
-      floatingActionButton: AutofillButton(
-        autoFillEnabled: _autoFillEnabled,
-        handleAutofillBtnClick: _handleAutofillBtnClick,
+      floatingActionButton: BlocBuilder<ChipBloc, ChipState>(
+        builder: (context, state) {
+          return AutofillButton(
+            autoFillEnabled:
+                (state is ChipCreatingState) ? false : _autoFillEnabled,
+            handleAutofillBtnClick: _handleAutofillBtnClick,
+          );
+        },
       ),
     );
   }

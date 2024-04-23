@@ -18,6 +18,7 @@ class TopContributorsSection extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //
             Padding(
@@ -47,9 +48,8 @@ class TopContributorsSection extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 16.h),
+            SizedBox(height: 7.h),
 
-            //
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -72,13 +72,17 @@ class TopContributorsSection extends StatelessWidget {
                       ),
                     );
                   } else if (state is TopContributorsLoadedState) {
+                    List<Map<String, dynamic>> topContributors =
+                        state.topContributors;
+
                     return Row(
                       children: [
+                        //
                         ...List.generate(
-                          state.topContributors.length,
+                          topContributors.length,
                           (index) {
                             Map<String, dynamic> topContributor =
-                                state.topContributors[index];
+                                topContributors[index];
 
                             return Padding(
                               padding: EdgeInsets.only(right: 10.w),
@@ -88,10 +92,10 @@ class TopContributorsSection extends StatelessWidget {
                             );
                           },
                         ),
-                        // Add your additional widget here
+
                         Padding(
                           padding: EdgeInsets.only(right: 10.w),
-                          child: TopContributorCardAlt(),
+                          child: const TopContributorCardAlt(),
                         ),
                       ],
                     );

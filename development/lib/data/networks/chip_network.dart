@@ -39,7 +39,8 @@ class ChipNetwork {
         .map((docSnapshot) => ChipModel.fromMap(docSnapshot.data()))
         .where((chip) =>
             chip.jobTitle.toLowerCase().contains(searchText.toLowerCase()) ||
-            chip.companyName.toLowerCase().contains(searchText.toLowerCase()))
+            chip.companyName.toLowerCase().contains(searchText.toLowerCase()) ||
+            chip.skills!.contains(searchText.toLowerCase()))
         .toList();
 
     return allFetchedChips;
@@ -319,7 +320,7 @@ class ChipNetwork {
     String? jobType = chipMap['jobType'];
     int? experienceRequired = chipMap['experienceRequired'];
     DateTime deadline = chipMap['deadline'];
-    List<dynamic> skills = List<dynamic>.from(chipMap['skills'] ?? []);
+    List<String> skills = chipMap['skills'];
     double? salary = chipMap['salary'];
     UserModel currentUser = chipMap['currentUser'];
 
@@ -331,12 +332,13 @@ class ChipNetwork {
 
     print('context is $context');
 
-    Map<String, dynamic> jobValidityResponse = await checkJobValidity(context);
+    if (description != '') {
+      Map<String, dynamic> jobValidityResponse =
+          await checkJobValidity(context);
 
-    if (int.parse(jobValidityResponse['prediction']) == 0) {
-      throw 'not-job';
-    } else if (int.parse(jobValidityResponse['prediction']) == 1) {
-      throw 'job';
+      if (int.parse(jobValidityResponse['prediction']) == 0) {
+        throw 'not-job';
+      }
     }
 
     Map<String, dynamic> englishProfanityResponse =

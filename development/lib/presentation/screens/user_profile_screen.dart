@@ -57,11 +57,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: CustomIconButton(
-              iconSvgPath: AssetPaths.leftArrowIconPath,
-              iconWidth: 16.w,
-              iconHeight: 16.h,
-              onTap: () => NavigationService.goBack(),
-            ),
+                iconSvgPath: AssetPaths.leftArrowIconPath,
+                iconWidth: 16.w,
+                iconHeight: 16.h,
+                onTap: () {
+                  BlocProvider.of<UserCubit>(context).fetchTopContributors();
+
+                  NavigationService.goBack();
+                }),
           ),
         ),
       ),

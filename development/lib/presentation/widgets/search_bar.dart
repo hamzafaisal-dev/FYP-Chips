@@ -161,7 +161,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   void initState() {
-    _filters = {"jobModes": [], "jobTypes": []};
+    _filters = {"jobModes": <String>[], "jobTypes": <String>[]};
 
     super.initState();
   }
@@ -208,9 +208,21 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               fillColor: Colors.white,
               hintText: 'Search',
               hintStyle: Theme.of(context).textTheme.bodyLarge,
-              prefixIcon: Icon(
-                leadingIcon,
-                size: 20.w,
+              prefixIcon: InkWell(
+                onTap: () {
+                  if (widget.searchController.text != '') {
+                    widget.searchController.clear();
+
+                    BlocProvider.of<ChipBloc>(context)
+                        .add(FetchChipsStream(filters: _filters));
+
+                    setState(() => leadingIcon = Icons.search);
+                  }
+                },
+                child: Icon(
+                  leadingIcon,
+                  size: 20.w,
+                ),
               ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 0.w,
@@ -228,7 +240,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           bottom: 5,
           right: 7,
           child: InkWell(
-            // onTap: widget.onFilterClick,
             onTap: _handleFilterClick,
             child: Container(
               height: 40,
