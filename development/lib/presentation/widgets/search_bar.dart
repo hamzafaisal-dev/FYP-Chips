@@ -172,7 +172,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   void initState() {
-    _filters = {"jobModes": [], "jobTypes": []};
+    _filters = {"jobModes": <String>[], "jobTypes": <String>[]};
+
     AuthState authState = BlocProvider.of<AuthCubit>(context).state;
     if (authState is AuthUserSignedIn) _authenticatedUser = authState.user;
     super.initState();
