@@ -100,8 +100,8 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
       Helpers.logEvent(
         _authenticatedUser.userId,
-        "edit-chip",
-        [ChipModel.fromMap(newChip), _authenticatedUser],
+        "post-chip",
+        [newChip.toString(), _authenticatedUser],
       );
 
       BlocProvider.of<ChipBloc>(context).add(UploadChipEvent(newChip: newChip));

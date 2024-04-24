@@ -9,6 +9,7 @@ import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/widgets/search_bar.dart';
 import 'package:development/services/navigation_service.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -172,7 +173,16 @@ class _AppLayoutState extends State<AppLayout> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => NavigationService.routeToNamed('/add-chip1'),
+        onPressed: () {
+          // log event
+          Helpers.logEvent(
+            _authenticatedUser!.userId,
+            "press-add-chip-button",
+            [_authenticatedUser],
+          );
+
+          NavigationService.routeToNamed('/add-chip1');
+        },
         elevation: 0,
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,
