@@ -87,7 +87,7 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
     Helpers.logEvent(
       _authenticatedUser.userId,
       "view-chip",
-      [_chipData],
+      [_chipData?.chipId ?? _chipId ?? 'n/a'],
     );
   }
 

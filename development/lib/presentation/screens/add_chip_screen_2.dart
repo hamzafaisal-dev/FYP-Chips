@@ -63,7 +63,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
   String? _jobType;
   String? _salary;
 
-  List<dynamic> foi = [];
+  List<String> foi = [];
 
   void _checkDeadline() {
     if (_chipDeadline == null) {

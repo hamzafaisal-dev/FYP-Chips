@@ -132,7 +132,7 @@ class UserProfileScreenHeader extends StatelessWidget {
               // bookmarks received
               UserStatSection(
                 statisticName: 'Bookmarks Received',
-                statisticValue: _authenticatedUser?.likesCount ?? 0,
+                statisticValue: _authenticatedUser?.bookmarkCount ?? 0,
                 icon: CustomIcons.privacypolicyicon,
                 iconColor: CustomColors.darkBlue,
               ),

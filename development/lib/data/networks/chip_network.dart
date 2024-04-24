@@ -330,8 +330,6 @@ class ChipNetwork {
     // concatenate all user input to check for profanity and job validity
     String context = '$jobTitle $companyName $description';
 
-    print('context is $context');
-
     if (description != '') {
       Map<String, dynamic> jobValidityResponse =
           await checkJobValidity(context);
