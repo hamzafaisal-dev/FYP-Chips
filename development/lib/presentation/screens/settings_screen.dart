@@ -218,7 +218,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           buttonTwoText: 'Sign Out',
           buttonOneOnPressed: () => Navigator.pop(context),
           buttonTwoOnPressed: () {
-            BlocProvider.of<AuthCubit>(context).signOut();
+            BlocProvider.of<AuthCubit>(context).signOut(_authenticatedUser!);
           },
         );
       },

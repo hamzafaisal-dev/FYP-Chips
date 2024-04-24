@@ -213,7 +213,7 @@ class AuthNetwork {
       Helpers.logEvent(
         newUser.userId,
         "sign-up",
-        [newUser.toMap()],
+        [newUser],
       );
 
       return newUser;
@@ -249,12 +249,12 @@ class AuthNetwork {
   }
 
   // sign out
-  Future<void> signOut() async {
+  Future<void> signOut(UserModel user) async {
     // log event
     Helpers.logEvent(
       _firebaseAuth.currentUser!.uid,
       "sign-out",
-      [],
+      [user],
     );
 
     try {

@@ -1,6 +1,7 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +55,13 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
             'Chip marked as applied!✅',
             'success',
           );
+
+          // log event
+          Helpers.logEvent(
+            _authenticatedUser!.userId,
+            "mark-chip-applied",
+            [widget.chipId],
+          );
         }
 
         if (state is ChipUnAppliedState) {
@@ -66,6 +74,13 @@ class _MarkAppliedButtonState extends State<MarkAppliedButton> {
             context,
             'Chip unmarked as applied!❌',
             'info',
+          );
+
+          // log event
+          Helpers.logEvent(
+            _authenticatedUser!.userId,
+            "unmark-chip-applied",
+            [widget.chipId],
           );
         }
 

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/comment_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:uuid/uuid.dart';
 
 class CommentNetwork {
@@ -39,6 +40,15 @@ class CommentNetwork {
         .collection('comments')
         .doc(newCommentId)
         .set(newComment.toJson());
+
+    // log event
+    Helpers.logEvent(
+      currentUser.userId,
+      "post-comment",
+      [newComment, currentUser, newChip],
+    );
+
+    return;
   }
 
   Stream<List<CommentModel>> getChipComments(ChipModel chip) {

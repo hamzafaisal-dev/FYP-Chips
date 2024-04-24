@@ -47,8 +47,8 @@ class AuthRepository {
   }
 
   // sign out
-  void signOut() async {
-    await _authNetwork.signOut();
+  void signOut(UserModel user) async {
+    await _authNetwork.signOut(user);
   }
 
   // send password reset email
