@@ -48,8 +48,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // sign out
-  Future<void> signOut() async {
-    _authRepository.signOut();
+  Future<void> signOut(UserModel user) async {
+    _authRepository.signOut(user);
     emit(AuthInitial());
   }
 

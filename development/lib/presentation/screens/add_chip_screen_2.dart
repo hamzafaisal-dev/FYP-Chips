@@ -17,6 +17,7 @@ import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/custom_textformfield.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,6 +98,12 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
         'currentUser': _authenticatedUser,
       };
 
+      Helpers.logEvent(
+        _authenticatedUser.userId,
+        "edit-chip",
+        [ChipModel.fromMap(newChip), _authenticatedUser],
+      );
+
       BlocProvider.of<ChipBloc>(context).add(UploadChipEvent(newChip: newChip));
     }
   }
@@ -114,6 +121,12 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
       Map<String, dynamic> editedChipMap = editedChip.toMap();
 
+      Helpers.logEvent(
+        _authenticatedUser.userId,
+        "edit-chip",
+        [editedChip, _authenticatedUser],
+      );
+
       BlocProvider.of<ChipBloc>(context)
           .add(EditChipEvent(editedChip: editedChipMap));
     }
@@ -124,6 +137,12 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
       'chipDescription': widget.arguments!["chipDetails"],
       'chipFile': widget.arguments!["chipImage"],
     };
+
+    Helpers.logEvent(
+      _authenticatedUser.userId,
+      "use-autofill",
+      [_authenticatedUser],
+    );
 
     BlocProvider.of<AutofillBloc>(context)
         .add(AutofillChipDetailsEvent(chipDetails: chipDetails));

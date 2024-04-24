@@ -154,7 +154,7 @@ class Helpers {
         body: jsonEncode(eventPayload),
       );
     } catch (error) {
-      print('Error: $error');
+      print('Error logging event: $error');
     }
   }
 }

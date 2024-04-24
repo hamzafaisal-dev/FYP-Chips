@@ -3,6 +3,7 @@ import 'package:development/business%20logic/cubits/notification/notification_cu
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,8 +59,15 @@ class _CustomBookmarkButtonState extends State<CustomBookmarkButton> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip added to favorites!🎉',
+            'Chip added to bookmarks!🎉',
             'success',
+          );
+
+          // log event
+          Helpers.logEvent(
+            state.updatedUser.userId,
+            "bookmark-chip",
+            [widget.currentChip, state.updatedUser],
           );
 
           // send notification to recipient on successful bookmark
@@ -75,8 +83,15 @@ class _CustomBookmarkButtonState extends State<CustomBookmarkButton> {
 
           HelperWidgets.showSnackbar(
             context,
-            'Chip removed from favorites!😢',
+            'Chip removed from bookmarks!😢',
             'info',
+          );
+
+          // log event
+          Helpers.logEvent(
+            state.updatedUser.userId,
+            "unbookmark-chip",
+            [widget.currentChip, state.updatedUser],
           );
         }
       },

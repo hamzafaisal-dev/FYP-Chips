@@ -272,37 +272,37 @@ class ChipNetwork {
   }
 
   // add chip to google sheet
-  Future<Map<String, dynamic>> addChipToGoogleSheet(ChipModel chip) async {
-    final url = Uri.https(NetworkURLS.baseUrl1, '/addChip');
-    final headers = {'Content-Type': 'application/json'};
-    DateTime deadline = chip.deadline;
-    String formattedDeadline =
-        '${deadline.year}-${Helpers.addLeadingZero(deadline.month)}-${Helpers.addLeadingZero(deadline.day)}';
-    final body = jsonEncode({
-      'deadline': formattedDeadline,
-      'title': chip.jobTitle.toString(),
-      'company': chip.companyName.toString(),
-      'where_to_apply': chip.applicationLink.toString(),
-    });
+  // Future<Map<String, dynamic>> addChipToGoogleSheet(ChipModel chip) async {
+  //   final url = Uri.https(NetworkURLS.baseUrl1, '/addChip');
+  //   final headers = {'Content-Type': 'application/json'};
+  //   DateTime deadline = chip.deadline;
+  //   String formattedDeadline =
+  //       '${deadline.year}-${Helpers.addLeadingZero(deadline.month)}-${Helpers.addLeadingZero(deadline.day)}';
+  //   final body = jsonEncode({
+  //     'deadline': formattedDeadline,
+  //     'title': chip.jobTitle.toString(),
+  //     'company': chip.companyName.toString(),
+  //     'where_to_apply': chip.applicationLink.toString(),
+  //   });
 
-    try {
-      final response = await http.post(url, headers: headers, body: body);
+  //   try {
+  //     final response = await http.post(url, headers: headers, body: body);
 
-      if (response.statusCode == 200) {
-        return {'success': true};
-      } else {
-        return {
-          'success': false,
-          'message': 'Failed to add chip to google sheet',
-        };
-      }
-    } catch (e) {
-      return {
-        'success': false,
-        'message': 'Error: $e',
-      };
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       return {'success': true};
+  //     } else {
+  //       return {
+  //         'success': false,
+  //         'message': 'Failed to add chip to google sheet',
+  //       };
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       'success': false,
+  //       'message': 'Error: $e',
+  //     };
+  //   }
+  // }
 
   // post chip
   Future<UserModel> postChip({required Map<String, dynamic> chipMap}) async {
@@ -503,6 +503,12 @@ class ChipNetwork {
 
     // chip is also deleted from firestore
     await _firestore.collection('chips').doc(chipId).delete();
+
+    Helpers.logEvent(
+      updatedUser.userId,
+      "delete-chip",
+      [chipId],
+    );
 
     return updatedUser;
   }
