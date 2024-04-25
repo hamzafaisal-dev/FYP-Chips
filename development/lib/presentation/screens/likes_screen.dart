@@ -76,7 +76,7 @@ class _LikeScreenState extends State<LikeScreen> {
 
               await UserNetwork().getTopContributors();
             },
-            icon: Icon(Icons.abc),
+            icon: const Icon(Icons.abc),
           )
         ],
       ),
@@ -87,7 +87,7 @@ class _LikeScreenState extends State<LikeScreen> {
               children: [
                 //
                 Divider(
-                  height: 10,
+                  height: 10.h,
                   thickness: 1,
                   color: Theme.of(context).colorScheme.surface,
                 ),
@@ -104,7 +104,7 @@ class _LikeScreenState extends State<LikeScreen> {
                           border: Border(
                             bottom: BorderSide(
                               color: Theme.of(context).colorScheme.surface,
-                              width: 1.0,
+                              width: 1.0.w,
                             ),
                           ),
                         ),
@@ -125,10 +125,11 @@ class _LikeScreenState extends State<LikeScreen> {
                             ),
                           ),
                           title: Text(
-                            user.username,
+                            user.name,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text('@${user.name}'),
+                          subtitle: Text('@${user.username}'),
+                          onTap: () {},
                         ),
                       );
                     },
@@ -167,11 +168,11 @@ Widget _buildLikeSkeleton(BuildContext context) {
             border: Border(
               bottom: BorderSide(
                 color: Theme.of(context).colorScheme.surface,
-                width: 1.0,
+                width: 1.0.w,
               ),
             ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Row(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -184,7 +185,7 @@ Widget _buildLikeSkeleton(BuildContext context) {
               SizedBox(width: 8.w),
 
               Padding(
-                padding: const EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 8.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -193,10 +194,10 @@ Widget _buildLikeSkeleton(BuildContext context) {
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: EdgeInsets.only(bottom: 8.h),
                         child: Container(
-                          height: 20,
-                          width: 110,
+                          height: 20.h,
+                          width: 110.w,
                           color: Colors.white,
                         ),
                       ),
@@ -206,10 +207,10 @@ Widget _buildLikeSkeleton(BuildContext context) {
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: EdgeInsets.only(bottom: 8.h),
                         child: Container(
-                          height: 20,
-                          width: 80,
+                          height: 20.h,
+                          width: 80.w,
                           color: Colors.white,
                         ),
                       ),
