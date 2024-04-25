@@ -358,19 +358,28 @@ Widget _buildViewScreen(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //
-                              RichText(
-                                text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                  children: [
-                                    const TextSpan(
-                                      text: 'Posted By: ',
-                                    ),
-                                    TextSpan(
-                                      text: chipData.postedBy,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                              InkWell(
+                                onTap: () {
+                                  NavigationService.routeToNamed(
+                                    '/user_profile',
+                                    arguments: {"postedBy": chipData.postedBy},
+                                  );
+                                },
+                                child: RichText(
+                                  text: TextSpan(
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                    children: [
+                                      const TextSpan(
+                                        text: 'Posted By: ',
+                                      ),
+                                      TextSpan(
+                                        text: chipData.postedBy,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               )
                             ],

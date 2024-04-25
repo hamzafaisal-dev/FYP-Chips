@@ -21,7 +21,12 @@ class TopContributorCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          NavigationService.routeToNamed(
+            '/user_profile',
+            arguments: {"postedBy": postedBy},
+          );
+        },
         borderRadius: BorderRadius.circular(10.0),
         child: Container(
           decoration: BoxDecoration(

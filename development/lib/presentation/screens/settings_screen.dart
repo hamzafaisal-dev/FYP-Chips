@@ -56,6 +56,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               SizedBox(height: 20.h),
 
+              // // Your Chips
+              // SettingsActionTile(
+              //   title: 'Your Chips',
+              //   subTitle: 'View your saved and posted chips',
+              //   leadingIcon: SvgPicture.asset(
+              //     AssetPaths.moreIconPath,
+              //     width: 18.w,
+              //     height: 3.63.h,
+              //   ),
+              //   trailingIcon: Icons.arrow_forward_ios_rounded,
+              //   onTap: () =>
+              //       NavigationService.routeToNamed('/user-chips-screen'),
+              // ),
+
+              // SizedBox(height: 8.h),
+
               // Favorited Chips
               SettingsActionTile(
                 title: 'Favorited Chips',

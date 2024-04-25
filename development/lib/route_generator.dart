@@ -11,6 +11,7 @@ import 'package:development/presentation/screens/favorite_chips_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
 import 'package:development/presentation/screens/otp_screen.dart';
+import 'package:development/presentation/screens/user_chips_scree.dart';
 import 'package:development/presentation/screens/user_profile_screen.dart';
 import 'package:development/presentation/screens/reset_password_screen.dart';
 import 'package:development/presentation/screens/settings_screen.dart';
@@ -158,6 +159,16 @@ class RouteGenerator {
 
           return MaterialPageRoute(
             builder: (context) => LikeScreen(arguments: receivedArguments),
+          );
+        }
+
+      case '/user-chips-screen':
+        {
+          // Map<String, dynamic>? receivedArguments =
+          //     settings.arguments as Map<String, dynamic>?;
+
+          return MaterialPageRoute(
+            builder: (context) => const UserChipsScreen(),
           );
         }
 
