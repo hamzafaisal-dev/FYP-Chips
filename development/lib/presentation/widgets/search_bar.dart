@@ -218,10 +218,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   "search-chips",
                   [value],
                 );
-                BlocProvider.of<ChipBloc>(context).add(
-                  FetchChips(searchText: value),
-                );
               }
+              BlocProvider.of<ChipBloc>(context).add(
+                FetchChips(searchText: value),
+              );
             },
             decoration: InputDecoration(
               fillColor: Colors.white,

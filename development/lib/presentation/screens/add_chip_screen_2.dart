@@ -19,7 +19,9 @@ import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/form_validators.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -206,7 +208,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
           child: Form(
             key: _addChipFormKey,
             child: BlocConsumer<AutofillBloc, AutofillState>(
@@ -377,7 +379,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
-                          .copyWith(fontSize: 22),
+                          .copyWith(fontSize: 24.sp),
                     ),
 
                     SizedBox(height: 12.h),
@@ -453,14 +455,14 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                                 Theme.of(context).colorScheme.onSecondary,
                             onPressed: null,
                             icon: const Icon(Icons.calendar_month),
-                            iconSize: 26,
+                            iconSize: 27.sp,
                           ),
 
                           Text(
                             _chipDeadline == null
                                 ? 'Select Chip Deadline'
                                 : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
-                            style: const TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 18.sp),
                           ),
                         ],
                       ),
@@ -482,18 +484,18 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
-                          .copyWith(fontSize: 22),
+                          .copyWith(fontSize: 23.sp),
                     ),
 
                     SizedBox(height: 12.h),
 
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         //
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.42,
+                        Expanded(
+                          flex: 4,
                           child: JobModeDropdown(
                             hintText: ' Job Mode ',
                             value: _jobMode,
@@ -501,10 +503,10 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                           ),
                         ),
 
-                        SizedBox(width: 8.w),
+                        SizedBox(width: 10.w),
 
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
+                        Expanded(
+                          flex: 6,
                           child: JobTypeDropdown(
                             hintText: ' Job Type ',
                             value: _jobType,
@@ -533,7 +535,7 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!
-                            .copyWith(fontSize: 22),
+                            .copyWith(fontSize: 23.sp),
                       ),
 
                     // chip description

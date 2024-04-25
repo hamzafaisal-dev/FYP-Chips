@@ -52,9 +52,23 @@ class _ChipTileState extends State<ChipTile> {
       if (widget.chipData.likedBy.contains(currentUserName)) {
         _chipLikes -= 1;
         widget.chipData.likedBy.remove(currentUserName);
+
+        // log event
+        Helpers.logEvent(
+          widget.currentUser.userId,
+          "unlike-chip",
+          [widget.chipData.chipId],
+        );
       } else {
         _chipLikes += 1;
         widget.chipData.likedBy.add(currentUserName);
+
+        // log event
+        Helpers.logEvent(
+          widget.currentUser.userId,
+          "like-chip",
+          [widget.chipData.chipId],
+        );
       }
     });
 

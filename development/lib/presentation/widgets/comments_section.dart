@@ -6,6 +6,7 @@ import 'package:development/presentation/widgets/comment_tile.dart';
 import 'package:development/presentation/widgets/comment_tile_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
 class CommentsSection extends StatefulWidget {
@@ -36,10 +37,10 @@ class _CommentsSectionState extends State<CommentsSection> {
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
-              .copyWith(fontSize: 22),
+              .copyWith(fontSize: 23.sp),
         ),
 
-        const SizedBox(height: 10),
+        SizedBox(height: 10.h),
 
         BlocBuilder<CommentCubit, CommentState>(
           builder: (context, state) {
@@ -55,18 +56,17 @@ class _CommentsSectionState extends State<CommentsSection> {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 40),
+                              padding: EdgeInsets.only(bottom: 40.h),
                               child: Transform.scale(
                                 scale: 2,
                                 child: Lottie.asset(
                                   AssetPaths.ghostEmptyAnimationPath,
                                   frameRate: FrameRate.max,
-                                  repeat: false,
-                                  width: 120,
+                                  width: 120.w,
                                 ),
                               ),
                             ),
-                            const Text('Be the first to write a comment'),
+                            const Text('Be the first to leave a comment!'),
                           ],
                         ),
                       );

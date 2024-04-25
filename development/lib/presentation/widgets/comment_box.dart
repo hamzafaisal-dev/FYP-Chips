@@ -4,7 +4,9 @@ import 'package:development/business%20logic/cubits/notification/notification_cu
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CommentBox extends StatelessWidget {
@@ -61,41 +63,43 @@ class CommentBox extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
+            padding: EdgeInsets.fromLTRB(8.w, 12.h, 8.w, 12.h),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //
                 CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.yellow,
+                  radius: 21.r,
+                  backgroundColor: Colors.grey[200],
                   child: ClipOval(
                     child: SvgPicture.network(
                       authenticatedUser.profilePictureUrl,
-                      height: 60,
-                      width: 60,
+                      height: 60.h,
+                      width: 60.w,
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
 
-                const SizedBox(width: 10),
+                SizedBox(width: 10.w),
 
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.74,
-                  padding: const EdgeInsets.only(top: 6),
-                  child: TextField(
-                    controller: commentController,
-                    autofocus: commentAutoFocused ?? false,
-                    decoration: const InputDecoration.collapsed(
-                      hintText: 'Leave a comment...',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
+                Expanded(
+                  child: Container(
+                    // width: MediaQuery.of(context).size.width * 0.63,
+                    padding: EdgeInsets.only(top: 6.h),
+                    child: TextField(
+                      controller: commentController,
+                      autofocus: commentAutoFocused ?? false,
+                      decoration: const InputDecoration.collapsed(
+                        hintText: 'Leave a comment...',
+                        hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
+                      minLines: 1,
+                      maxLines: 2,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     ),
-                    minLines: 1,
-                    maxLines: 2,
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   ),
                 ),
 

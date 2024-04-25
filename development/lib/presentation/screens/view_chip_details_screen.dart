@@ -217,7 +217,7 @@ Widget _buildViewScreen(
   return Scaffold(
     body: SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+        padding: EdgeInsets.fromLTRB(12.w, 14.h, 12.w, 14.h),
         child: chipData == null
             ? const Center(child: Text('Looks like this chip has been deleted'))
             : ListView(
@@ -296,7 +296,7 @@ Widget _buildViewScreen(
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   // chip title + bookmark icon
                   Row(
@@ -311,18 +311,18 @@ Widget _buildViewScreen(
                         ),
                       ),
 
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10.w),
 
                       Row(
                         children: [
                           // bookmark icon
                           CustomBookmarkButton(
-                            iconSize: 28,
-                            radius: 22,
+                            iconSize: 28.sp,
+                            radius: 22.r,
                             currentChip: chipData,
                           ),
 
-                          if (isEditable) const SizedBox(width: 10),
+                          if (isEditable) SizedBox(width: 10.w),
 
                           if (isEditable)
                             CustomIconButton(
@@ -344,7 +344,7 @@ Widget _buildViewScreen(
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   // Posted By + Posted Time
                   Row(
@@ -385,7 +385,7 @@ Widget _buildViewScreen(
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   // Apply Here + Copy to clipboard
                   Row(
@@ -415,12 +415,12 @@ Widget _buildViewScreen(
                                 context, 'Copied to clipboard!', 'success');
                           });
                         },
-                        icon: const Icon(Icons.copy, size: 20),
+                        icon: Icon(Icons.copy, size: 22.sp),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   // Company Name
                   Row(
@@ -435,7 +435,7 @@ Widget _buildViewScreen(
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   // Deadline
                   Row(
@@ -451,40 +451,40 @@ Widget _buildViewScreen(
                     ],
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   Text(
                     'Chip Details',
                     style: Theme.of(context)
                         .textTheme
                         .headlineMedium!
-                        .copyWith(fontSize: 22),
+                        .copyWith(fontSize: 23.sp),
                   ),
 
                   Text(
                     chipData.description ?? 'No description available',
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16.sp),
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   if (chipData.imageUrl != null && chipData.imageUrl != '')
                     ChipNetworkImageContainer(imageUrl: chipData.imageUrl!),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   MarkAppliedButton(chipId: chipData.chipId),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   Material(
                     elevation: 2,
                     shadowColor: Colors.grey.withOpacity(0.5),
                     color: Colors.white,
-                    child: const Divider(height: 1, color: Colors.white),
+                    child: Divider(height: 1.h, color: Colors.white),
                   ),
 
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14.h),
 
                   CommentsSection(chip: chipData),
 
