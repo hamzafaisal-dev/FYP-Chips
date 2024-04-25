@@ -68,17 +68,6 @@ class _LikeScreenState extends State<LikeScreen> {
             ),
           ),
         ),
-
-        actions: [
-          IconButton(
-            onPressed: () async {
-              print('pressed');
-
-              await UserNetwork().getTopContributors();
-            },
-            icon: const Icon(Icons.abc),
-          )
-        ],
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
