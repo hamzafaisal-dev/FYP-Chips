@@ -37,6 +37,13 @@ class _ChipTileState extends State<ChipTile> {
   late int _chipComments;
 
   void _viewLikes() {
+    // log event
+    Helpers.logEvent(
+      widget.currentUser.userId,
+      "view-chip-likes",
+      [widget.chipData.chipId],
+    );
+
     NavigationService.routeToNamed(
       '/likes-screen',
       arguments: {"likedBy": widget.chipData.likedBy},
