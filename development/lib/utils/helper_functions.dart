@@ -145,10 +145,10 @@ class Helpers {
       "eventParameters": parameters,
     };
 
-    print("Logging event: $eventPayload");
+    // print("Logging event: $eventPayload");
 
     try {
-      print("trying to log event");
+      // print("trying to log event");
       http.post(
         Uri.parse(NetworkURLS.logEventUrl),
         headers: <String, String>{
@@ -156,7 +156,7 @@ class Helpers {
         },
         body: jsonEncode(eventPayload),
       );
-      print("Event logged successfully");
+      // print("Event logged successfully");
     } catch (error) {
       print('Error logging event: $error');
     }

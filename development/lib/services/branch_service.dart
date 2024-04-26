@@ -5,6 +5,7 @@ import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BranchService {
   BranchContentMetaData metadata = BranchContentMetaData();
@@ -18,33 +19,36 @@ class BranchService {
   StreamController<String> controllerInitSession = StreamController<String>();
 
   void listenDynamicLinks() async {
-    streamSubscription = FlutterBranchSdk.listSession().listen((data) async {
-      debugPrint('listenDynamicLinks - DeepLink Data: $data');
-      controllerData.sink.add((data.toString()));
+    streamSubscription = FlutterBranchSdk.listSession().listen(
+      (data) async {
+        debugPrint('listenDynamicLinks - DeepLink Data: $data');
+        controllerData.sink.add((data.toString()));
 
-      if (data.containsKey('+clicked_branch_link') &&
-          data['+clicked_branch_link'] == true) {
-        debugPrint(
-            '------------------------------------Link clicked----------------------------------------------');
-        debugPrint('Key: ${data['key']}');
-        debugPrint('Chip ID: ${data['chip_id']}');
-        debugPrint(
-            '------------------------------------------------------------------------------------------------');
-        debugPrint(
-          'Link clicked: Custom string - ${data['custom_string']} - Date: ${data['custom_date_created'] ?? ''}',
-        );
+        if (data.containsKey('+clicked_branch_link') &&
+            data['+clicked_branch_link'] == true) {
+          debugPrint(
+              '------------------------------------Link clicked----------------------------------------------');
+          debugPrint('Key: ${data['key']}');
+          debugPrint('Chip ID: ${data['chip_id']}');
+          debugPrint(
+              '------------------------------------------------------------------------------------------------');
+          debugPrint(
+            'Link clicked: Custom string - ${data['custom_string']} - Date: ${data['custom_date_created'] ?? ''}',
+          );
 
-        if (data['key'] == '1') {
-          debugPrint("Key correct");
-          // NavigationService.routeToNamed(
-          //   '/view-chip',
-          //   arguments: {"chipId": data['chip_id']},
-          // );
+          if (data['key'] == '1') {
+            debugPrint("Key correct");
+            NavigationService.routeToNamed(
+              '/view-chip',
+              arguments: {"chipId": data['chip_id']},
+            );
+          }
         }
-      }
-    }, onError: (error) {
-      debugPrint('listSession error: ${error.toString()}');
-    });
+      },
+      onError: (error) {
+        debugPrint('listSession error: ${error.toString()}');
+      },
+    );
   }
 
   void initDeepLinkData() {
@@ -85,6 +89,7 @@ class BranchService {
       */
 
     const canonicalIdentifier = 12;
+
     buo = BranchUniversalObject(
         canonicalIdentifier: 'flutter/branch_$canonicalIdentifier',
         title: 'Flutter Branch Plugin - $dateString',
@@ -138,15 +143,19 @@ class BranchService {
   void generateLink(BuildContext context, BranchUniversalObject buo,
       BranchLinkProperties lp) async {
     initDeepLinkData();
+
     BranchResponse response =
         await FlutterBranchSdk.getShortUrl(buo: buo, linkProperties: lp);
     if (response.success) {
       if (context.mounted) {
         debugPrint(response.result);
-        Clipboard.setData(ClipboardData(text: response.result)).then((_) {
-          HelperWidgets.showSnackbar(
-              context, 'Copied to clipboard!', 'success');
-        });
+
+        // Clipboard.setData(ClipboardData(text: response.result)).then((_) {
+        //   HelperWidgets.showSnackbar(
+        //       context, 'Copied to clipboard!', 'success');
+        // });
+
+        Share.share('Check out this chip: ${response.result}');
       }
     } else {
       debugPrint('Error : ${response.errorCode} - ${response.errorMessage}');

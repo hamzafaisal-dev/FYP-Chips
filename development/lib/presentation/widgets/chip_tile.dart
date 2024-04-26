@@ -1,10 +1,12 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/services/branch_service.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/utils/helper_functions.dart';
@@ -413,7 +415,36 @@ class _ChipTileState extends State<ChipTile> {
             width: MediaQuery.of(context).size.width * 0.28,
             child: IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 9.h),
-              onPressed: () {},
+              onPressed: () {
+                BranchService().generateLink(
+                    context,
+                    BranchUniversalObject(
+                        canonicalIdentifier: 'flutter/branch',
+                        title: widget.chipData.jobTitle,
+                        contentDescription: '${widget.chipData.companyName} is hiring a ${widget.chipData.jobTitle}',
+                        contentMetadata: BranchContentMetaData()
+                          ..addCustomMetadata('key', 1)
+                          ..addCustomMetadata(
+                              'chip_id', widget.chipData.chipId),
+                        keywords: ['Plugin', 'Branch', 'Flutter'],
+                        publiclyIndex: true,
+                        locallyIndex: true,
+                        expirationDateInMilliSec: DateTime.now()
+                            .add(const Duration(days: 365))
+                            .millisecondsSinceEpoch),
+                    BranchLinkProperties(
+                        channel: 'share',
+                        feature: 'sharing',
+                        stage: 'new share',
+                        campaign: 'campaign',
+                        tags: ['one', 'two', 'three'])
+                      ..addControlParam('\$uri_redirect_mode', '1')
+                      ..addControlParam('\$ios_nativelink', true)
+                      ..addControlParam('\$match_duration', 7200)
+                      ..addControlParam('\$always_deeplink', true)
+                      ..addControlParam('\$android_redirect_timeout', 750)
+                      ..addControlParam('referring_user_id', 'user_id'));
+              },
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: const Icon(Icons.share_rounded, size: 20),

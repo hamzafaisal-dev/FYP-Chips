@@ -51,9 +51,10 @@ void main() async {
   );
 
   await FlutterBranchSdk.init(
-      useTestKey: false, enableLogging: false, disableTracking: false);
-
-  // FlutterBranchSdk.validateSDKIntegration();
+    useTestKey: false,
+    enableLogging: false,
+    disableTracking: false,
+  );
 
   runApp(const MyApp());
 }

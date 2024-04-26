@@ -459,45 +459,6 @@ Widget _buildViewScreen(
                             chipData.deadline.toString()),
                         Colors.lightBlueAccent,
                       ),
-
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        visualDensity: VisualDensity.compact,
-                        onPressed: () {
-                          BranchService().generateLink(
-                              context,
-                              BranchUniversalObject(
-                                  canonicalIdentifier: 'flutter/branch',
-                                  title: 'Flutter Branch Plugin',
-                                  contentDescription:
-                                      'Flutter Branch Description',
-                                  contentMetadata: BranchContentMetaData()
-                                    ..addCustomMetadata('key', 1)
-                                    ..addCustomMetadata(
-                                        'chip_id', chipData.chipId),
-                                  keywords: ['Plugin', 'Branch', 'Flutter'],
-                                  publiclyIndex: true,
-                                  locallyIndex: true,
-                                  expirationDateInMilliSec: DateTime.now()
-                                      .add(const Duration(days: 365))
-                                      .millisecondsSinceEpoch),
-                              BranchLinkProperties(
-                                  channel: 'share',
-                                  feature: 'sharing',
-                                  stage: 'new share',
-                                  campaign: 'campaign',
-                                  tags: ['one', 'two', 'three'])
-                                ..addControlParam('\$uri_redirect_mode', '1')
-                                ..addControlParam('\$ios_nativelink', true)
-                                ..addControlParam('\$match_duration', 7200)
-                                ..addControlParam('\$always_deeplink', true)
-                                ..addControlParam(
-                                    '\$android_redirect_timeout', 750)
-                                ..addControlParam(
-                                    'referring_user_id', 'user_id'));
-                        },
-                        icon: const Icon(Icons.share, size: 20),
-                      ),
                     ],
                   ),
 
