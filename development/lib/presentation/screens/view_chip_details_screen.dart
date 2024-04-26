@@ -12,12 +12,14 @@ import 'package:development/presentation/widgets/chip_image_container2.dart';
 import 'package:development/presentation/widgets/comment_box.dart';
 import 'package:development/presentation/widgets/comments_section.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
+import 'package:development/services/branch_service.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChipDetailsScreen extends StatefulWidget {
@@ -456,6 +458,45 @@ Widget _buildViewScreen(
                         Helpers.formatDateTimeString(
                             chipData.deadline.toString()),
                         Colors.lightBlueAccent,
+                      ),
+
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        visualDensity: VisualDensity.compact,
+                        onPressed: () {
+                          BranchService().generateLink(
+                              context,
+                              BranchUniversalObject(
+                                  canonicalIdentifier: 'flutter/branch',
+                                  title: 'Flutter Branch Plugin',
+                                  contentDescription:
+                                      'Flutter Branch Description',
+                                  contentMetadata: BranchContentMetaData()
+                                    ..addCustomMetadata('key', 1)
+                                    ..addCustomMetadata(
+                                        'chip_id', chipData.chipId),
+                                  keywords: ['Plugin', 'Branch', 'Flutter'],
+                                  publiclyIndex: true,
+                                  locallyIndex: true,
+                                  expirationDateInMilliSec: DateTime.now()
+                                      .add(const Duration(days: 365))
+                                      .millisecondsSinceEpoch),
+                              BranchLinkProperties(
+                                  channel: 'share',
+                                  feature: 'sharing',
+                                  stage: 'new share',
+                                  campaign: 'campaign',
+                                  tags: ['one', 'two', 'three'])
+                                ..addControlParam('\$uri_redirect_mode', '1')
+                                ..addControlParam('\$ios_nativelink', true)
+                                ..addControlParam('\$match_duration', 7200)
+                                ..addControlParam('\$always_deeplink', true)
+                                ..addControlParam(
+                                    '\$android_redirect_timeout', 750)
+                                ..addControlParam(
+                                    'referring_user_id', 'user_id'));
+                        },
+                        icon: const Icon(Icons.share, size: 20),
                       ),
                     ],
                   ),

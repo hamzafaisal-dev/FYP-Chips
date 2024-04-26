@@ -18,6 +18,7 @@ import 'package:development/presentation/themes/theme.dart';
 import 'package:development/route_generator.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -48,6 +49,11 @@ void main() async {
     ],
     debug: true,
   );
+
+  await FlutterBranchSdk.init(
+      useTestKey: false, enableLogging: false, disableTracking: false);
+
+  // FlutterBranchSdk.validateSDKIntegration();
 
   runApp(const MyApp());
 }

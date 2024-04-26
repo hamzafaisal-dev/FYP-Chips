@@ -10,6 +10,7 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_image_tile.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
+import 'package:development/services/branch_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     SharedPrefCubit sharedPrefCubit = BlocProvider.of<SharedPrefCubit>(context);
     sharedPrefCubit.getData();
+
+    // BranchService().listenDynamicLinks();
+    // BranchService().initDeepLinkData();
   }
 
   Future<void> _handleRefresh() async {

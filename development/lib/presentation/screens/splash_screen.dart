@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/services/branch_service.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/services/notification_service.dart';
 import 'package:development/utils/helper_functions.dart';
@@ -25,6 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     super.initState();
+
+    BranchService().listenDynamicLinks();
+    BranchService().initDeepLinkData();
   }
 
   @override
