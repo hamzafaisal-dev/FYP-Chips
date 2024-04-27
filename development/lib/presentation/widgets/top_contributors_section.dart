@@ -33,17 +33,17 @@ class TopContributorsSection extends StatelessWidget {
                           fontSize: 19.sp,
                         ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'See All',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14.sp,
-                            // color: Theme.of(context).colorScheme.surface,
-                          ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {},
+                  //   child: Text(
+                  //     'See All',
+                  //     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  //           fontWeight: FontWeight.w700,
+                  //           fontSize: 14.sp,
+                  //           // color: Theme.of(context).colorScheme.surface,
+                  //         ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

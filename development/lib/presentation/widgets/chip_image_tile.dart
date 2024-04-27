@@ -1,5 +1,6 @@
 import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
 import 'package:development/business%20logic/blocs/chip/chip_event.dart';
+import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:development/services/branch_service.dart';
@@ -113,11 +114,11 @@ class _ChipImageTileState extends State<ChipImageTile> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Card(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             // borderRadius: BorderRadius.circular(10),
             ),
         elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+        margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 0),
         child: InkWell(
           borderRadius: BorderRadius.circular(12.r),
           splashColor: Colors.transparent,
@@ -137,7 +138,7 @@ class _ChipImageTileState extends State<ChipImageTile> {
 
                 if (_chipHasImage)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
                     child: Container(
                       alignment: Alignment.center,
                       child: Material(
@@ -156,8 +157,11 @@ class _ChipImageTileState extends State<ChipImageTile> {
                               if (loadingProgress == null) {
                                 return child;
                               } else {
-                                return const Center(
-                                  child: CustomCircularProgressIndicator(),
+                                return Container(
+                                  color: Colors.white,
+                                  child: const Center(
+                                    child: CustomCircularProgressIndicator(),
+                                  ),
                                 );
                               }
                             },

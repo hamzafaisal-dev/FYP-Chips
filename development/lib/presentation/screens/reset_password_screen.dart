@@ -94,6 +94,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         onTapOutside: (event) {
                           FocusScope.of(context).unfocus();
                         },
+                        maxLength: 254,
+                        // gets rid of maxLength counter under text fields
+                        buildCounter: (
+                          context, {
+                          required currentLength,
+                          maxLength,
+                          required isFocused,
+                        }) =>
+                            null,
                         controller: _emailController,
                         decoration: Styles.textFormFieldDecoration(
                           'j.doe.36963@khi.iba.edu.pk',

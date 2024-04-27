@@ -61,122 +61,139 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favorite Chips'),
-        centerTitle: true,
+    return PopScope(
+      onPopInvoked: (didPop) {
+        BlocProvider.of<UserCubit>(context).fetchTopContributors();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Favorite Chips'),
+          centerTitle: true,
 
-        // back button
-        leadingWidth: 64.w,
-        leading: Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: CustomIconButton(
-              iconSvgPath: AssetPaths.leftArrowIconPath,
-              iconWidth: 16.w,
-              iconHeight: 16.h,
-              onTap: () => Navigator.pop(context),
+          // back button
+          leadingWidth: 64.w,
+          leading: Padding(
+            padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: CustomIconButton(
+                iconSvgPath: AssetPaths.leftArrowIconPath,
+                iconWidth: 16.w,
+                iconHeight: 16.h,
+                onTap: () {
+                  BlocProvider.of<UserCubit>(context).fetchTopContributors();
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            //
-            Padding(
-              padding: EdgeInsets.only(top: 15.h, bottom: 10.h),
-              child: Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: TextFormField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    hintText: 'Search',
-                    hintStyle: Theme.of(context).textTheme.bodyLarge,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 20.w,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 0.w,
-                      vertical: 0.h,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            children: [
+              //
+              Padding(
+                padding: EdgeInsets.only(top: 15.h, bottom: 10.h),
+                child: Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: TextFormField(
+                    maxLength: 20,
+                    buildCounter: (
+                      context, {
+                      required currentLength,
+                      maxLength,
+                      required isFocused,
+                    }) =>
+                        null,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      hintText: 'Search',
+                      hintStyle: Theme.of(context).textTheme.bodyLarge,
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: 20.w,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 0.w,
+                        vertical: 0.h,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 16.4.h),
+              SizedBox(height: 16.4.h),
 
-            ElevatedButton(
-              onPressed: () {
-                _selectDateRange(context);
-              },
-              child: Text(
-                'Select Date Range',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+              ElevatedButton(
+                onPressed: () {
+                  _selectDateRange(context);
+                },
+                child: Text(
+                  'Select Date Range',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
               ),
-            ),
 
-            SizedBox(height: 23.4.h),
+              SizedBox(height: 23.4.h),
 
-            BlocBuilder<UserCubit, UserState>(
-              builder: (context, state) {
-                if (state is UserChipsFetched) {
-                  List<ChipModel> usersFavoritedChips = state.userChips;
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserChipsFetched) {
+                    List<ChipModel> usersFavoritedChips = state.userChips;
 
-                  if (usersFavoritedChips.isEmpty) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Lottie.asset(
-                          AssetPaths.girlEmptyBoxAnimationPath,
-                          frameRate: FrameRate.max,
-                          width: 270.w,
-                        ),
-                        SizedBox(height: 20.h),
-                        Text(
-                          "No favorite chips yet!",
-                          style: Theme.of(context).textTheme.labelSmall,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                    if (usersFavoritedChips.isEmpty) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Lottie.asset(
+                            AssetPaths.girlEmptyBoxAnimationPath,
+                            frameRate: FrameRate.max,
+                            width: 270.w,
+                          ),
+                          SizedBox(height: 20.h),
+                          Text(
+                            "No favorite chips yet!",
+                            style: Theme.of(context).textTheme.labelSmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      );
+                    }
+
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: usersFavoritedChips.length,
+                        itemBuilder: (context, index) {
+                          ChipModel chipData = usersFavoritedChips[index];
+
+                          return ChipTile(
+                            chipData: chipData,
+                            currentUser: _authenticatedUser!,
+                          );
+                        },
+                      ),
                     );
+                  } else if (state is UserErrorState) {
+                    return Center(child: Text(state.errorMessage));
                   }
 
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: usersFavoritedChips.length,
-                      itemBuilder: (context, index) {
-                        ChipModel chipData = usersFavoritedChips[index];
-
-                        return ChipTile(
-                          chipData: chipData,
-                          currentUser: _authenticatedUser!,
-                        );
-                      },
-                    ),
-                  );
-                } else if (state is UserErrorState) {
-                  return Center(child: Text(state.errorMessage));
-                }
-
-                return const CustomCircularProgressIndicator();
-              },
-            ),
-          ],
+                  return const CustomCircularProgressIndicator();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

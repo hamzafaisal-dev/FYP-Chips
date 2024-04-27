@@ -70,6 +70,15 @@ class _SignInScreenState extends State<SignInScreen> {
 
               // email form field
               TextFormField(
+                maxLength: 254,
+                // gets rid of maxLength counter under text fields
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
                 },
@@ -93,6 +102,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
                 },
+                maxLength: 128,
+                // gets rid of maxLength counter under text fields
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: Styles.textFormFieldDecoration(
