@@ -43,6 +43,9 @@ class AssetPaths {
       'assets/images/icons/bookmark_icon.svg';
   static const String alertsIconPath = 'assets/images/icons/alerts_icon.svg';
   static const String filterIconPath = 'assets/images/icons/filter_icon.svg';
+  static const String signOutIconPath = 'assets/images/icons/sign_out_icon.svg';
+  static const String bookmarksIconPath =
+      'assets/images/icons/bookmarks_icon.svg';
 
   // animations
   static const String splashScreenAnimationPath =

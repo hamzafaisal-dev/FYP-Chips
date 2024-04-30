@@ -1,7 +1,6 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
-import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
@@ -13,14 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
-class AppliedChipScreen extends StatefulWidget {
-  const AppliedChipScreen({super.key});
+class PostedChipScreen extends StatefulWidget {
+  const PostedChipScreen({super.key});
 
   @override
-  State<AppliedChipScreen> createState() => _AppliedChipScreenState();
+  State<PostedChipScreen> createState() => _PostedChipScreenState();
 }
 
-class _AppliedChipScreenState extends State<AppliedChipScreen> {
+class _PostedChipScreenState extends State<PostedChipScreen> {
   late final UserModel? _authenticatedUser;
   final _searchController = TextEditingController();
 
@@ -33,13 +32,13 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
       _authenticatedUser = authState.user;
       Helpers.logEvent(
         _authenticatedUser!.userId,
-        "view-applied-chips",
+        "view-favorite-chips",
         [_authenticatedUser],
       );
     }
 
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
-    userCubit.fetchUserChips(_authenticatedUser!.appliedChips);
+    userCubit.fetchUserChips(_authenticatedUser!.postedChips);
   }
 
   DateTime _startDate = DateTime.now();
@@ -68,7 +67,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Applied Chips'),
+          title: const Text('Posted Chips'),
           centerTitle: true,
 
           // back button
@@ -95,30 +94,69 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
           child: Column(
             children: [
               //
+              // Padding(
+              //   padding: EdgeInsets.only(top: 15.h, bottom: 10.h),
+              //   child: Container(
+              //     width: double.maxFinite,
+              //     decoration: BoxDecoration(
+              //       color: Theme.of(context).colorScheme.surface,
+              //       borderRadius: BorderRadius.circular(12.r),
+              //     ),
+              //     child: TextFormField(
+              //       controller: _searchController,
+              //       decoration: InputDecoration(
+              //         fillColor: Colors.white,
+              //         hintText: 'Search',
+              //         hintStyle: Theme.of(context).textTheme.bodyLarge,
+              //         prefixIcon: Icon(
+              //           Icons.search,
+              //           size: 20.w,
+              //         ),
+              //         contentPadding: EdgeInsets.symmetric(
+              //           horizontal: 0.w,
+              //           vertical: 0.h,
+              //         ),
+              //         border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(12.r),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
+              // SizedBox(height: 16.4.h),
+
+              // ElevatedButton(
+              //   onPressed: () {
+              //     _selectDateRange(context);
+              //   },
+              //   child: Text(
+              //     'Select Date Range',
+              //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              //           color: Theme.of(context).colorScheme.onPrimary,
+              //         ),
+              //   ),
+              // ),
+
+              // SizedBox(height: 23.4.h),
 
               BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
-                  print(state);
-
                   if (state is UserChipsFetched) {
-                    List<ChipModel> usersAppliedChips = state.userChips;
+                    List<ChipModel> usersFavoritedChips = state.userChips;
 
-                    if (usersAppliedChips.isEmpty) {
-                      // Animation if no favorite chips
+                    if (usersFavoritedChips.isEmpty) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          //
                           Lottie.asset(
-                            AssetPaths.appliedEmptyAnimationPath,
+                            AssetPaths.girlEmptyBoxAnimationPath,
                             frameRate: FrameRate.max,
                             width: 270.w,
                           ),
-
                           SizedBox(height: 20.h),
-
                           Text(
-                            "No applied chips yet!",
+                            "No favorite chips yet!",
                             style: Theme.of(context).textTheme.labelSmall,
                             textAlign: TextAlign.center,
                           ),
@@ -128,9 +166,9 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
 
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: usersAppliedChips.length,
+                        itemCount: usersFavoritedChips.length,
                         itemBuilder: (context, index) {
-                          ChipModel chipData = usersAppliedChips[index];
+                          ChipModel chipData = usersFavoritedChips[index];
 
                           return ChipTile(
                             chipData: chipData,
@@ -143,7 +181,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                     return Center(child: Text(state.errorMessage));
                   }
 
-                  return const CustomCircularProgressIndicator();
+                  return const Center(child: CustomCircularProgressIndicator());
                 },
               ),
             ],

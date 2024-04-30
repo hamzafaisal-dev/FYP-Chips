@@ -168,8 +168,7 @@ class ChipNetwork {
 
   //network method for english profanity
   Future<Map<String, dynamic>> checkEnglishProfanity(String input) async {
-    final url =
-        Uri.parse('https://ayekaunic.pythonanywhere.com/profanity/english');
+    final url = Uri.parse('https://chips.pythonanywhere.com/profanity/english');
 
     final headers = {
       'Content-Type': 'application/json',
@@ -206,8 +205,7 @@ class ChipNetwork {
 
   //network method for roman urdu profanity
   Future<Map<String, dynamic>> checkUrduProfanity(String input) async {
-    final url =
-        Uri.parse('https://ayekaunic.pythonanywhere.com/profanity/romanUrdu');
+    final url = Uri.parse('https://chips.pythonanywhere.com/profanity/urdu');
     final headers = {
       'Content-Type': 'application/json',
     };

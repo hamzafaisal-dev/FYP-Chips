@@ -72,14 +72,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               // SizedBox(height: 8.h),
 
+              // Posted Chips
+              SettingsActionTile(
+                title: 'Posted Chips',
+                subTitle: 'View your posted chips',
+                leadingIcon: SvgPicture.asset(
+                  AssetPaths.bookmarksIconPath,
+                  width: 24.w,
+                  height: 24.h,
+                ),
+                trailingIcon: Icons.arrow_forward_ios_rounded,
+                onTap: () => NavigationService.routeToNamed('/posted-chip'),
+              ),
+
+              SizedBox(height: 8.h),
+
               // Favorited Chips
               SettingsActionTile(
                 title: 'Favorited Chips',
                 subTitle: 'View your favorited chips',
                 leadingIcon: SvgPicture.asset(
-                  AssetPaths.notificationBellIconPath,
-                  width: 18.w,
-                  height: 18.h,
+                  AssetPaths.bookmarksIconPath,
+                  width: 24.w,
+                  height: 24.h,
                 ),
                 trailingIcon: Icons.arrow_forward_ios_rounded,
                 onTap: () => NavigationService.routeToNamed('/favorite-chip'),
@@ -114,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsActionTile(
                 title: 'About Us',
                 leadingIcon: SvgPicture.asset(
-                  AssetPaths.feedbackIconPath,
+                  AssetPaths.aboutIconPath,
                   width: 18.w,
                   height: 18.h,
                 ),
@@ -201,9 +216,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return SettingsActionTile(
                     title: 'Sign out',
                     leadingIcon: SvgPicture.asset(
-                      AssetPaths.aboutIconPath,
-                      width: 16.w,
-                      height: 16.h,
+                      AssetPaths.signOutIconPath,
+                      width: 22.w,
+                      height: 22.h,
                     ),
                     trailingIcon: Icons.arrow_forward_ios_rounded,
                     onTap: () {

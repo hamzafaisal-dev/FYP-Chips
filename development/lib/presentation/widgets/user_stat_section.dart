@@ -8,12 +8,14 @@ class UserStatSection extends StatelessWidget {
     required this.statisticValue,
     required this.icon,
     required this.iconColor,
+    this.iconSize,
   }) : super(key: key);
 
   final String statisticName;
   final int statisticValue;
   final IconData icon;
   final Color iconColor;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class UserStatSection extends StatelessWidget {
             child: Icon(
               icon,
               color: iconColor,
-              size: 18.dg,
+              size: iconSize ?? 18.dg,
             ),
           ),
         ),

@@ -283,6 +283,40 @@ class _ChipTileState extends State<ChipTile> {
           Row(
             children: [
               //
+// show this only if no chip description
+              if (!_chipHasDescription)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0, right: 4),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 2),
+                          child: Icon(
+                            Icons.location_city,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        ),
+                        Text(
+                          widget.chipData.companyName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.surface,
+                            fontWeight: FontWeight.w900,
+                            // fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
               // show this only if deadline is in 3 days or less
               if (expiresInThreeDays)
@@ -301,6 +335,7 @@ class _ChipTileState extends State<ChipTile> {
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
                       fontWeight: FontWeight.w900,
+                      // fontSize: 16,
                     ),
                   ),
                 ),
@@ -421,7 +456,8 @@ class _ChipTileState extends State<ChipTile> {
                     BranchUniversalObject(
                         canonicalIdentifier: 'flutter/branch',
                         title: widget.chipData.jobTitle,
-                        contentDescription: '${widget.chipData.companyName} is hiring a ${widget.chipData.jobTitle}',
+                        contentDescription:
+                            '${widget.chipData.companyName} is hiring a ${widget.chipData.jobTitle}',
                         contentMetadata: BranchContentMetaData()
                           ..addCustomMetadata('key', 1)
                           ..addCustomMetadata(

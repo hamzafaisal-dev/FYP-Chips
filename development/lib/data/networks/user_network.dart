@@ -138,11 +138,12 @@ class UserNetwork {
       final chipSnapshot = await _firestore
           .collection('chips')
           .where('chipId', isEqualTo: chipId)
+          // .orderBy('createdAt', descending: true)
           .get();
 
       if (chipSnapshot.docs.isNotEmpty) {
         ChipModel chip = ChipModel.fromMap(chipSnapshot.docs.first.data());
-        fetchedChips.add(chip);
+        fetchedChips.insert(0, chip);
       }
     }
 

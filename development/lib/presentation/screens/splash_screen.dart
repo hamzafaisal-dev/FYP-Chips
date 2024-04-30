@@ -27,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     super.initState();
 
-    BranchService().listenDynamicLinks();
-    BranchService().initDeepLinkData();
+    // BranchService().listenDynamicLinks();
+    // BranchService().initDeepLinkData();
   }
 
   @override

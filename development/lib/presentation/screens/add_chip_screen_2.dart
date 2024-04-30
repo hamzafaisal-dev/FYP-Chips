@@ -205,378 +205,393 @@ class _AddChipScreen2State extends State<AddChipScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
-          child: Form(
-            key: _addChipFormKey,
-            child: BlocConsumer<AutofillBloc, AutofillState>(
-              listener: (context, state) {
-                if (state is AutofillLoading) {
-                  HelperWidgets.showAutofillDialog(
-                      context, 'AUTOFILLING UNDERWAY!');
-                }
+    return BlocBuilder<ChipBloc, ChipState>(
+      builder: (context, state) {
+        print(state);
 
-                if (state is AutofillSuccess) {
-                  Navigator.pop(context); //removes autofill dialog
+        return PopScope(
+          canPop: state is! ChipCreatingState,
+          child: Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+                child: Form(
+                  key: _addChipFormKey,
+                  child: BlocConsumer<AutofillBloc, AutofillState>(
+                    listener: (context, state) {
+                      if (state is AutofillLoading) {
+                        HelperWidgets.showAutofillDialog(
+                            context, 'AUTOFILLING UNDERWAY!');
+                      }
 
-                  print(state.autoFillResponse["foi"]);
+                      if (state is AutofillSuccess) {
+                        Navigator.pop(context); //removes autofill dialog
 
-                  _chipTitleController.text =
-                      state.autoFillResponse["job_title"];
+                        print(
+                            '_chipDetailsController.text ${_chipDetailsController.text}');
 
-                  _companyTitleController.text =
-                      state.autoFillResponse["company_name"];
-                  _chipDetailsController.text =
-                      _chipDetailsController.text == ''
-                          ? state.autoFillResponse["description"]
-                          : '';
-                  _chipDeadline = state.autoFillResponse["deadline"];
-                  _applicationLinkController.text =
-                      state.autoFillResponse["email"];
+                        _chipTitleController.text =
+                            state.autoFillResponse["job_title"];
 
-                  _jobMode = state.autoFillResponse["mode"] == 'Unknown'
-                      ? 'On-site'
-                      : state.autoFillResponse["mode"];
+                        _companyTitleController.text =
+                            state.autoFillResponse["company_name"];
 
-                  _jobType = state.autoFillResponse["type"];
+                        _chipDetailsController.text =
+                            _chipDetailsController.text == ''
+                                ? state.autoFillResponse["description"]
+                                : _chipDetailsController.text;
 
-                  _salaryTitleController.text =
-                      state.autoFillResponse["salary"] == 'Unknown'
-                          ? ''
-                          : state.autoFillResponse["salary"];
+                        _chipDeadline = state.autoFillResponse["deadline"];
+                        _applicationLinkController.text =
+                            state.autoFillResponse["email"];
 
-                  foi = state.autoFillResponse["foi"] == 'Unknown'
-                      ? <String>[]
-                      : state.autoFillResponse["foi"];
+                        _jobMode = state.autoFillResponse["mode"] == 'Unknown'
+                            ? 'On-site'
+                            : state.autoFillResponse["mode"];
 
-                  HelperWidgets.showSnackbar(
-                    context,
-                    'Autofill Success!🥳',
-                    'success',
-                  );
-                }
+                        _jobType = state.autoFillResponse["type"];
 
-                if (state is AutofillError) {
-                  Navigator.pop(context); //removes autofill dialog
+                        _salaryTitleController.text =
+                            state.autoFillResponse["salary"] == 'Unknown'
+                                ? ''
+                                : state.autoFillResponse["salary"];
 
-                  HelperWidgets.showSnackbar(
-                    context,
-                    state.errorMsg,
-                    'error',
-                  );
-                }
-              },
-              builder: (context, state) {
-                bool goBackEnabled = true;
+                        foi = state.autoFillResponse["foi"] == 'Unknown'
+                            ? <String>[]
+                            : state.autoFillResponse["foi"];
 
-                return ListView(
-                  children: [
-                    //
-
-                    // back icon + select image btn + post btn
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //
-                        BlocBuilder<ChipBloc, ChipState>(
-                          builder: (context, state) {
-                            return CustomIconButton(
-                              iconSvgPath: AssetPaths.leftArrowIconPath,
-                              iconWidth: 16.w,
-                              iconHeight: 16.h,
-                              onTap: () {
-                                if (state is! ChipCreatingState) {
-                                  HelperWidgets.showDiscardChangesDialog(
-                                    context,
-                                    'Discard changes? You\'ll have to fill in the details again',
-                                  );
-                                }
-                              },
-                            );
-                          },
-                        ),
-
-                        // post btn
-                        BlocConsumer<ChipBloc, ChipState>(
-                          listener: (context, state) {
-                            if (state is ChipAddSuccess) {
-                              HelperWidgets.showSnackbar(
-                                context,
-                                'Chip created successfully! 🥳',
-                                'success',
-                              );
-
-                              // event fired to emit updated user in app
-                              BlocProvider.of<AuthCubit>(context)
-                                  .userUpdated(state.updatedUser);
-
-                              NavigationService.goBack();
-                              NavigationService.routeToReplacementNamed(
-                                  '/layout');
-                            }
-                            if (state is ChipEditSuccess) {
-                              HelperWidgets.showSnackbar(
-                                context,
-                                'Chip edited successfully!🥳',
-                                'success',
-                              );
-
-                              Navigator.pop(context);
-                              NavigationService.routeToReplacementNamed(
-                                  '/layout');
-                            }
-                            if (state is ChipCreatingState) {
-                              _autoFillEnabled = false;
-
-                              HelperWidgets.showSnackbar(
-                                context,
-                                'Creating chip...',
-                                'info',
-                              );
-                            }
-                            if (state is ChipEditingState) {
-                              _autoFillEnabled = false;
-
-                              HelperWidgets.showSnackbar(
-                                context,
-                                'Editing chip...',
-                                'info',
-                              );
-                            }
-                            if (state is ChipError) {
-                              if (state.errorMsg == 'profane') {
-                                HelperWidgets.showProfanityDialog(context);
-                              } else if (state.errorMsg == 'not-job') {
-                                HelperWidgets.showNotJobDialog(context);
-                              } else {
-                                HelperWidgets.showSnackbar(
-                                  context,
-                                  state.errorMsg,
-                                  'error',
-                                );
-                              }
-                            }
-                          },
-                          builder: (context, state) {
-                            return PostChipButton(
-                              isLoading: (state is ChipCreatingState),
-                              isEditable: _isEditable,
-                              onEditChip: _editChip,
-                              onCreateChip: _createChip,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    // 'Fill out the essentials!'
-                    Text(
-                      'Fill out the essentials!',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 24.sp),
-                    ),
-
-                    SizedBox(height: 12.h),
-
-                    // chip title textfield
-                    CustomTextFormField(
-                      controller: _chipTitleController,
-                      label: ' Chip Title ',
-                      validatorFunction: (value) =>
-                          FormValidators.chipValidator(value),
-                      onValueChanged: (value) => _chipTitle = value,
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    // company title textfield
-                    CustomTextFormField(
-                      controller: _companyTitleController,
-                      label: ' Company Title ',
-                      validatorFunction: (value) =>
-                          FormValidators.chipValidator(value),
-                      onValueChanged: (value) => _companyTitle = value,
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    CustomTextFormField(
-                      controller: _applicationLinkController,
-                      label: ' Where To Apply ',
-                      toolTipMessage:
-                          'This can be a url, a phone number or an email',
-                      suffixIcon: const Icon(Icons.info_outline_rounded),
-                      validatorFunction: (value) =>
-                          FormValidators.chipLinkValidator(value),
-                      onValueChanged: (value) {
-                        goBackEnabled = !goBackEnabled;
-
-                        _applicationLink = value;
-                      },
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    // select chip deadline
-                    InkWell(
-                      focusColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () async {
-                        final selectedDate = await showDatePicker(
-                          helpText: 'Select Chip Deadline',
-                          context: context,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(DateTime.now().year, 12, 31),
+                        HelperWidgets.showSnackbar(
+                          context,
+                          'Autofill Success!🥳',
+                          'success',
                         );
+                      }
 
-                        if (selectedDate != null &&
-                            selectedDate != _chipDeadline) {
-                          setState(() => _chipDeadline = selectedDate);
-                        }
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      if (state is AutofillError) {
+                        Navigator.pop(context); //removes autofill dialog
+
+                        HelperWidgets.showSnackbar(
+                          context,
+                          state.errorMsg,
+                          'error',
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      bool goBackEnabled = true;
+
+                      return ListView(
                         children: [
                           //
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            alignment: Alignment.centerLeft,
-                            visualDensity: VisualDensity.compact,
+
+                          // back icon + select image btn + post btn
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //
+                              BlocBuilder<ChipBloc, ChipState>(
+                                builder: (context, state) {
+                                  return CustomIconButton(
+                                    iconSvgPath: AssetPaths.leftArrowIconPath,
+                                    iconWidth: 16.w,
+                                    iconHeight: 16.h,
+                                    onTap: () {
+                                      if (state is! ChipCreatingState) {
+                                        HelperWidgets.showDiscardChangesDialog(
+                                          context,
+                                          'Discard changes? You\'ll have to fill in the details again',
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+
+                              // post btn
+                              BlocConsumer<ChipBloc, ChipState>(
+                                listener: (context, state) {
+                                  if (state is ChipAddSuccess) {
+                                    HelperWidgets.showSnackbar(
+                                      context,
+                                      'Chip created successfully! 🥳',
+                                      'success',
+                                    );
+
+                                    // event fired to emit updated user in app
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .userUpdated(state.updatedUser);
+
+                                    NavigationService.goBack();
+                                    NavigationService.routeToReplacementNamed(
+                                        '/layout');
+                                  }
+                                  if (state is ChipEditSuccess) {
+                                    HelperWidgets.showSnackbar(
+                                      context,
+                                      'Chip edited successfully!🥳',
+                                      'success',
+                                    );
+
+                                    Navigator.pop(context);
+                                    NavigationService.routeToReplacementNamed(
+                                        '/layout');
+                                  }
+                                  if (state is ChipCreatingState) {
+                                    _autoFillEnabled = false;
+
+                                    HelperWidgets.showSnackbar(
+                                      context,
+                                      'Creating chip...',
+                                      'info',
+                                    );
+                                  }
+                                  if (state is ChipEditingState) {
+                                    _autoFillEnabled = false;
+
+                                    HelperWidgets.showSnackbar(
+                                      context,
+                                      'Editing chip...',
+                                      'info',
+                                    );
+                                  }
+                                  if (state is ChipError) {
+                                    if (state.errorMsg == 'profane') {
+                                      HelperWidgets.showProfanityDialog(
+                                          context);
+                                    } else if (state.errorMsg == 'not-job') {
+                                      HelperWidgets.showNotJobDialog(context);
+                                    } else {
+                                      HelperWidgets.showSnackbar(
+                                        context,
+                                        state.errorMsg,
+                                        'error',
+                                      );
+                                    }
+                                  }
+                                },
+                                builder: (context, state) {
+                                  return PostChipButton(
+                                    isLoading: (state is ChipCreatingState),
+                                    isEditable: _isEditable,
+                                    onEditChip: _editChip,
+                                    onCreateChip: _createChip,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // 'Fill out the essentials!'
+                          Text(
+                            'Fill out the essentials!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(fontSize: 24.sp),
+                          ),
+
+                          SizedBox(height: 12.h),
+
+                          // chip title textfield
+                          CustomTextFormField(
+                            controller: _chipTitleController,
+                            label: ' Chip Title ',
+                            validatorFunction: (value) =>
+                                FormValidators.chipValidator(value),
+                            onValueChanged: (value) => _chipTitle = value,
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // company title textfield
+                          CustomTextFormField(
+                            controller: _companyTitleController,
+                            label: ' Company Title ',
+                            validatorFunction: (value) =>
+                                FormValidators.chipValidator(value),
+                            onValueChanged: (value) => _companyTitle = value,
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          CustomTextFormField(
+                            controller: _applicationLinkController,
+                            label: ' Where To Apply ',
+                            toolTipMessage:
+                                'This can be a url, a phone number or an email',
+                            suffixIcon: const Icon(Icons.info_outline_rounded),
+                            validatorFunction: (value) =>
+                                FormValidators.chipLinkValidator(value),
+                            onValueChanged: (value) {
+                              goBackEnabled = !goBackEnabled;
+
+                              _applicationLink = value;
+                            },
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // select chip deadline
+                          InkWell(
                             focusColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            disabledColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            onPressed: null,
-                            icon: const Icon(Icons.calendar_month),
-                            iconSize: 27.sp,
+                            splashColor: Colors.transparent,
+                            onTap: () async {
+                              final selectedDate = await showDatePicker(
+                                helpText: 'Select Chip Deadline',
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(DateTime.now().year, 12, 31),
+                              );
+
+                              if (selectedDate != null &&
+                                  selectedDate != _chipDeadline) {
+                                setState(() => _chipDeadline = selectedDate);
+                              }
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                //
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  alignment: Alignment.centerLeft,
+                                  visualDensity: VisualDensity.compact,
+                                  focusColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  disabledColor:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                  onPressed: null,
+                                  icon: const Icon(Icons.calendar_month),
+                                  iconSize: 27.sp,
+                                ),
+
+                                Text(
+                                  _chipDeadline == null
+                                      ? 'Select Chip Deadline'
+                                      : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
+                                  style: TextStyle(fontSize: 18.sp),
+                                ),
+                              ],
+                            ),
                           ),
 
+                          SizedBox(height: 20.h),
+
+                          Divider(
+                            height: 10.h,
+                            color: Theme.of(context).colorScheme.surface,
+                            thickness: 10,
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // 'Want to add a few more details?'
                           Text(
-                            _chipDeadline == null
-                                ? 'Select Chip Deadline'
-                                : 'Chip Deadline: ${DateFormat.yMMMMd().format(_chipDeadline!)}',
-                            style: TextStyle(fontSize: 18.sp),
+                            'Want to add a few more details?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(fontSize: 23.sp),
                           ),
+
+                          SizedBox(height: 12.h),
+
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                            children: [
+                              //
+                              Expanded(
+                                flex: 4,
+                                child: JobModeDropdown(
+                                  hintText: ' Job Mode ',
+                                  value: _jobMode,
+                                  onValueChanged: (value) => _jobMode = value,
+                                ),
+                              ),
+
+                              SizedBox(width: 10.w),
+
+                              Expanded(
+                                flex: 6,
+                                child: JobTypeDropdown(
+                                  hintText: ' Job Type ',
+                                  value: _jobType,
+                                  onValueChanged: (value) => _jobType = value,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 16.h),
+
+                          // salary textfield
+                          CustomTextFormField(
+                            controller: _salaryTitleController,
+                            label: ' Salary ',
+                            keyBoardInputType: TextInputType.number,
+                            onValueChanged: (value) => _salary = value,
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // 'CHIP DETAILS'
+                          if (_chipDetailsController.text != '')
+                            Text(
+                              'CHIP DETAILS:',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(fontSize: 23.sp),
+                            ),
+
+                          // chip description
+                          if (_chipDetailsController.text != '')
+                            TextField(
+                              readOnly: !_isEditable,
+                              // autofocus: true,
+                              controller: _chipDetailsController,
+                              decoration: const InputDecoration.collapsed(
+                                  hintText: null),
+                              scrollPadding: const EdgeInsets.all(20.0),
+                              minLines: (_selectedImage == null &&
+                                      _chipFileUrl == null)
+                                  ? 8
+                                  : 1,
+                              maxLines: 12,
+                            ),
+
+                          const SizedBox(height: 10),
+
+                          // chip image container
+                          if (_selectedImage != null || _chipFileUrl != null)
+                            _isEditable
+                                ? ChipNetworkImageContainer(
+                                    imageUrl: _chipFileUrl)
+                                : ChipImageContainer(
+                                    selectedImage: _selectedImage!),
                         ],
-                      ),
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    Divider(
-                      height: 10.h,
-                      color: Theme.of(context).colorScheme.surface,
-                      thickness: 10,
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    // 'Want to add a few more details?'
-                    Text(
-                      'Want to add a few more details?',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontSize: 23.sp),
-                    ),
-
-                    SizedBox(height: 12.h),
-
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                      children: [
-                        //
-                        Expanded(
-                          flex: 4,
-                          child: JobModeDropdown(
-                            hintText: ' Job Mode ',
-                            value: _jobMode,
-                            onValueChanged: (value) => _jobMode = value,
-                          ),
-                        ),
-
-                        SizedBox(width: 10.w),
-
-                        Expanded(
-                          flex: 6,
-                          child: JobTypeDropdown(
-                            hintText: ' Job Type ',
-                            value: _jobType,
-                            onValueChanged: (value) => _jobType = value,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    // salary textfield
-                    CustomTextFormField(
-                      controller: _salaryTitleController,
-                      label: ' Salary ',
-                      keyBoardInputType: TextInputType.number,
-                      onValueChanged: (value) => _salary = value,
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    // 'CHIP DETAILS'
-                    if (_chipDetailsController.text != '')
-                      Text(
-                        'CHIP DETAILS:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(fontSize: 23.sp),
-                      ),
-
-                    // chip description
-                    if (_chipDetailsController.text != '')
-                      TextField(
-                        readOnly: !_isEditable,
-                        // autofocus: true,
-                        controller: _chipDetailsController,
-                        decoration:
-                            const InputDecoration.collapsed(hintText: null),
-                        scrollPadding: const EdgeInsets.all(20.0),
-                        minLines:
-                            (_selectedImage == null && _chipFileUrl == null)
-                                ? 8
-                                : 1,
-                        maxLines: 12,
-                      ),
-
-                    const SizedBox(height: 10),
-
-                    // chip image container
-                    if (_selectedImage != null || _chipFileUrl != null)
-                      _isEditable
-                          ? ChipNetworkImageContainer(imageUrl: _chipFileUrl)
-                          : ChipImageContainer(selectedImage: _selectedImage!),
-                  ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            floatingActionButton: BlocBuilder<ChipBloc, ChipState>(
+              builder: (context, state) {
+                return AutofillButton(
+                  autoFillEnabled:
+                      (state is ChipCreatingState) ? false : _autoFillEnabled,
+                  handleAutofillBtnClick: _handleAutofillBtnClick,
                 );
               },
             ),
           ),
-        ),
-      ),
-      floatingActionButton: BlocBuilder<ChipBloc, ChipState>(
-        builder: (context, state) {
-          return AutofillButton(
-            autoFillEnabled:
-                (state is ChipCreatingState) ? false : _autoFillEnabled,
-            handleAutofillBtnClick: _handleAutofillBtnClick,
-          );
-        },
-      ),
+        );
+      },
     );
   }
 }

@@ -57,6 +57,9 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
 
     BlocProvider.of<SharedPrefCubit>(context).getData();
 
+    print('poopalicious1 is ${widget.arguments?["chipData"]}');
+    print('poopalicious2 is ${widget.arguments?["chipId"]}');
+
     if (widget.arguments != null) {
       if (widget.arguments!["chipData"] == null) {
         _chipId = widget.arguments!["chipId"];
@@ -105,6 +108,8 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
         return BlocConsumer<ChipBloc, ChipState>(
           listener: (context, state) {},
           builder: (context, state) {
+            print('state in view is $state');
+
             if (state is IndividualChipLoaded) _chipData = state.chip;
 
             if (widget.arguments!["chipData"] != null) {

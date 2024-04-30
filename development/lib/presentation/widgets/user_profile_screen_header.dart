@@ -115,7 +115,8 @@ class UserProfileScreenHeader extends StatelessWidget {
               UserStatSection(
                 statisticName: 'Chips Posted',
                 statisticValue: _authenticatedUser?.postedChips.length ?? 0,
-                icon: CustomIcons.feedbackicon,
+                icon: Icons.child_care_sharp,
+                iconSize: 24,
                 iconColor: Theme.of(context).colorScheme.primary,
               ),
 
@@ -133,7 +134,8 @@ class UserProfileScreenHeader extends StatelessWidget {
               UserStatSection(
                 statisticName: 'Bookmarks Received',
                 statisticValue: _authenticatedUser?.bookmarkCount ?? 0,
-                icon: CustomIcons.privacypolicyicon,
+                icon: Icons.bookmarks,
+                iconSize: 20,
                 iconColor: CustomColors.darkBlue,
               ),
             ],

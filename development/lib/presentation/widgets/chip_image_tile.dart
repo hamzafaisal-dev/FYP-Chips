@@ -149,7 +149,7 @@ class _ChipImageTileState extends State<ChipImageTile> {
                           child: Image.network(
                             widget.chipData.imageUrl!,
                             fit: BoxFit.contain,
-                            width: MediaQuery.of(context).size.width * 0.85,
+                            width: MediaQuery.of(context).size.width * 0.9,
                             height: null,
                             loadingBuilder: (BuildContext context, Widget child,
                                 ImageChunkEvent? loadingProgress) {
@@ -428,8 +428,9 @@ class _ChipImageTileState extends State<ChipImageTile> {
                     context,
                     BranchUniversalObject(
                         canonicalIdentifier: 'flutter/branch',
-                        title: 'Flutter Branch Plugin',
-                        contentDescription: 'Flutter Branch Description',
+                        title: widget.chipData.jobTitle,
+                        contentDescription:
+                            '${widget.chipData.companyName} is hiring a ${widget.chipData.jobTitle}',
                         contentMetadata: BranchContentMetaData()
                           ..addCustomMetadata('key', 1)
                           ..addCustomMetadata(

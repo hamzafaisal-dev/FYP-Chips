@@ -1,7 +1,7 @@
 extension EmailValidator on String {
   bool isValidIbaEmail() {
     return RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      r'^[a-zA-Z]+(\.[a-zA-Z]+)?(\.[0-9]+)?@khi\.iba\.edu\.pk$|^[a-zA-Z0-9._%+-]+@iba\.edu\.pk$',
     ).hasMatch(this);
   }
 }
