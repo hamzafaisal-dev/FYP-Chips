@@ -73,6 +73,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // name form field
               TextFormField(
                 controller: _nameController,
+                maxLength: 50,
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 decoration: Styles.textFormFieldDecoration(
                   'Your Display Name',
                   const Icon(Icons.person_outline),
@@ -92,6 +100,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // email form field
               TextFormField(
                 controller: _emailController,
+                maxLength: 254,
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 decoration: Styles.textFormFieldDecoration(
                   'IBA Email',
                   const Icon(Icons.email_outlined),
@@ -113,6 +129,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
+                maxLength: 128,
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 decoration: Styles.textFormFieldDecoration(
                   'Password',
                   const Icon(Icons.lock_outline),
@@ -139,6 +163,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // confirm password form field
               TextFormField(
                 obscureText: !_isConfirmPasswordVisible,
+                maxLength: 128,
+                buildCounter: (
+                  context, {
+                  required currentLength,
+                  maxLength,
+                  required isFocused,
+                }) =>
+                    null,
                 decoration: Styles.textFormFieldDecoration(
                   'Confirm Password',
                   const Icon(Icons.lock_outline),

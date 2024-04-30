@@ -70,6 +70,14 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
         appBar: AppBar(
           title: const Text('Applied Chips'),
           centerTitle: true,
+    return PopScope(
+      onPopInvoked: (didPop) {
+        BlocProvider.of<UserCubit>(context).fetchTopContributors();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Applied Chips'),
+          centerTitle: true,
 
           // back button
           leadingWidth: 64.w,
@@ -99,7 +107,12 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
               BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
                   print(state);
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  print(state);
 
+                  if (state is UserChipsFetched) {
+                    List<ChipModel> usersAppliedChips = state.userChips;
                   if (state is UserChipsFetched) {
                     List<ChipModel> usersAppliedChips = state.userChips;
 
@@ -114,7 +127,19 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                             frameRate: FrameRate.max,
                             width: 270.w,
                           ),
+                    if (usersAppliedChips.isEmpty) {
+                      // Animation if no favorite chips
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //
+                          Lottie.asset(
+                            AssetPaths.appliedEmptyAnimationPath,
+                            frameRate: FrameRate.max,
+                            width: 270.w,
+                          ),
 
+                          SizedBox(height: 20.h),
                           SizedBox(height: 20.h),
 
                           Text(
@@ -125,7 +150,20 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                         ],
                       );
                     }
+                          Text(
+                            "No applied chips yet!",
+                            style: Theme.of(context).textTheme.labelSmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      );
+                    }
 
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: usersAppliedChips.length,
+                        itemBuilder: (context, index) {
+                          ChipModel chipData = usersAppliedChips[index];
                     return Expanded(
                       child: ListView.builder(
                         itemCount: usersAppliedChips.length,
@@ -143,6 +181,11 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                     return Center(child: Text(state.errorMessage));
                   }
 
+                  return const CustomCircularProgressIndicator();
+                },
+              ),
+            ],
+          ),
                   return const CustomCircularProgressIndicator();
                 },
               ),
