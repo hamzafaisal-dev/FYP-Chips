@@ -149,14 +149,16 @@ class _PostedChipScreenState extends State<PostedChipScreen> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Lottie.asset(
-                            AssetPaths.girlEmptyBoxAnimationPath,
-                            frameRate: FrameRate.max,
-                            width: 270.w,
+                          Center(
+                            child: Lottie.asset(
+                              AssetPaths.girlEmptyBoxAnimationPath,
+                              frameRate: FrameRate.max,
+                              width: 270.w,
+                            ),
                           ),
                           SizedBox(height: 20.h),
                           Text(
-                            "No favorite chips yet!",
+                            "No posted chips yet!",
                             style: Theme.of(context).textTheme.labelSmall,
                             textAlign: TextAlign.center,
                           ),

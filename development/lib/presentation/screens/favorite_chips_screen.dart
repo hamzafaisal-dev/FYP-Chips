@@ -104,10 +104,12 @@ class _FavoriteChipScreenState extends State<FavoriteChipScreen> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Lottie.asset(
-                            AssetPaths.girlEmptyBoxAnimationPath,
-                            frameRate: FrameRate.max,
-                            width: 270.w,
+                          Center(
+                            child: Lottie.asset(
+                              AssetPaths.girlEmptyBoxAnimationPath,
+                              frameRate: FrameRate.max,
+                              width: 270.w,
+                            ),
                           ),
                           SizedBox(height: 20.h),
                           Text(

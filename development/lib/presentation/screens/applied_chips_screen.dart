@@ -1,7 +1,6 @@
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
-import 'package:development/constants/custom_colors.dart';
 import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
@@ -33,7 +32,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
       _authenticatedUser = authState.user;
       Helpers.logEvent(
         _authenticatedUser!.userId,
-        "view-applied-chips",
+        "view-favorite-chips",
         [_authenticatedUser],
       );
     }
@@ -70,14 +69,6 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
         appBar: AppBar(
           title: const Text('Applied Chips'),
           centerTitle: true,
-    return PopScope(
-      onPopInvoked: (didPop) {
-        BlocProvider.of<UserCubit>(context).fetchTopContributors();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Applied Chips'),
-          centerTitle: true,
 
           // back button
           leadingWidth: 64.w,
@@ -106,50 +97,21 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
 
               BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
-                  print(state);
-              BlocBuilder<UserCubit, UserState>(
-                builder: (context, state) {
-                  print(state);
-
                   if (state is UserChipsFetched) {
-                    List<ChipModel> usersAppliedChips = state.userChips;
-                  if (state is UserChipsFetched) {
-                    List<ChipModel> usersAppliedChips = state.userChips;
+                    List<ChipModel> usersFavoritedChips = state.userChips;
 
-                    if (usersAppliedChips.isEmpty) {
-                      // Animation if no favorite chips
+                    if (usersFavoritedChips.isEmpty) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          //
-                          Lottie.asset(
-                            AssetPaths.appliedEmptyAnimationPath,
-                            frameRate: FrameRate.max,
-                            width: 270.w,
+                          Center(
+                            child: Lottie.asset(
+                              AssetPaths.girlEmptyBoxAnimationPath,
+                              frameRate: FrameRate.max,
+                              width: 270.w,
+                            ),
                           ),
-                    if (usersAppliedChips.isEmpty) {
-                      // Animation if no favorite chips
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          //
-                          Lottie.asset(
-                            AssetPaths.appliedEmptyAnimationPath,
-                            frameRate: FrameRate.max,
-                            width: 270.w,
-                          ),
-
                           SizedBox(height: 20.h),
-                          SizedBox(height: 20.h),
-
-                          Text(
-                            "No applied chips yet!",
-                            style: Theme.of(context).textTheme.labelSmall,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      );
-                    }
                           Text(
                             "No applied chips yet!",
                             style: Theme.of(context).textTheme.labelSmall,
@@ -161,14 +123,9 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
 
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: usersAppliedChips.length,
+                        itemCount: usersFavoritedChips.length,
                         itemBuilder: (context, index) {
-                          ChipModel chipData = usersAppliedChips[index];
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: usersAppliedChips.length,
-                        itemBuilder: (context, index) {
-                          ChipModel chipData = usersAppliedChips[index];
+                          ChipModel chipData = usersFavoritedChips[index];
 
                           return ChipTile(
                             chipData: chipData,
@@ -181,12 +138,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
                     return Center(child: Text(state.errorMessage));
                   }
 
-                  return const CustomCircularProgressIndicator();
-                },
-              ),
-            ],
-          ),
-                  return const CustomCircularProgressIndicator();
+                  return const Center(child: CustomCircularProgressIndicator());
                 },
               ),
             ],
