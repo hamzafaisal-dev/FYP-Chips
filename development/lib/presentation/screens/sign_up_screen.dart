@@ -245,6 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           email: state.email,
                           onProceed: () {
                             Navigator.pop(context);
+
                             NavigationService.routeToNamed(
                               '/otp',
                               arguments: {

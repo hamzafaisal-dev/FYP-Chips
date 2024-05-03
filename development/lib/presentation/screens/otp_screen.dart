@@ -79,16 +79,9 @@ class _OtpScreenState extends State<OtpScreen> {
               );
             }
             if (state is AuthSignUpSuccess) {
-              HelperWidgets.showSnackbar(
-                context,
-                'Account Created Successfully! Welcome to Chips!🍟',
-                'success',
-              );
-
               BlocProvider.of<AuthCubit>(context)
                   .sendOnboardingEmail(state.user);
 
-              print('we here sign up');
               NotificationService.createChipsNotification(state.user.name);
             }
             if (state is AuthSignUpFailure) {
@@ -99,7 +92,7 @@ class _OtpScreenState extends State<OtpScreen> {
               );
             }
             if (state is AuthUserSignedIn) {
-              NavigationService.pushAndRemoveUntil('/layout');
+              NavigationService.pushAndRemoveUntil('/prefences');
             }
           },
           buildWhen: (previous, current) {

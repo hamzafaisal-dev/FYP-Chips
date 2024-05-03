@@ -4,6 +4,12 @@ extension EmailValidator on String {
       r'^[a-zA-Z]+(\.[a-zA-Z]+)?(\.[0-9]+)?@khi\.iba\.edu\.pk$|^[a-zA-Z0-9._%+-]+@iba\.edu\.pk$',
     ).hasMatch(this);
   }
+
+  bool isValidEmail() {
+    return RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    ).hasMatch(this);
+  }
 }
 
 extension PhoneNumberValidator on String {

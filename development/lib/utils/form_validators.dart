@@ -70,7 +70,7 @@ class FormValidators {
     //   return 'Invalid URL format';
     // }
 
-    if (!value.isValidIbaEmail() &&
+    if (!value.isValidEmail() &&
         !value.isValidPhoneNumber() &&
         !value.isValidLink()) {
       return 'Invalid input value';

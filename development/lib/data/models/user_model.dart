@@ -12,6 +12,7 @@ class UserModel {
     required this.appliedChips,
     required this.favoritedChips,
     required this.binnedChips,
+    this.skills,
     required this.preferences,
     required this.reportCount,
     required this.isBanned,
@@ -34,6 +35,7 @@ class UserModel {
   final List<String> appliedChips;
   final List<String> favoritedChips;
   final List<String> binnedChips;
+  final List<String>? skills;
   final Map<String, dynamic> preferences;
   final int reportCount;
   final bool isBanned;
@@ -56,6 +58,7 @@ class UserModel {
     List<String>? appliedChips,
     List<String>? favoritedChips,
     List<String>? binnedChips,
+    List<String>? skills,
     Map<String, dynamic>? preferences,
     int? reportCount,
     bool? isBanned,
@@ -78,6 +81,7 @@ class UserModel {
       appliedChips: appliedChips ?? this.appliedChips,
       favoritedChips: favoritedChips ?? this.favoritedChips,
       binnedChips: binnedChips ?? this.binnedChips,
+      skills: skills ?? this.skills,
       preferences: preferences ?? this.preferences,
       reportCount: reportCount ?? this.reportCount,
       isBanned: isBanned ?? this.isBanned,
@@ -103,6 +107,7 @@ class UserModel {
       'appliedChips': appliedChips,
       'favoritedChips': favoritedChips,
       'binnedChips': binnedChips,
+      'skills': skills,
       'preferences': preferences,
       'reportCount': reportCount,
       'isBanned': isBanned,
@@ -128,6 +133,7 @@ class UserModel {
       appliedChips: List.from(map['appliedChips']),
       favoritedChips: List.from(map['favoritedChips']),
       binnedChips: List.from(map['binnedChips']),
+      skills: List.from(map['skills']),
       preferences: Map.from((map['preferences'])),
       reportCount: map['reportCount'] as int,
       isBanned: map['isBanned'] as bool,

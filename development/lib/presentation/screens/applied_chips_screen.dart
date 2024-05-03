@@ -32,7 +32,7 @@ class _AppliedChipScreenState extends State<AppliedChipScreen> {
       _authenticatedUser = authState.user;
       Helpers.logEvent(
         _authenticatedUser!.userId,
-        "view-favorite-chips",
+        "view-applied-chips",
         [_authenticatedUser],
       );
     }

@@ -108,8 +108,6 @@ class _ChipDetailsScreenState extends State<ChipDetailsScreen> {
         return BlocConsumer<ChipBloc, ChipState>(
           listener: (context, state) {},
           builder: (context, state) {
-            print('state in view is $state');
-
             if (state is IndividualChipLoaded) _chipData = state.chip;
 
             if (widget.arguments!["chipData"] != null) {

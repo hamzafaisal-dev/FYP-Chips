@@ -5,6 +5,7 @@ import 'package:development/business%20logic/cubits/contact_us/contact_us_cubit.
 import 'package:development/business%20logic/cubits/notification/notification_cubit.dart';
 import 'package:development/business%20logic/cubits/shared_pref_cubit/cubit/shared_pref_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
+import 'package:development/presentation/screens/preferences_screen.dart';
 import 'package:development/presentation/screens/splash_screen.dart';
 import 'package:development/utils/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeMode.light,
             onGenerateRoute: RouteGenerator.generateRoutes,
             navigatorKey: NavigationService.navigatorKey,
+            // home: const PreferencesScreen(),
             home: const SplashScreen(),
           ),
         ),

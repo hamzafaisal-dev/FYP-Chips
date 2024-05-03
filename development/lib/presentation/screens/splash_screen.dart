@@ -38,6 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
         return previous != current;
       },
       listener: (context, state) {
+        print(state);
+
         if (state is AuthUserAlreadySignedIn) {
           HelperWidgets.showSnackbar(
             context,

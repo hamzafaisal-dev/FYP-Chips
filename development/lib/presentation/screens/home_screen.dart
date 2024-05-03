@@ -10,8 +10,11 @@ import 'package:development/data/models/user_model.dart';
 import 'package:development/presentation/widgets/chip_image_tile.dart';
 import 'package:development/presentation/widgets/chip_tile.dart';
 import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
+import 'package:development/presentation/widgets/custom_preference_chip.dart';
+import 'package:development/presentation/widgets/user_interests_list.dart';
 import 'package:development/services/branch_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
@@ -56,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('home built');
+
     return BlocListener<SharedPrefCubit, SharedPrefState>(
       listener: (context, state) {
         if (state is SharedPrefDataGet) {
@@ -75,145 +80,26 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SizedBox(height: 16.h),
-
-                  // // hey, user name
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: 'Hello, ',
-                  //     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //           fontWeight: FontWeight.w700,
-                  //           fontSize: 36.sp,
-                  //         ),
-                  //     children: <TextSpan>[
-                  //       TextSpan(
-                  //         // text: 'Farhan Mushi',
-                  //         text: _authenticatedUser?.name ?? 'John Doe',
-                  //         style:
-                  //             Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //                   fontWeight: FontWeight.w700,
-                  //                   fontSize: 36.sp,
-                  //                   color: Theme.of(context).primaryColor,
-                  //                 ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // // here are some chips for you
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: 'Here are some ',
-                  //     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //           fontWeight: FontWeight.w400,
-                  //           fontSize: 18.sp,
-                  //         ),
-                  //     children: [
-                  //       TextSpan(
-                  //         text: 'Chips',
-                  //         style:
-                  //             Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //                   fontWeight: FontWeight.w700,
-                  //                   fontSize: 18.sp,
-                  //                 ),
-                  //       ),
-                  //       TextSpan(
-                  //         text: ' for you',
-                  //         style:
-                  //             Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //                   fontWeight: FontWeight.w400,
-                  //                   fontSize: 18.sp,
-                  //                 ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // SizedBox(height: 23.4.h),
-
-                  // // top contributors
-                  // TopContributorsSection(authenticatedUser: _authenticatedUser),
-
-                  // SizedBox(height: 16.h),
-
-                  // SizedBox(height: 23.4.h),
-
+                  //
                   if (state is ChipsStreamLoaded)
-                    (state.chips.isEmpty)
-                        ? const Center(
-                            child: Text(
-                              'khaali hai bey',
-                            ),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              // Add 1 for the TopContributorsSection widget
-                              itemCount: state.chips.length + 1,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  // Render the TopContributorsSection widget at the first position
-                                  return const TopContributorsSection();
-                                } else {
-                                  // Render the remaining items normally after the TopContributorsSection
-                                  List<ChipModel> chipData = state.chips;
-                                  ChipModel chipObject = chipData[index - 1];
-
-                                  return Padding(
-                                    padding: EdgeInsets.only(bottom: 10.8.h),
-                                    child: (chipObject.imageUrl == '')
-                                        ? ChipTile(
-                                            chipData: chipObject,
-                                            currentUser: _authenticatedUser!,
-                                          )
-                                        : ChipImageTile(
-                                            chipData: chipObject,
-                                            currentUser: _authenticatedUser!,
-                                          ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-
-                  if (state is ChipsLoaded)
-                    if (state.chips.isEmpty)
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            //
-                            const SizedBox(height: 140),
-
-                            Lottie.asset(
-                              AssetPaths.ghostEmptyAnimationPath,
-                              frameRate: FrameRate.max,
-                              repeat: false,
-                              animate: false,
-                              width: 300,
-                            ),
-
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40),
-                              child: Text(
-                                'OOPS! NO CHIPS FOUND',
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    else
-                      Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: state.chips.length,
-                          itemBuilder: (context, index) {
+                    Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        // Add 2 for the TopContributorsSection and UserInterests widgets
+                        itemCount: state.chips.length + 2,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return UserInterests(
+                              authenticatedUser: _authenticatedUser!,
+                            );
+                          }
+                          if (index == 1) {
+                            // render the TopContributorsSection widget at the first position
+                            return const TopContributorsSection();
+                          } else {
+                            // render the remaining items normally after the TopContributorsSection
                             List<ChipModel> chipData = state.chips;
-                            var chipObject = chipData[index];
+                            ChipModel chipObject = chipData[index - 2];
 
                             return Padding(
                               padding: EdgeInsets.only(bottom: 10.8.h),
@@ -227,17 +113,72 @@ class _HomeScreenState extends State<HomeScreen> {
                                       currentUser: _authenticatedUser!,
                                     ),
                             );
-                          },
-                        ),
+                          }
+                        },
                       ),
+                    ),
+
+                  if (state is ChipsLoaded)
+                    Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: state.chips.isEmpty
+                            ? state.chips.length + 3
+                            : state.chips.length + 2,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return UserInterests(
+                              authenticatedUser: _authenticatedUser!,
+                            );
+                          }
+                          if (index == 1) {
+                            // render the TopContributorsSection widget at the first position
+                            return const TopContributorsSection();
+                          }
+
+                          if (index == 2 && state.chips.isEmpty) {
+                            return _buildEmptyGraphic(context);
+                          }
+
+                          List<ChipModel> chipData = state.chips;
+                          var chipObject = chipData[index - 2];
+
+                          return (state is ChipsLoading)
+                              ? const ChipTileSkeleton()
+                              : Padding(
+                                  padding: EdgeInsets.only(bottom: 10.8.h),
+                                  child: (chipObject.imageUrl == '')
+                                      ? ChipTile(
+                                          chipData: chipObject,
+                                          currentUser: _authenticatedUser!,
+                                        )
+                                      : ChipImageTile(
+                                          chipData: chipObject,
+                                          currentUser: _authenticatedUser!,
+                                        ),
+                                );
+                        },
+                      ),
+                    ),
 
                   if (state is ChipsLoading)
                     Expanded(
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: 10,
-                        itemBuilder: (context, index) =>
-                            const ChipTileSkeleton(),
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return UserInterests(
+                              authenticatedUser: _authenticatedUser!,
+                            );
+                          }
+                          if (index == 1) {
+                            // render the TopContributorsSection widget at the first position
+                            return const TopContributorsSection();
+                          }
+
+                          return const ChipTileSkeleton();
+                        },
                       ),
                     ),
 
@@ -250,6 +191,33 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyGraphic(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          //
+          Lottie.asset(
+            AssetPaths.ghostEmptyAnimationPath,
+            frameRate: FrameRate.max,
+            repeat: false,
+            animate: false,
+            width: 300,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              'OOPS! NO CHIPS FOUND',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -32,7 +32,7 @@ class _PostedChipScreenState extends State<PostedChipScreen> {
       _authenticatedUser = authState.user;
       Helpers.logEvent(
         _authenticatedUser!.userId,
-        "view-favorite-chips",
+        "view-posted-chips",
         [_authenticatedUser],
       );
     }

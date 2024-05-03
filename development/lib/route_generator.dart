@@ -10,6 +10,7 @@ import 'package:development/presentation/screens/edit_profile_screen.dart';
 import 'package:development/presentation/screens/favorite_chips_screen.dart';
 import 'package:development/presentation/screens/home_screen.dart';
 import 'package:development/presentation/screens/posted_chips_screen.dart';
+import 'package:development/presentation/screens/preferences_screen.dart';
 import 'package:development/presentation/screens/sign_in_screen.dart';
 import 'package:development/presentation/screens/otp_screen.dart';
 import 'package:development/presentation/screens/user_chips_scree.dart';
@@ -137,6 +138,11 @@ class RouteGenerator {
                 UserProfileScreen(arguments: receivedArguments),
           );
         }
+
+      case '/prefences':
+        return MaterialPageRoute(
+          builder: (context) => const PreferencesScreen(),
+        );
 
       case '/reset-password':
         return MaterialPageRoute(

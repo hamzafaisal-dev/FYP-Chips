@@ -190,6 +190,7 @@ class AuthNetwork {
         favoritedChips: [],
         binnedChips: [],
         preferences: {},
+        skills: [],
         reportCount: 0,
         isBanned: false,
         createdAt: DateTime.now(),
