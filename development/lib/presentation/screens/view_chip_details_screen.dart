@@ -290,9 +290,16 @@ Widget _buildViewScreen(
                                 child: Text('Delete'),
                               ),
                             if (!isDeletable)
-                              const PopupMenuItem<String>(
+                              PopupMenuItem<String>(
                                 value: '2',
-                                child: Text('Report Chip'),
+                                child: const Text('Report Chip'),
+                                onTap: () {
+                                  HelperWidgets.showSnackbar(
+                                    context,
+                                    "Feature under development, thank you for your patience!😄",
+                                    "info",
+                                  );
+                                },
                               ),
                           ],
                           icon: const Icon(Icons.more_horiz),

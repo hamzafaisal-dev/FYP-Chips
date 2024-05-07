@@ -10,8 +10,10 @@ import 'package:development/presentation/screens/settings_screen.dart';
 import 'package:development/presentation/widgets/search_bar.dart';
 import 'package:development/services/navigation_service.dart';
 import 'package:development/utils/helper_functions.dart';
+import 'package:development/utils/widget_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -88,53 +90,56 @@ class _AppLayoutState extends State<AppLayout> {
 
         //
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0.w),
-            child: BlocConsumer<NotificationCubit, NotificationState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is NotificationsStreamLoaded) {
-                  return StreamBuilder<List<NotificationModel>>(
-                      stream: state.notifications,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<NotificationModel> notifications = snapshot.data!
-                              .where((notif) => notif.read == false)
-                              .toList();
+          BlocConsumer<NotificationCubit, NotificationState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is NotificationsStreamLoaded) {
+                return StreamBuilder<List<NotificationModel>>(
+                    stream: state.notifications,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<NotificationModel> notifications = snapshot.data!
+                            .where((notif) => notif.read == false)
+                            .toList();
 
-                          return Badge.count(
-                            count: notifications.length,
-                            isLabelVisible: notifications.isNotEmpty,
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () => NavigationService.routeToNamed(
-                                '/notifications',
-                                arguments: {"notifications": snapshot.data},
-                              ),
-                              child: Transform.scale(
-                                scale: 1.2,
-                                child: SvgPicture.asset(
-                                  AssetPaths.alertsIconPath,
-                                  width: 18.42.w,
-                                  height: 21.67.h,
-                                  colorFilter: ColorFilter.mode(
-                                    Theme.of(context).colorScheme.onPrimary,
-                                    BlendMode.srcIn,
+                        return Badge.count(
+                          count: notifications.length,
+                          isLabelVisible: notifications.isNotEmpty,
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () => NavigationService.routeToNamed(
+                              '/notifications',
+                              arguments: {"notifications": snapshot.data},
+                            ),
+                            child: SizedBox(
+                              height: double.maxFinite,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Transform.scale(
+                                  scale: 1.2,
+                                  child: SvgPicture.asset(
+                                    AssetPaths.alertsIconPath,
+                                    width: 18.42.w,
+                                    height: 21.67.h,
+                                    colorFilter: ColorFilter.mode(
+                                      Theme.of(context).colorScheme.onPrimary,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          );
-                        }
+                          ),
+                        );
+                      }
 
-                        return const SizedBox.shrink();
-                      });
-                }
+                      return const SizedBox.shrink();
+                    });
+              }
 
-                return const Text('notifs laoding');
-              },
-            ),
+              return const Text('notifs laoding');
+            },
           ),
         ],
       );
