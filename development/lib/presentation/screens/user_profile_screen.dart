@@ -30,7 +30,7 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   late final UserModel? _authenticatedUser;
 
-  late final UserModel? _loadedUser;
+  UserModel? _loadedUser;
 
   @override
   void initState() {
@@ -57,159 +57,175 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       onPopInvoked: (didPop) {
         BlocProvider.of<UserCubit>(context).fetchTopContributors();
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile'),
-          centerTitle: true,
+      child: BlocConsumer<UserCubit, UserState>(
+        listener: (context, state) {
+          if (state is UserLoadedState) {
+            print('${state.user.name} ${state.user.postedChips.length}');
 
-          // back button
-          leadingWidth: 64.w,
-          leading: Padding(
-            padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: CustomIconButton(
-                iconSvgPath: AssetPaths.leftArrowIconPath,
-                iconWidth: 16.w,
-                iconHeight: 16.h,
-                onTap: () {
-                  BlocProvider.of<UserCubit>(context).fetchTopContributors();
+            _loadedUser = state.user;
+          }
+        },
+        builder: (context, state) {
+          // if (state is UserLoadedState) {
+          //   print('${state.user.name} ${state.user.postedChips.length}');
+          // }
 
-                  NavigationService.goBack();
-                },
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Profile'),
+              centerTitle: true,
+
+              // back button
+              leadingWidth: 64.w,
+              leading: Padding(
+                padding: EdgeInsets.fromLTRB(20.w, 0.h, 0.w, 0.h),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: CustomIconButton(
+                    iconSvgPath: AssetPaths.leftArrowIconPath,
+                    iconWidth: 16.w,
+                    iconHeight: 16.h,
+                    onTap: () {
+                      BlocProvider.of<UserCubit>(context)
+                          .fetchTopContributors();
+
+                      NavigationService.goBack();
+                    },
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            children: [
-              // user details section
-              Padding(
-                padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
-                child: BlocBuilder<UserCubit, UserState>(
-                  builder: (context, state) {
-                    if (state is UserLoadingState) {
-                      return const UserProfileScreenHeaderSkeleton();
-                    }
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                children: [
+                  // user details section
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
+                    child: BlocBuilder<UserCubit, UserState>(
+                      builder: (context, state) {
+                        if (state is UserLoadingState) {
+                          return const UserProfileScreenHeaderSkeleton();
+                        }
 
-                    if (widget.arguments?["postedBy"] ==
-                        _authenticatedUser?.username) {
-                      Helpers.logEvent(
-                        _authenticatedUser!.userId,
-                        "view-own-profile",
-                        [_authenticatedUser],
-                      );
-                      return UserProfileScreenHeader(
-                        authenticatedUser: _authenticatedUser,
-                        isEditable: true,
-                      );
-                    } else if (state is UserLoadedState) {
-                      _loadedUser = state.user;
+                        if (widget.arguments?["postedBy"] ==
+                            _authenticatedUser?.username) {
+                          Helpers.logEvent(
+                            _authenticatedUser!.userId,
+                            "view-own-profile",
+                            [_authenticatedUser],
+                          );
+                          return UserProfileScreenHeader(
+                            authenticatedUser: _authenticatedUser,
+                            isEditable: true,
+                          );
+                        } else if (state is UserLoadedState) {
+                          // _loadedUser = state.user;
 
-                      Helpers.logEvent(
-                        _authenticatedUser!.userId,
-                        "view-profile",
-                        [state.user],
-                      );
-                      return UserProfileScreenHeader(
-                        authenticatedUser: state.user,
-                        isEditable: false,
-                      );
-                    } else {
-                      Helpers.logEvent(
-                        _authenticatedUser!.userId,
-                        "view-own-profile",
-                        [_authenticatedUser],
-                      );
-                      return UserProfileScreenHeader(
-                        authenticatedUser: _authenticatedUser,
-                        isEditable: true,
-                      );
-                    }
-                  },
-                ),
-              ),
+                          Helpers.logEvent(
+                            _authenticatedUser!.userId,
+                            "view-profile",
+                            [state.user],
+                          );
+                          return UserProfileScreenHeader(
+                            authenticatedUser: state.user,
+                            isEditable: false,
+                          );
+                        } else {
+                          Helpers.logEvent(
+                            _authenticatedUser!.userId,
+                            "view-own-profile",
+                            [_authenticatedUser],
+                          );
+                          return UserProfileScreenHeader(
+                            authenticatedUser: _authenticatedUser,
+                            isEditable: true,
+                          );
+                        }
+                      },
+                    ),
+                  ),
 
-              // your chips
-              Padding(
-                padding: EdgeInsets.only(bottom: 10.h),
-                child: Text(
-                  "Posted Chips",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
+                  // your chips
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10.h),
+                    child: Text(
+                      "Posted Chips",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
 
-              BlocBuilder<ChipBloc, ChipState>(
-                builder: (context, state) {
-                  if (state is ChipsLoading) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: 9,
-                        itemBuilder: (context, index) =>
-                            const ChipTileSkeleton(),
-                      ),
-                    );
-                  } else if (state is ChipsStreamLoaded) {
-                    List<ChipModel> chipsList = state.chips;
-                    List<ChipModel> usersChips = [];
-                    for (ChipModel chip in chipsList) {
-                      if (_authenticatedUser!.postedChips
-                          .contains(chip.chipId)) {
-                        usersChips.add(chip);
-                      }
-                    }
-
-                    if (usersChips.isEmpty) {
-                      return Expanded(
-                        child: Center(
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Lottie.asset(
-                                AssetPaths.appliedEmptyAnimationPath,
-                                width: 200.w,
-                                repeat: true,
-                              ),
-                              SizedBox(height: 20.h),
-                              Text(
-                                "No chips posted yet!",
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
+                  BlocBuilder<ChipBloc, ChipState>(
+                    builder: (context, state) {
+                      if (_loadedUser == null || state is ChipsLoading) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: 9,
+                            itemBuilder: (context, index) =>
+                                const ChipTileSkeleton(),
                           ),
-                        ),
-                      );
-                    } else {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: usersChips.length,
-                          itemBuilder: (context, index) {
-                            ChipModel chip = usersChips[index];
+                        );
+                      } else if (state is ChipsStreamLoaded) {
+                        List<ChipModel> chipsList = state.chips;
+                        List<ChipModel> usersChips = [];
+                        for (ChipModel chip in chipsList) {
+                          if (_loadedUser!.postedChips.contains(chip.chipId)) {
+                            usersChips.add(chip);
+                          }
+                        }
 
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 10.8.h),
-                              child: ChipTile(
-                                chipData: chip,
-                                currentUser: _authenticatedUser!,
+                        if (usersChips.isEmpty) {
+                          return Expanded(
+                            child: Center(
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    AssetPaths.appliedEmptyAnimationPath,
+                                    width: 200.w,
+                                    repeat: true,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    "No chips posted yet!",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  } else if (state is ChipError) {
-                    return Text(state.errorMsg);
-                  }
-                  return const Text("woops, something went wrong...");
-                },
-              ),
+                            ),
+                          );
+                        } else {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: usersChips.length,
+                              itemBuilder: (context, index) {
+                                ChipModel chip = usersChips[index];
 
-              SizedBox(height: 20.h),
-            ],
-          ),
-        ),
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 10.8.h),
+                                  child: ChipTile(
+                                    chipData: chip,
+                                    currentUser: _authenticatedUser!,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      } else if (state is ChipError) {
+                        return Text(state.errorMsg);
+                      }
+                      return const Text("woops, something went wrong...");
+                    },
+                  ),
+
+                  SizedBox(height: 20.h),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

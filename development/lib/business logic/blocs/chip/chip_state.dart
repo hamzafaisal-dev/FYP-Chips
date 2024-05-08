@@ -94,3 +94,17 @@ class ChipDeletingState extends ChipState {
   @override
   List<Object?> get props => [];
 }
+
+class UserPostedChipsLoading extends ChipState {
+  @override
+  List<Object?> get props => [];
+}
+
+class UserPostedChipsLoaded extends ChipState {
+  final List<ChipModel> chips;
+
+  const UserPostedChipsLoaded({required this.chips});
+
+  @override
+  List<Object?> get props => [chips];
+}

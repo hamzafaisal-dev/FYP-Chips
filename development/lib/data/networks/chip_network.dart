@@ -64,6 +64,25 @@ class ChipNetwork {
     return chips;
   }
 
+  // get a particular users psoted chips
+  Future<List<ChipModel>> getUsersChips(String postedBy) async {
+    QuerySnapshot snapshot = await _firestore
+        .collection('chips')
+        .where('postedBy', isEqualTo: postedBy)
+        .orderBy('createdAt', descending: true)
+        .get();
+
+    List<ChipModel> chips = snapshot.docs
+        .map(
+          (docSnapshot) => ChipModel.fromMap(
+            docSnapshot.data() as Map<String, dynamic>,
+          ),
+        )
+        .toList();
+
+    return chips;
+  }
+
   // get filtered chips
   Future<List<ChipModel>> getFilteredChips(Map<String, dynamic> filters) async {
     List<String> selectedJobModes = filters['jobModes'] as List<String>;

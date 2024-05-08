@@ -135,5 +135,18 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         emit(ChipError(errorMsg: error.toString()));
       }
     });
+
+    on<FetchUserPostedChips>((event, emit) async {
+      try {
+        emit(UserPostedChipsLoading());
+
+        List<ChipModel> usersPostedChips =
+            await _chipRepository.getUsersChips(event.postedBy);
+
+        emit(UserPostedChipsLoaded(chips: usersPostedChips));
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+      }
+    });
   }
 }

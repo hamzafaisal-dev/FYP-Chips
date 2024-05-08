@@ -19,6 +19,11 @@ class ChipRepository {
     return await _chipsNetwork.getAllChipsFuture();
   }
 
+  // get a particular users psoted chips
+  Future<List<ChipModel>> getUsersChips(String postedBy) async {
+    return await _chipsNetwork.getUsersChips(postedBy);
+  }
+
   // get stream of all chips
   Future<List<ChipModel>> getFilteredChips(Map<String, dynamic> filters) async {
     return await _chipsNetwork.getFilteredChips(filters);

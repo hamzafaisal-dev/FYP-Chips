@@ -282,8 +282,7 @@ class _ChipTileState extends State<ChipTile> {
           //
           Row(
             children: [
-              //
-// show this only if no chip description
+              // show this only if no chip description
               if (!_chipHasDescription)
                 Padding(
                   padding: const EdgeInsets.only(top: 0, right: 4),
@@ -306,6 +305,7 @@ class _ChipTileState extends State<ChipTile> {
                         ),
                         Text(
                           widget.chipData.companyName,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.surface,
@@ -331,6 +331,7 @@ class _ChipTileState extends State<ChipTile> {
                     Helpers.formatExpiryDateString(
                       widget.chipData.deadline.toString(),
                     ),
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,

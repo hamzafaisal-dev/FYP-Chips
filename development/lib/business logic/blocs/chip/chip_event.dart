@@ -76,3 +76,12 @@ class JustFetchChips extends ChipEvent {
   @override
   List<Object?> get props => [];
 }
+
+class FetchUserPostedChips extends ChipEvent {
+  String postedBy;
+
+  FetchUserPostedChips({required this.postedBy});
+
+  @override
+  List<Object?> get props => [];
+}
