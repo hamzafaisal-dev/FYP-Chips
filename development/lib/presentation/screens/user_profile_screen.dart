@@ -1,7 +1,13 @@
+import 'package:development/business%20logic/blocs/chip/chip_bloc.dart';
+import 'package:development/business%20logic/blocs/chip/chip_event.dart';
+import 'package:development/business%20logic/blocs/chip/chip_state.dart';
 import 'package:development/business%20logic/cubits/auth/auth_cubit.dart';
 import 'package:development/business%20logic/cubits/user/user_cubit.dart';
 import 'package:development/constants/asset_paths.dart';
+import 'package:development/data/models/chip_model.dart';
 import 'package:development/data/models/user_model.dart';
+import 'package:development/presentation/widgets/chip_tile.dart';
+import 'package:development/presentation/widgets/chip_tile_skeleton.dart';
 import 'package:development/presentation/widgets/custom_icon_button.dart';
 import 'package:development/presentation/widgets/user_prof_screen_header_skeleton.dart';
 import 'package:development/services/navigation_service.dart';
@@ -9,6 +15,7 @@ import 'package:development/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import '../widgets/user_profile_screen_header.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -23,6 +30,8 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   late final UserModel? _authenticatedUser;
 
+  late final UserModel? _loadedUser;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +41,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
     userCubit.fetchUserChipsStream(_authenticatedUser!.username);
+
+    BlocProvider.of<ChipBloc>(context).add(const JustFetchChips());
 
     if (widget.arguments != null) {
       String postedBy = widget.arguments!["postedBy"];
@@ -58,14 +69,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: CustomIconButton(
-                  iconSvgPath: AssetPaths.leftArrowIconPath,
-                  iconWidth: 16.w,
-                  iconHeight: 16.h,
-                  onTap: () {
-                    BlocProvider.of<UserCubit>(context).fetchTopContributors();
+                iconSvgPath: AssetPaths.leftArrowIconPath,
+                iconWidth: 16.w,
+                iconHeight: 16.h,
+                onTap: () {
+                  BlocProvider.of<UserCubit>(context).fetchTopContributors();
 
-                    NavigationService.goBack();
-                  }),
+                  NavigationService.goBack();
+                },
+              ),
             ),
           ),
         ),
@@ -94,6 +106,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         isEditable: true,
                       );
                     } else if (state is UserLoadedState) {
+                      _loadedUser = state.user;
+
                       Helpers.logEvent(
                         _authenticatedUser!.userId,
                         "view-profile",
@@ -118,93 +132,81 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
               ),
 
-              // // your chips
-              // Padding(
-              //   padding: EdgeInsets.only(bottom: 10.h),
-              //   child: Text(
-              //     "Your Chips",
-              //     style: Theme.of(context).textTheme.headlineSmall,
-              //   ),
-              // ),
+              // your chips
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.h),
+                child: Text(
+                  "Posted Chips",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
 
-              // // user chips list
-              // BlocBuilder<UserCubit, UserState>(
-              //   builder: (context, state) {
-              //     if (state is UserChipsStreamFetched) {
-              //       return StreamBuilder(
-              //         stream: state.userChipsStream,
-              //         builder: (context, snapshot) {
-              //           if (snapshot.connectionState == ConnectionState.waiting) {
-              //             return Expanded(
-              //               child: ListView.builder(
-              //                 itemCount: 9,
-              //                 itemBuilder: (context, index) =>
-              //                     const ChipTileSkeleton(),
-              //               ),
-              //             );
-              //           } else if (snapshot.hasError) {
-              //             return SelectableText(snapshot.error.toString());
-              //           } else if (snapshot.data?.isEmpty ?? true) {
-              //             return Column(
-              //               mainAxisSize: MainAxisSize.min,
-              //               children: [
-              //                 Lottie.asset(
-              //                   AssetPaths.ghostEmptyAnimationPath,
-              //                   width: 234.w,
-              //                   frameRate: FrameRate.max,
-              //                 ),
-              //                 Padding(
-              //                   padding: EdgeInsets.only(top: 10.h),
-              //                   child: Text(
-              //                     "You haven't posted any chips yet.",
-              //                     style: Theme.of(context).textTheme.labelSmall,
-              //                     textAlign: TextAlign.center,
-              //                   ),
-              //                 ),
-              //               ],
-              //             );
-              //           } else if (snapshot.hasData) {
-              //             return Expanded(
-              //               child: RefreshIndicator(
-              //                 backgroundColor:
-              //                     Theme.of(context).colorScheme.surface,
-              //                 onRefresh: () async {
-              //                   BlocProvider.of<UserCubit>(context)
-              //                       .fetchUserChipsStream(
-              //                           _authenticatedUser!.username);
-              //                 },
-              //                 child: ListView.builder(
-              //                   itemCount: snapshot.data!.length,
-              //                   itemBuilder: (context, index) {
-              //                     List<ChipModel> userChipsList = snapshot.data!;
-              //                     ChipModel chip = userChipsList[index];
-              //                     return Padding(
-              //                       padding: EdgeInsets.only(bottom: 10.8.h),
-              //                       child: ChipTile(
-              //                         chipData: chip,
-              //                         currentUser: _authenticatedUser!,
-              //                         onTap: () => NavigationService.routeToNamed(
-              //                           '/view-chip',
-              //                           arguments: {"chipData": chip},
-              //                         ),
-              //                       ),
-              //                     );
-              //                   },
-              //                 ),
-              //               ),
-              //             );
-              //           } else {
-              //             return const Text("woops, something went wrong...");
-              //           }
-              //         },
-              //       );
-              //     } else if (state is FetchingUserChips) {
-              //       return const Text("fetching...");
-              //     } else {
-              //       return Text("chips not fetched. state: $state");
-              //     }
-              //   },
-              // ),
+              BlocBuilder<ChipBloc, ChipState>(
+                builder: (context, state) {
+                  if (state is ChipsLoading) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: 9,
+                        itemBuilder: (context, index) =>
+                            const ChipTileSkeleton(),
+                      ),
+                    );
+                  } else if (state is ChipsStreamLoaded) {
+                    List<ChipModel> chipsList = state.chips;
+                    List<ChipModel> usersChips = [];
+                    for (ChipModel chip in chipsList) {
+                      if (_authenticatedUser!.postedChips
+                          .contains(chip.chipId)) {
+                        usersChips.add(chip);
+                      }
+                    }
+
+                    if (usersChips.isEmpty) {
+                      return Expanded(
+                        child: Center(
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset(
+                                AssetPaths.appliedEmptyAnimationPath,
+                                width: 200.w,
+                                repeat: true,
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "No chips posted yet!",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: usersChips.length,
+                          itemBuilder: (context, index) {
+                            ChipModel chip = usersChips[index];
+
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 10.8.h),
+                              child: ChipTile(
+                                chipData: chip,
+                                currentUser: _authenticatedUser!,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  } else if (state is ChipError) {
+                    return Text(state.errorMsg);
+                  }
+                  return const Text("woops, something went wrong...");
+                },
+              ),
+
+              SizedBox(height: 20.h),
             ],
           ),
         ),

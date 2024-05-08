@@ -127,5 +127,13 @@ class ChipBloc extends Bloc<ChipEvent, ChipState> {
         _fetchChips(emit);
       }
     });
+
+    on<JustFetchChips>((event, emit) async {
+      try {
+        await _fetchChips(emit);
+      } catch (error) {
+        emit(ChipError(errorMsg: error.toString()));
+      }
+    });
   }
 }

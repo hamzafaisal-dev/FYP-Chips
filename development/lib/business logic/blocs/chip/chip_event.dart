@@ -70,5 +70,9 @@ class DeleteChipEvent extends ChipEvent {
   List<Object?> get props => [chipId, currentUser];
 }
 
-// move this to UserCubit when it's create
+class JustFetchChips extends ChipEvent {
+  const JustFetchChips();
 
+  @override
+  List<Object?> get props => [];
+}
